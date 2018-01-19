@@ -256,8 +256,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      */
     @SuppressWarnings({"unchecked"})
     protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(final PicoContainer container,
-                                                                            final ComponentAdapter adapter, final Class keyType, final Generic<?> valueType) {
-        final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
+                                                                            final ComponentAdapter<?> adapter, final Class keyType, final Generic<?> valueType) {
+        final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
             adapterMap.putAll(getMatchingComponentAdapters(parent, adapter, keyType, valueType));

@@ -395,7 +395,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
     private Map<URL, Permissions> makePermissions() {
-        Map<URL, Permissions> permissionsMap = new HashMap<URL, Permissions>();
+        Map<URL, Permissions> permissionsMap = new HashMap<>();
         for (ClassPathElement cpe : classPathElements) {
             Permissions permissionCollection = cpe.getPermissionCollection();
             permissionsMap.put(cpe.getUrl(), permissionCollection);

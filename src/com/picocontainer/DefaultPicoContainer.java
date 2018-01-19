@@ -583,7 +583,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     public <T> BindWithOrTo<T> bind(final Class<T> type) {
-        return new DpcBindWithOrTo<T>(DefaultPicoContainer.this, type);
+        return new DpcBindWithOrTo<>(DefaultPicoContainer.this, type);
     }
 
     /**
@@ -593,6 +593,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     public MutablePicoContainer addComponent(final Object implOrInstance) {
         return addComponent(implOrInstance, this.containerProperties);
     }
+
 
     @Override
     public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
