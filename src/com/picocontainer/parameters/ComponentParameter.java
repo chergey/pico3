@@ -39,6 +39,7 @@ public class ComponentParameter
 
     /**
      * <code>DEFAULT</code> is an instance of ComponentParameter using the default constructor.
+     *
      * @todo Clean up the circular reference.
      */
     public static final ComponentParameter DEFAULT = new ComponentParameter();
@@ -53,7 +54,6 @@ public class ComponentParameter
     public static final ComponentParameter ARRAY_ALLOW_EMPTY = new ComponentParameter(true);
 
     private final Parameter collectionParameter;
-
 
 
     /**
@@ -91,7 +91,7 @@ public class ComponentParameter
      * The components in the collection will be of the specified type.
      *
      * @param componentValueType the component's type (ignored for an Array)
-     * @param emptyCollection <code>true</code> allows the collection to be empty
+     * @param emptyCollection    <code>true</code> allows the collection to be empty
      */
     public ComponentParameter(final Generic<?> componentValueType, final boolean emptyCollection) {
         this(null, new CollectionComponentParameter(componentValueType, emptyCollection));
@@ -103,9 +103,9 @@ public class ComponentParameter
      * The components in the collection will be of the specified type and their adapter's key
      * must have a particular type.
      *
-     * @param keyType the component adapter's key type
+     * @param keyType            the component adapter's key type
      * @param componentValueType the component's type (ignored for an Array)
-     * @param emptyCollection <code>true</code> allows the collection to be empty
+     * @param emptyCollection    <code>true</code> allows the collection to be empty
      */
     public ComponentParameter(final Class<?> keyType, final Generic<?> componentValueType, final boolean emptyCollection) {
         this(null, new CollectionComponentParameter(keyType, componentValueType, emptyCollection));
@@ -114,10 +114,11 @@ public class ComponentParameter
 
     /**
      * Use this constructor if you are using CollectionComponentParameter
-    * @param mapDefiningParameter the collection component parameter used for finding matching components
+     *
+     * @param mapDefiningParameter the collection component parameter used for finding matching components
      */
     public ComponentParameter(final Parameter mapDefiningParameter) {
-    	this(null, mapDefiningParameter);
+        this(null, mapDefiningParameter);
     }
 
     private ComponentParameter(final Object key, final Parameter collectionParameter) {
@@ -126,18 +127,19 @@ public class ComponentParameter
     }
 
     @Override
-	public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
+    public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
                             final boolean useNames, final Annotation binding) {
 
         return new Resolver() {
             final Resolver resolver = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding);
+
             public boolean isResolved() {
                 boolean superResolved = resolver.isResolved();
                 if (!superResolved) {
                     if (collectionParameter != null) {
                         return collectionParameter.resolve(container, forAdapter, null, expectedType, expectedNameBinding,
-                                                                useNames, binding).isResolved();
+                                useNames, binding).isResolved();
                     }
                     return false;
                 }
@@ -155,7 +157,7 @@ public class ComponentParameter
                 }
                 if (result == null && collectionParameter != null) {
                     result = collectionParameter.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding,
-                                                                 useNames, binding).resolveInstance(into);
+                            useNames, binding).resolveInstance(into);
                 }
                 return result;
             }
@@ -167,7 +169,7 @@ public class ComponentParameter
     }
 
     @Override
-	public void verify(final PicoContainer container,
+    public void verify(final PicoContainer container,
                        final ComponentAdapter<?> adapter,
                        final Type expectedType,
                        final NameBinding expectedNameBinding,
@@ -190,7 +192,7 @@ public class ComponentParameter
      * @see BasicComponentParameter#accept(com.picocontainer.PicoVisitor)
      */
     @Override
-	public void accept(final PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         if (collectionParameter != null) {
             collectionParameter.accept(visitor);

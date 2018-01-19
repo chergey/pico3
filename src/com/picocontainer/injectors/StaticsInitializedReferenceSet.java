@@ -15,45 +15,45 @@ import java.util.Set;
 
 /**
  * Wrapper around a set of references to static members.
- * @author Michael Rimov
  *
+ * @author Michael Rimov
  */
 public class StaticsInitializedReferenceSet {
 
-	private Set<Member> referenceSet = null;
+    private Set<Member> referenceSet = null;
 
 
-	public synchronized boolean isMemberAlreadyInitialized(final Member member) {
-		if (member == null) {
-			throw new NullPointerException("member");
-		}
-		return getReferenceSet().contains(member);
-	}
+    public synchronized boolean isMemberAlreadyInitialized(final Member member) {
+        if (member == null) {
+            throw new NullPointerException("member");
+        }
+        return getReferenceSet().contains(member);
+    }
 
-	public synchronized void markMemberInitialized(final Member member) {
+    public synchronized void markMemberInitialized(final Member member) {
 
-		if (member == null) {
-			throw new NullPointerException("member");
-		}
+        if (member == null) {
+            throw new NullPointerException("member");
+        }
 
-		if (!Modifier.isStatic(member.getModifiers())) {
-			throw new IllegalArgumentException("Members should only be marked if they are static");
-		}
+        if (!Modifier.isStatic(member.getModifiers())) {
+            throw new IllegalArgumentException("Members should only be marked if they are static");
+        }
 
-		getReferenceSet().add(member);
-	}
+        getReferenceSet().add(member);
+    }
 
-	protected Set<Member> getReferenceSet() {
-		if (referenceSet == null) {
-			referenceSet = new HashSet<Member>();
-		}
+    protected Set<Member> getReferenceSet() {
+        if (referenceSet == null) {
+            referenceSet = new HashSet<Member>();
+        }
 
-		return referenceSet;
+        return referenceSet;
 
-	}
+    }
 
-	public synchronized void dispose() {
-		referenceSet = null;
-	}
+    public synchronized void dispose() {
+        referenceSet = null;
+    }
 
 }

@@ -39,8 +39,8 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
-            final LifecycleStrategy lifecycle, final Properties componentProps, final Object key,
-            final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+                                                          final LifecycleStrategy lifecycle, final Properties componentProps, final Object key,
+                                                          final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         if (delegate == null) {
             delegate = new AdaptingInjection();
         }
@@ -56,9 +56,9 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
     public void verify(final PicoContainer container) {
-    	if (delegate != null) {
-    		delegate.verify(container);
-    	}
+        if (delegate != null) {
+            delegate.verify(container);
+        }
     }
 
     public void accept(final PicoVisitor visitor) {
@@ -70,7 +70,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
 
 
     public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-            final LifecycleStrategy lifecycle, final Properties componentProps, final ComponentAdapter<T> adapter) {
+                                                       final LifecycleStrategy lifecycle, final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (delegate != null && delegate instanceof Behavior) {
             return ((Behavior) delegate).addComponentAdapter(monitor, lifecycle,
                     componentProps, adapter);
@@ -81,10 +81,11 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     /**
      * Checks to see if one or more properties in the parameter <code>present</code> are available in
      * the <code>current</code> parameter.
-     * @param current the current set of properties to check
-     * @param present the properties to check for.
+     *
+     * @param current         the current set of properties to check
+     * @param present         the properties to check for.
      * @param compareValueToo If set to true, then we also check the <em>value</em> of the property to make
-     * sure it matches.  Some items in {@link com.picocontainer.Characteristics} have both a true and a false value.
+     *                        sure it matches.  Some items in {@link com.picocontainer.Characteristics} have both a true and a false value.
      * @return true if the property is present <em>and</em> the value that exists equals the value of
      * caompareValueToo
      */
@@ -139,12 +140,12 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
     }
 
 
-	public void dispose() {
-		if (delegate != null) {
-			delegate.dispose();
-		}
-	}    
-    
+    public void dispose() {
+        if (delegate != null) {
+            delegate.dispose();
+        }
+    }
+
     /**
      * <p>
      * Component adapter which decorates another adapter.
@@ -164,7 +165,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
      * @author Mauro Talevi
      */
     public abstract static class AbstractChangedBehavior<T> implements ChangedBehavior<T>, ComponentMonitorStrategy,
-                                                      LifecycleStrategy, Serializable {
+            LifecycleStrategy, Serializable {
 
         protected final ComponentAdapter<T> delegate;
 
@@ -213,7 +214,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {
             if (delegate instanceof ComponentMonitorStrategy) {
-                return ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
+                return ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
             }
             return new NullComponentMonitor();
         }
@@ -222,11 +223,12 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * Returns delegate's current monitor if the delegate supports
          * a component monitor strategy.
          * {@inheritDoc}
+         *
          * @throws PicoCompositionException if no component monitor is found in delegate
          */
         public ComponentMonitor currentMonitor() {
             if (delegate instanceof ComponentMonitorStrategy) {
-                return ((ComponentMonitorStrategy)delegate).currentMonitor();
+                return ((ComponentMonitorStrategy) delegate).currentMonitor();
             }
             throw new PicoCompositionException("No component monitor found in delegate");
         }
@@ -237,7 +239,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void start(final PicoContainer container) {
             if (delegate instanceof ChangedBehavior) {
-                ((ChangedBehavior<?>)delegate).start(container);
+                ((ChangedBehavior<?>) delegate).start(container);
             }
         }
 
@@ -247,7 +249,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void stop(final PicoContainer container) {
             if (delegate instanceof ChangedBehavior) {
-                ((ChangedBehavior<?>)delegate).stop(container);
+                ((ChangedBehavior<?>) delegate).stop(container);
             }
         }
 
@@ -257,7 +259,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void dispose(final PicoContainer container) {
             if (delegate instanceof ChangedBehavior) {
-                ((ChangedBehavior<?>)delegate).dispose(container);
+                ((ChangedBehavior<?>) delegate).dispose(container);
             }
         }
 
@@ -267,19 +269,19 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public boolean componentHasLifecycle() {
             if (delegate instanceof ChangedBehavior) {
-                return ((ChangedBehavior<?>)delegate).componentHasLifecycle();
+                return ((ChangedBehavior<?>) delegate).componentHasLifecycle();
             }
             return false;
         }
 
         public boolean isStarted() {
             if (delegate instanceof ChangedBehavior) {
-                return ((ChangedBehavior<?>)delegate).isStarted();
+                return ((ChangedBehavior<?>) delegate).isStarted();
             }
             return false;
         }
 
-    // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
+        // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
         /**
          * Invokes delegate start method if the delegate is a LifecycleStrategy
@@ -287,7 +289,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void start(final Object component) {
             if (delegate instanceof LifecycleStrategy) {
-                ((LifecycleStrategy)delegate).start(component);
+                ((LifecycleStrategy) delegate).start(component);
             }
         }
 
@@ -297,7 +299,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void stop(final Object component) {
             if (delegate instanceof LifecycleStrategy) {
-                ((LifecycleStrategy)delegate).stop(component);
+                ((LifecycleStrategy) delegate).stop(component);
             }
         }
 
@@ -307,7 +309,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          */
         public void dispose(final Object component) {
             if (delegate instanceof LifecycleStrategy) {
-                ((LifecycleStrategy)delegate).dispose(component);
+                ((LifecycleStrategy) delegate).dispose(component);
             }
         }
 
@@ -324,7 +326,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
         }
 
         @Override
-		public String toString() {
+        public String toString() {
             return getDescriptor() + ":" + delegate.toString();
         }
     }

@@ -39,7 +39,7 @@ public class IntoTypeTestCase {
     }
 
 
-    public static interface Alice {
+    public interface Alice {
     }
 
 

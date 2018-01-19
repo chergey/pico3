@@ -45,12 +45,12 @@ public class RegexComposer implements ComposingMonitor.Composer {
                 pat = pattern;
             }
             Collection<ComponentAdapter<?>> cas = container.getComponentAdapters();
-            List retVal = new ArrayList();
+            List<Object> retVal = new ArrayList<>();
             for (ComponentAdapter<?> componentAdapter : cas) {
                 Object key2 = componentAdapter.getComponentKey();
                 if (key2 instanceof String) {
                     Matcher matcher = pat.matcher((String) key2);
-                    if (matcher != null && matcher.find()) {
+                    if (matcher.find()) {
                         retVal.add(componentAdapter.getComponentInstance(container, ComponentAdapter.NOTHING.class));
                     }
                 }

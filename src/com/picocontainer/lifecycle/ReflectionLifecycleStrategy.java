@@ -28,27 +28,27 @@ import com.picocontainer.ComponentMonitor;
 @SuppressWarnings("serial")
 public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
- 	/**
-	 * Index in the methodnames array that contains the name of the 'start'
-	 * method.
-	 */
-	private final static int START = 0;
+    /**
+     * Index in the methodnames array that contains the name of the 'start'
+     * method.
+     */
+    private final static int START = 0;
 
-	/**
-	 * Index in the methodNames array that contains the name of the 'stop'
-	 * method.
-	 */
-	private final static int STOP = 1;
+    /**
+     * Index in the methodNames array that contains the name of the 'stop'
+     * method.
+     */
+    private final static int STOP = 1;
 
-	/**
-	 * Index in the methodNames array that contains the name of the 'dispose'
-	 * method.
-	 */
-	private final static int DISPOSE = 2;
+    /**
+     * Index in the methodNames array that contains the name of the 'dispose'
+     * method.
+     */
+    private final static int DISPOSE = 2;
 
-	/**
-	 * An array of method names that are part of the lifecycle functions.
-	 */
+    /**
+     * An array of method names that are part of the lifecycle functions.
+     */
     private final String[] methodNames;
 
     /**
@@ -70,9 +70,9 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
      * Construct a ReflectionLifecycleStrategy with individual method names. Note, that a lifecycle
      * method does not have any arguments.
      *
-     * @param monitor the monitor to use
-     * @param startMethodName the name of the start method
-     * @param stopMethodName the name of the stop method
+     * @param monitor           the monitor to use
+     * @param startMethodName   the name of the start method
+     * @param stopMethodName    the name of the stop method
      * @param disposeMethodName the name of the dispose method
      * @throws NullPointerException if the monitor is <code>null</code>
      */
@@ -83,20 +83,26 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
         methodNames = new String[]{startMethodName, stopMethodName, disposeMethodName};
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void start(final Object component) {
-    	Method[] methods = init(component.getClass());
+        Method[] methods = init(component.getClass());
         invokeMethod(component, methods[START]);
 
     }
 
-	/** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void stop(final Object component) {
         Method[] methods = init(component.getClass());
         invokeMethod(component, methods[STOP]);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void dispose(final Object component) {
         Method[] methods = init(component.getClass());
         invokeMethod(component, methods[DISPOSE]);
@@ -118,12 +124,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     }
 
     protected void monitorAndThrowReflectionLifecycleException(final Method method,
-                                                             final Throwable e,
-                                                             final Object component) {
+                                                               final Throwable e,
+                                                               final Object component) {
         RuntimeException re;
         if (e.getCause() instanceof RuntimeException) {
             re = (RuntimeException) e.getCause();
-        // TODO - change lifecycleInvocationFailed to take a throwable in future version
+            // TODO - change lifecycleInvocationFailed to take a throwable in future version
 //        } else if (e.getCause() instanceof Error) {
 //            re = (Error) e.getCause();
         } else {
@@ -147,6 +153,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
 
     /**
      * Initializes the method array with the given type.
+     *
      * @param type the type to examine for reflection lifecycle methods.
      * @return Method array containing start/stop/dispose methods.
      */
@@ -158,12 +165,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
                 methods = new Method[methodNames.length];
                 for (int i = 0; i < methods.length; i++) {
                     try {
-                    	 final String methodName = methodNames[i];
-                    	 	if (methodName == null) {
-                    	 	// skipping, we're not interested in this lifecycle method.
-                    	 		continue;
-                    	 }
-                    	 methods[i] = type.getMethod(methodName);
+                        final String methodName = methodNames[i];
+                        if (methodName == null) {
+                            // skipping, we're not interested in this lifecycle method.
+                            continue;
+                        }
+                        methods[i] = type.getMethod(methodName);
                     } catch (NoSuchMethodException ignored) {
                     }
                 }

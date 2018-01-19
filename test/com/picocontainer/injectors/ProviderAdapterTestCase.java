@@ -12,7 +12,6 @@ import com.picocontainer.injectors.ProviderAdapter;
 public class ProviderAdapterTestCase {
 
 	public static class A {
-
 	}
 
 	public static class ProviderA implements javax.inject.Provider<A> {

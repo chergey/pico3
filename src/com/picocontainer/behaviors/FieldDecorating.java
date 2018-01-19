@@ -35,7 +35,7 @@ public abstract class FieldDecorating extends AbstractBehavior implements Decora
     }
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(
+    public <T> ComponentAdapter<T> createComponentAdapter(
             final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
             throws PicoCompositionException {
         return monitor.changedBehavior(new FieldDecorated<T>(
@@ -56,7 +56,7 @@ public abstract class FieldDecorating extends AbstractBehavior implements Decora
         }
 
         @Override
-		public T getComponentInstance(final PicoContainer container, final Type into)
+        public T getComponentInstance(final PicoContainer container, final Type into)
                 throws PicoCompositionException {
             T instance = super.getComponentInstance(container, into);
             Field[] fields = instance.getClass().getDeclaredFields();

@@ -25,8 +25,10 @@ public class MultiInjectionTestCase {
 
     public static class Bar {
     }
+
     public static class Baz {
     }
+
     public static class Foo {
         private final Bar bar;
         private Baz baz;
@@ -67,7 +69,8 @@ public class MultiInjectionTestCase {
         }
     }
 
-    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
+    @Test
+    public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
@@ -78,7 +81,8 @@ public class MultiInjectionTestCase {
         assertNotNull(foo.baz);
     }
 
-    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() throws NoSuchMethodException {
+    @Test
+    public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection("inject"));
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
@@ -89,7 +93,8 @@ public class MultiInjectionTestCase {
         assertNotNull(foo.baz);
     }
 
-    @Test public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
+    @Test
+    public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
@@ -101,7 +106,8 @@ public class MultiInjectionTestCase {
     }
 
 
-    @Test public void testComponentWithCtorAndSetterDiCanNoteMissingSetterDependency() throws NoSuchMethodException {
+    @Test
+    public void testComponentWithCtorAndSetterDiCanNoteMissingSetterDependency() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
         dpc.addComponent(Foo.class);

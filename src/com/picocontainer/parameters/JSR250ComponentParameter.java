@@ -12,7 +12,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 
-
 public class JSR250ComponentParameter extends ComponentParameter {
 
     private final String name;

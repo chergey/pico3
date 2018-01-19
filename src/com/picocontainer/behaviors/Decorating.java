@@ -28,11 +28,11 @@ import com.picocontainer.parameters.MethodParameters;
 public abstract class Decorating extends AbstractBehavior implements Decorator {
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-                                                   final Properties componentProps, final Object key,
-                                                   final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps, final Object key,
+                                                          final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         return monitor.changedBehavior(new Decorated<T>(super.createComponentAdapter(monitor, lifecycle,
-                componentProps,key, impl, constructorParams, fieldParams, methodParams), this));
+                componentProps, key, impl, constructorParams, fieldParams, methodParams), this));
     }
 
     @SuppressWarnings("serial")
@@ -45,7 +45,7 @@ public abstract class Decorating extends AbstractBehavior implements Decorator {
         }
 
         @Override
-		public T getComponentInstance(final PicoContainer container, final Type into)
+        public T getComponentInstance(final PicoContainer container, final Type into)
                 throws PicoCompositionException {
             T instance = super.getComponentInstance(container, into);
             decorator.decorate(instance);

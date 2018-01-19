@@ -22,31 +22,31 @@ import com.picocontainer.PicoContainer;
 /**
  * CommandLineArgumentsPicoContainer configured itself from array of strings
  * which are most likely coming in as command line arguments
- *
  */
 @SuppressWarnings("serial")
 public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     public CommandLinePicoContainer(final char separator, final String... arguments) {
-    	this(separator, (PicoContainer) null, arguments);
+        this(separator, (PicoContainer) null, arguments);
     }
 
     public CommandLinePicoContainer(final char separator, final PicoContainer parent, final String... arguments) {
-    	super(new DefaultPicoContainer(parent));
+        super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
+
     public CommandLinePicoContainer(final char separator, final StringReader argumentsProps) throws IOException {
         this(separator, argumentsProps, new String[0]);
     }
 
-    public CommandLinePicoContainer(final char separator, final StringReader argumentProperties, final String... arguments) throws IOException{
-    	this(separator, argumentProperties, null, arguments);
+    public CommandLinePicoContainer(final char separator, final StringReader argumentProperties, final String... arguments) throws IOException {
+        this(separator, argumentProperties, null, arguments);
     }
 
     public CommandLinePicoContainer(final char separator, final StringReader argumentProperties, final PicoContainer parent, final String... arguments)
-        throws IOException {
-    	super(new DefaultPicoContainer(parent));
+            throws IOException {
+        super(new DefaultPicoContainer(parent));
 
         LineNumberReader lnr = new LineNumberReader(argumentProperties);
         String line = lnr.readLine();
@@ -64,7 +64,7 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     }
 
     public CommandLinePicoContainer(final PicoContainer parent, final String... arguments) {
-    	this('=', parent, arguments);
+        this('=', parent, arguments);
     }
 
     private void addConfig(final String key, final Object val) {
@@ -75,27 +75,27 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
     }
 
     @Override
-	public <T> T getComponentInto(final Class<T> componentType, final Type into) {
+    public <T> T getComponentInto(final Class<T> componentType, final Type into) {
         return null;
     }
 
     @Override
-	public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
+    public <T> T getComponentInto(final Generic<T> componentType, final Type into) {
         return null;
     }
 
     @Override
-	public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Generic<T> componentType) {
         return null;
     }
 
     @Override
-	public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
         return null;
     }
 
     @Override
-	public PicoContainer getParent() {
+    public PicoContainer getParent() {
         return new EmptyPicoContainer();
     }
 
@@ -107,13 +107,13 @@ public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
             addConfig(kvs[0], "true");
         } else if (kvs.length > 2) {
             throw new PicoCompositionException(
-                "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
+                    "Argument name'" + separator + "'value pair '" + argument + "' has too many '" + separator + "' characters");
         }
     }
 
     @Override
-	public MutablePicoContainer getDelegate() {
-    	return (MutablePicoContainer) super.getDelegate();
+    public MutablePicoContainer getDelegate() {
+        return (MutablePicoContainer) super.getDelegate();
     }
 
     public void setName(final String s) {

@@ -183,7 +183,7 @@ public class PicoBuilder {
             componentFactory = new CompositeInjection(injectors.toArray(new InjectionType[injectors.size()]));
         }
 
-        Stack<Object> clonedBehaviors = (Stack<Object>) behaviors.clone();
+        Stack<?> clonedBehaviors = (Stack<?>) behaviors.clone();
         while (!clonedBehaviors.empty()) {
             componentFactory = buildComponentFactory(tempContainer, componentFactory, clonedBehaviors);
         }
@@ -195,7 +195,7 @@ public class PicoBuilder {
         if (lifecycle == null) {
             tempContainer.addComponent(LifecycleStrategy.class, lifecycleClass);
         } else {
-            tempContainer.addComponent(LifecycleStrategy.class, lifecycle);
+            tempContainer.addComponent(LifecycleStrategy.class, (Object) lifecycle);
 
         }
         tempContainer.addComponent("mpc", mpcClass);
@@ -230,7 +230,7 @@ public class PicoBuilder {
         }
     }
 
-    private ComponentFactory buildComponentFactory(final DefaultPicoContainer container, final ComponentFactory lastCaf, final Stack<Object> clonedBehaviors) {
+    private ComponentFactory buildComponentFactory(final DefaultPicoContainer container, final ComponentFactory lastCaf, final Stack<?> clonedBehaviors) {
         Object componentFactory = clonedBehaviors.pop();
         DefaultPicoContainer tmpContainer = new TransientPicoContainer(container);
         tmpContainer.addComponent("componentFactory", componentFactory);

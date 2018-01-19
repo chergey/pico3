@@ -28,8 +28,8 @@ import com.picocontainer.parameters.MethodParameters;
 public class Guarding extends AbstractBehavior {
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-            final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.createComponentAdapter(monitor, lifecycle,
                 componentProps, key, impl, constructorParams, fieldParams, methodParams);
@@ -42,8 +42,8 @@ public class Guarding extends AbstractBehavior {
     }
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-            final Properties componentProps, final ComponentAdapter<T> adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                       final Properties componentProps, final ComponentAdapter<T> adapter) {
         String guard = getAndRemovePropertiesIfPresentByKey(componentProps, Characteristics.GUARD);
         ComponentAdapter<T> delegate = super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         if (guard == null) {
@@ -56,8 +56,8 @@ public class Guarding extends AbstractBehavior {
     /**
      * behaviour for allows components to be guarded by another component
      *
-     * @author Paul Hammant
      * @param <T>
+     * @author Paul Hammant
      */
     @SuppressWarnings("serial")
     public static class Guarded<T> extends AbstractChangedBehavior<T> {
@@ -69,7 +69,7 @@ public class Guarding extends AbstractBehavior {
         }
 
         @Override
-		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             container.getComponentInto(guard, into);
             return super.getComponentInstance(container, into);
         }

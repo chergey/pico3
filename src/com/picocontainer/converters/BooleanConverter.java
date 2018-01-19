@@ -1,7 +1,6 @@
 package com.picocontainer.converters;
 
 
-
 /**
  * Converts values to 'boolean' data type objects
  *

@@ -12,17 +12,16 @@ import com.picocontainer.Parameter;
 
 public abstract class AbstractParameter implements Parameter {
 
-	public AbstractParameter() {
+    public AbstractParameter() {
 
-	}
+    }
 
-	/**
-	 * @todo REMOVE ME
-	 *
-	 * @return
-	 */
-	public String getTargetName() {
-		return null;
-	}
+    /**
+     * @return
+     * @todo REMOVE ME
+     */
+    public String getTargetName() {
+        return null;
+    }
 
 }

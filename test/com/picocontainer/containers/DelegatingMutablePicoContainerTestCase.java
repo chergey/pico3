@@ -13,13 +13,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
+import com.picocontainer.*;
 import org.junit.Test;
 import com.picocontainer.tck.AbstractPicoContainerTest;
 
-import com.picocontainer.Characteristics;
-import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.PicoBuilder;
-import com.picocontainer.PicoContainer;
 import com.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 
@@ -42,6 +39,16 @@ public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContaine
 	private static class MyDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
         public MyDelegatingMutablePicoContainer(final MutablePicoContainer parent) {
             super(parent);
+        }
+
+        @Override
+        public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
+        }
+
+        @Override
+        public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
         }
 
         @Override

@@ -12,6 +12,5 @@ public class PackagePrivateDerivedTest1 extends PackagePrivateBase1 {
 
 	@Inject
 	void doSomething() {
-
 	}
 }

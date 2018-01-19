@@ -58,8 +58,8 @@ public class Behaviors {
         return new Caching.Cached<>(delegate);
     }
 
-    public static <T> ChangedBehavior<T> cached(final ComponentAdapter<T> delegate, final ObjectReference instanceReference) {
-        return new Caching.Cached<T>(delegate, instanceReference);
+    public static <T> ChangedBehavior<T> cached(final ComponentAdapter<T> delegate, final ObjectReference<?> instanceReference) {
+        return new Caching.Cached<T>(delegate, (ObjectReference<Storing.Stored.Instance<T>>) instanceReference);
     }
 
     public static <T> ChangedBehavior<T> decorated(final ComponentAdapter<T> delegate, final Decorator decorator) {

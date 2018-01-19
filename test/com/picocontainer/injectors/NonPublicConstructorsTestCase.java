@@ -24,7 +24,7 @@ public final class NonPublicConstructorsTestCase {
         MutablePicoContainer container = new DefaultPicoContainer();
 
         ComponentAdapter<DummyNotPublicConstructor> dummyComponentAdapter =
-                new ConstructorInjector<DummyNotPublicConstructor>(
+                new ConstructorInjector<>(
                         DummyNotPublicConstructor.class,
                         DummyNotPublicConstructor.class)
                 .withNonPublicConstructors();
@@ -40,7 +40,7 @@ public final class NonPublicConstructorsTestCase {
         MutablePicoContainer container = new DefaultPicoContainer();
 
         ComponentAdapter<DummyNotPublicClass> dummyComponentAdapter =
-                new ConstructorInjector<DummyNotPublicClass>(
+                new ConstructorInjector<>(
                         DummyNotPublicClass.class.getCanonicalName(),
                         DummyNotPublicClass.class)
                 .withNonPublicConstructors();
@@ -56,7 +56,7 @@ public final class NonPublicConstructorsTestCase {
         MutablePicoContainer container = new DefaultPicoContainer();
 
         ComponentAdapter<DummyProtectedConstructor> dummyComponentAdapter =
-                new ConstructorInjector<DummyProtectedConstructor>(
+                new ConstructorInjector<>(
                         DummyProtectedConstructor.class,
                         DummyProtectedConstructor.class)
                 .withNonPublicConstructors();

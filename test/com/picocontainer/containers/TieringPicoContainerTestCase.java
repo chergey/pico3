@@ -107,7 +107,7 @@ public class TieringPicoContainerTestCase {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Grouchy {}
+    public @interface Grouchy {}
 
     public static class GrouchyTiredPerson extends TiredPerson {
         public GrouchyTiredPerson(final Couch couchToSitOn) {
@@ -118,7 +118,7 @@ public class TieringPicoContainerTestCase {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Polite {}
+    public @interface Polite {}
 
     public static class PoliteTiredPerson extends TiredPerson {
         public PoliteTiredPerson(final Couch couchToSitOn) {
@@ -134,6 +134,7 @@ public class TieringPicoContainerTestCase {
         }
     }
 
+    @SuppressWarnings("all")
     @Test
     public void testThatGrandparentTraversalForComponentsCanBeBlockedEvenForAnnotatedInjections() {
         MutablePicoContainer grandparent = new TieringPicoContainer();

@@ -29,7 +29,7 @@ public interface Converters {
      * Converts a particular string value into the target type
      *
      * @param value the String value to convert
-     * @param type the object Type to convert to
+     * @param type  the object Type to convert to
      * @return The converted Object instance
      */
     Object convert(String value, Type type);

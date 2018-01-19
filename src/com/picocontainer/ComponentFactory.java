@@ -30,32 +30,30 @@ public interface ComponentFactory {
     /**
      * Create a new component adapter based on the specified arguments.
      *
-     * @param monitor the component monitor
-     * @param lifecycle te lifecycle strategy
-     * @param componentProps the component properties
-     * @param key the key to be associated with this adapter. This
-     *            value should be returned from a call to
-     *            {@link ComponentAdapter#getComponentKey()} on the created
-     *            adapter.
-     * @param impl the implementation class to be associated
-     *            with this adapter. This value should be returned from a call
-     *            to {@link ComponentAdapter#getComponentImplementation()} on
-     *            the created adapter. Should not be null.
+     * @param monitor           the component monitor
+     * @param lifecycle         te lifecycle strategy
+     * @param componentProps    the component properties
+     * @param key               the key to be associated with this adapter. This
+     *                          value should be returned from a call to
+     *                          {@link ComponentAdapter#getComponentKey()} on the created
+     *                          adapter.
+     * @param impl              the implementation class to be associated
+     *                          with this adapter. This value should be returned from a call
+     *                          to {@link ComponentAdapter#getComponentImplementation()} on
+     *                          the created adapter. Should not be null.
      * @param constructorParams TODO
-     * @param fieldParams TODO
-     * @param methodParams TODO
-     * @return a new component adapter based on the specified arguments. Should
-     *         not return null.
-     * @throws PicoCompositionException if the creation of the component adapter
-     *             results in a {@link PicoCompositionException}.
+     * @param fieldParams       TODO
+     * @param methodParams      TODO
      * @return The component adapter
+     * @throws PicoCompositionException if the creation of the component adapter
+     *                                  results in a {@link PicoCompositionException}.
      */
     <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
-                                            LifecycleStrategy lifecycle,
-                                            Properties componentProps,
-                                            Object key,
-                                            Class<T> impl,
-                                            ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException;
+                                                   LifecycleStrategy lifecycle,
+                                                   Properties componentProps,
+                                                   Object key,
+                                                   Class<T> impl,
+                                                   ConstructorParameters constructorParams, FieldParameters[] fieldParams, MethodParameters[] methodParams) throws PicoCompositionException;
 
     /**
      * Verification for the ComponentFactory - subject to implementation.
@@ -72,6 +70,6 @@ public interface ComponentFactory {
      * @param visitor the visitor.
      */
     void accept(PicoVisitor visitor);
-    
+
     void dispose();
 }

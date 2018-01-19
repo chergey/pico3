@@ -23,31 +23,31 @@ public class Automating extends AbstractBehavior implements Serializable {
 
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
-                                                   final LifecycleStrategy lifecycle,
-                                                   final Properties componentProps,
-                                                   final Object key,
-                                                   final Class<T> impl,
-                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                          final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps,
+                                                          final Object key,
+                                                          final Class<T> impl,
+                                                          final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return monitor.changedBehavior(new Automated<T>(super.createComponentAdapter(monitor,
-                                            lifecycle,
-                                            componentProps,
-                                            key,
-                                            impl,
-                                            constructorParams, fieldParams, methodParams)));
+                lifecycle,
+                componentProps,
+                key,
+                impl,
+                constructorParams, fieldParams, methodParams)));
     }
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter<T> adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
+                                                       final LifecycleStrategy lifecycle,
+                                                       final Properties componentProps,
+                                                       final ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProps, Characteristics.AUTOMATIC);
         return monitor.changedBehavior(new Automated<T>(super.addComponentAdapter(monitor,
-                                         lifecycle,
-                                         componentProps,
-                                         adapter)));
+                lifecycle,
+                componentProps,
+                adapter)));
     }
 
     @SuppressWarnings("serial")
@@ -59,7 +59,7 @@ public class Automating extends AbstractBehavior implements Serializable {
         }
 
         @Override
-		public boolean hasLifecycle(final Class<?> type) {
+        public boolean hasLifecycle(final Class<?> type) {
             return true;
         }
 

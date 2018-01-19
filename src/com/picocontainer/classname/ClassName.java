@@ -33,17 +33,17 @@ public class ClassName implements CharSequence {
     }
 
     @Override
-	public String toString() {
-        return className.toString();
+    public String toString() {
+        return className;
     }
 
     @Override
-	public int hashCode() {
+    public int hashCode() {
         return className.hashCode();
     }
 
     @Override
-	public boolean equals(final Object o) {
+    public boolean equals(final Object o) {
         return className.equals(o);
     }
 }

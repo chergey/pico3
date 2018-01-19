@@ -30,8 +30,6 @@ public class InjectorTestCase {
 
 
     final PicoVisitor parameterChecker = new AbstractPicoVisitor() {
-
-
         public boolean visitContainer(final PicoContainer pico) {
             return false;  //To change body of implemented methods use File | Settings | File Templates.
         }

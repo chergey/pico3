@@ -37,7 +37,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
 				public Object run(final Object instance) {
                     try {
                         blocker.block();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                     return null;
                 }

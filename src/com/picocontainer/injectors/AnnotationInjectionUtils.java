@@ -68,7 +68,7 @@ public class AnnotationInjectionUtils {
             Resource resouceAnno = (Resource) getAnnotationIfPresent(allAnnotations[i], Resource.class);
 
             if (resouceAnno != null && member instanceof Field) {
-                Class<?> clazz= ((Field) member).getType();
+                Class<?> clazz = ((Field) member).getType();
                 returnValue[i] = new JSR250ComponentParameter(resouceAnno.name(), clazz);
             }
 

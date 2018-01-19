@@ -36,7 +36,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
     }
 
     @Override
-	public Class<?> loadClass(final String name) throws ClassNotFoundException {
+    public Class<?> loadClass(final String name) throws ClassNotFoundException {
         try {
             return super.loadClass(name);
         } catch (ClassNotFoundException e) {
@@ -45,7 +45,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
     }
 
     @Override
-	protected Class<?> findClass(final String name) throws ClassNotFoundException {
+    protected Class<?> findClass(final String name) throws ClassNotFoundException {
         try {
             return super.findClass(name);
         } catch (ClassNotFoundException e) {
@@ -70,7 +70,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
     }
 
     @Override
-	public String toString() {
+    public String toString() {
         String result = CustomPermissionsURLClassLoader.class.getName() + " " + System.identityHashCode(this) + ":";
         URL[] urls = getURLs();
         for (URL url : urls) {
@@ -81,7 +81,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
     }
 
     @Override
-	public PermissionCollection getPermissions(final CodeSource codeSource) {
+    public PermissionCollection getPermissions(final CodeSource codeSource) {
         return permissionsMap.get(codeSource.getLocation());
     }
 

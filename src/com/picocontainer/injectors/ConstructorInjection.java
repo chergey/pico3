@@ -44,7 +44,7 @@ import com.picocontainer.parameters.MethodParameters;
 /**
  * A {@link com.picocontainer.InjectionType} for constructor injection.
  * The factory creates {@link ConstructorInjector}.
- *
+ * <p>
  * If there is more than one constructor for the component, the one with the
  * most satisfiable parameters will be used.  By default, the choice of
  * constructor for the component in question will be remembered between usages.
@@ -58,7 +58,6 @@ public class ConstructorInjection extends AbstractInjectionType {
     protected final boolean rememberChosenConstructor;
 
     /**
-     *
      * @param rememberChosenConstructor whether 'which constructor?' should be remembered
      *                                  from use to use for the associated injector.
      */
@@ -75,14 +74,14 @@ public class ConstructorInjection extends AbstractInjectionType {
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties properties, final Object key,
-                                                   final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+                                                          final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         boolean useNames = AbstractBehavior.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
         ConstructorInjector<T> injector = newConstructorInjector(monitor, key, impl, useNames, constructorParams);
         injector.enableEmjection(AbstractBehavior.removePropertiesIfPresent(properties, Characteristics.EMJECTION_ENABLED));
         return wrapLifeCycle(monitor.newInjector(injector), lifecycle);
     }
 
-    protected <T>ConstructorInjector<T> newConstructorInjector(final ComponentMonitor monitor, final Object key, final Class<T> impl, final boolean useNames, final ConstructorParameters parameters) {
+    protected <T> ConstructorInjector<T> newConstructorInjector(final ComponentMonitor monitor, final Object key, final Class<T> impl, final boolean useNames, final ConstructorParameters parameters) {
         return new ConstructorInjector<T>(monitor, useNames, rememberChosenConstructor, key, impl, parameters);
     }
 
@@ -106,7 +105,6 @@ public class ConstructorInjection extends AbstractInjectionType {
         private boolean allowNonPublicClasses = false;
 
 
-
         /***
          * Convenience method that allows creation of a constructor injector with specific, optional parameters.
          * @param key
@@ -114,14 +112,15 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @param params
          */
         public ConstructorInjector(final Object key, final Class<T> impl, final Parameter... params) {
-        	this(key, impl, (params == null || params.length == 0) ? (ConstructorParameters)null :  new ConstructorParameters(params));
+            this(key, impl, (params == null || params.length == 0) ? (ConstructorParameters) null : new ConstructorParameters(params));
         }
 
         /**
          * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
          * convenient constructor for use when instantiating a constructor injector directly.
-         * @param key the search key for this implementation
-         * @param impl the concrete implementation
+         *
+         * @param key        the search key for this implementation
+         * @param impl       the concrete implementation
          * @param parameters the parameters used for initialization
          */
         public ConstructorInjector(final Object key, final Class<T> impl, final ConstructorParameters parameters) {
@@ -131,43 +130,41 @@ public class ConstructorInjection extends AbstractInjectionType {
         /**
          * Creates a ConstructorInjector
          *
-         * @param monitor                 the component monitor used by this addAdapter
-         * @param useNames                use argument names when looking up dependencies
-         * @param key            the search key for this implementation
-         * @param impl the concrete implementation
-         * @param parameters              the parameters to use for the initialization
-         * @throws com.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
-         *                              if the implementation is not a concrete class.
-         * @throws NullPointerException if one of the parameters is <code>null</code>
+         * @param monitor    the component monitor used by this addAdapter
+         * @param useNames   use argument names when looking up dependencies
+         * @param key        the search key for this implementation
+         * @param impl       the concrete implementation
+         * @param parameters the parameters to use for the initialization
+         * @throws com.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class.
+         * @throws NullPointerException                                                          if one of the parameters is <code>null</code>
          */
         public ConstructorInjector(final ComponentMonitor monitor, final boolean useNames, final Object key, final Class<T> impl,
-        		final ConstructorParameters parameters) throws  NotConcreteRegistrationException {
+                                   final ConstructorParameters parameters) throws NotConcreteRegistrationException {
             super(key, impl,
-            		parameters != null ?  new AccessibleObjectParameterSet[] { parameters } : null,
-            		monitor, useNames,
+                    parameters != null ? new AccessibleObjectParameterSet[]{parameters} : null,
+                    monitor, useNames,
 
-            		/**
-            		 * Constructor Injection should always be using all parameters provided to it that
-            		 * don't have a member name attached.
-            		 */
-            		true);
+                    /**
+                     * Constructor Injection should always be using all parameters provided to it that
+                     * don't have a member name attached.
+                     */
+                    true);
         }
 
         /**
          * Creates a ConstructorInjector
          *
-         * @param monitor                 the component monitor used by this addAdapter
-         * @param useNames                use argument names when looking up dependencies
-         * @param rememberChosenCtor      remember the chosen constructor (to speed up second/subsequent calls)
-         * @param key            the search key for this implementation
-         * @param impl the concrete implementation
-         * @param constructorParams              the parameters to use for the initialization
-         * @throws com.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
-         *                              if the implementation is not a concrete class.
-         * @throws NullPointerException if one of the parameters is <code>null</code>
+         * @param monitor            the component monitor used by this addAdapter
+         * @param useNames           use argument names when looking up dependencies
+         * @param rememberChosenCtor remember the chosen constructor (to speed up second/subsequent calls)
+         * @param key                the search key for this implementation
+         * @param impl               the concrete implementation
+         * @param constructorParams  the parameters to use for the initialization
+         * @throws com.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class.
+         * @throws NullPointerException                                                          if one of the parameters is <code>null</code>
          */
         public ConstructorInjector(final ComponentMonitor monitor, final boolean useNames, final boolean rememberChosenCtor, final Object key, final Class<T> impl,
-                                   final ConstructorParameters constructorParams) throws  NotConcreteRegistrationException {
+                                   final ConstructorParameters constructorParams) throws NotConcreteRegistrationException {
             super(key, impl, toAccessibleObjectParameterSetArray(constructorParams), monitor, useNames, true);
             this.rememberChosenConstructor = rememberChosenCtor;
         }
@@ -193,11 +190,11 @@ public class ConstructorInjection extends AbstractInjectionType {
             return ctor;
         }
 
-        @SuppressWarnings({ "synthetic-access", "rawtypes" })
+        @SuppressWarnings({"synthetic-access", "rawtypes"})
         protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(final PicoContainer container) throws PicoCompositionException {
-            final Set<Constructor<?>> conflicts = new HashSet<Constructor<?>>();
-            final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
-            final Map<ResolverKey, Parameter.Resolver> resolvers = new HashMap<ResolverKey, Parameter.Resolver>();
+            final Set<Constructor<?>> conflicts = new HashSet<>();
+            final Set<Type> unsatisfiableDependencyTypes = new HashSet<>();
+            final Map<ResolverKey, Parameter.Resolver> resolvers = new HashMap<>();
             if (sortedMatchingConstructors == null) {
                 sortedMatchingConstructors = getSortedMatchingConstructors();
             }
@@ -209,75 +206,75 @@ public class ConstructorInjection extends AbstractInjectionType {
             Constructor<?> unsatisfiedConstructor = null;
             int lastParameterTested = 0;
             for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
-            	try {
-	                boolean failedDependency = false;
-	                Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
-	                fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
-	                Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
+                try {
+                    boolean failedDependency = false;
+                    Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
+                    fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
+                    Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
 
-	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
-	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
+                    final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
+                    final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
 
-	                final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
+                    final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
 
-	                //For debug messages if something fails since we swap parameters part way through the function
-	                List<Parameter> parametersUsed = new ArrayList<>(Arrays.asList(currentParameters));
+                    //For debug messages if something fails since we swap parameters part way through the function
+                    List<Parameter> parametersUsed = new ArrayList<>(Arrays.asList(currentParameters));
 
-	                // remember: all constructors with less arguments than the given parameters are filtered out already
-	                for (int j = 0; j < currentParameters.length; j++) {
-	                	lastParameterTested = j;
-	                    // check whether this constructor is satisfiable
-	                    Type expectedType = box(parameterTypes[j]);
-	                    NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
-	                    Parameter parameterToUse = getParameterToUse(sortedMatchingConstructor,j, currentParameters[j]);
-	                    parametersUsed.set(j, parameterToUse);
-	                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], parameterToUse);
-	                    Parameter.Resolver resolver = resolvers.get(resolverKey);
-	                    if (resolver == null) {
-	                        Parameter currentParameter = parameterToUse;
-	                        Annotation annotation = bindings[j];
-	                        boolean b = useNames();
-	                        resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
-	                        resolvers.put(resolverKey, resolver);
-	                    }
-	                    if (resolver.isResolved()) {
-	                        currentAdapters[j] = resolver.getComponentAdapter();
-	                        continue;
-	                    }
-	                    unsatisfiableDependencyTypes.add(expectedType);
-	                    unsatisfiedDependency = box(parameterTypes[j]);
-	                    unsatisfiedConstructor = sortedMatchingConstructor;
-	                    failedDependency = true;
-	                }
+                    // remember: all constructors with less arguments than the given parameters are filtered out already
+                    for (int j = 0; j < currentParameters.length; j++) {
+                        lastParameterTested = j;
+                        // check whether this constructor is satisfiable
+                        Type expectedType = box(parameterTypes[j]);
+                        NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
+                        Parameter parameterToUse = getParameterToUse(sortedMatchingConstructor, j, currentParameters[j]);
+                        parametersUsed.set(j, parameterToUse);
+                        ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], parameterToUse);
+                        Parameter.Resolver resolver = resolvers.get(resolverKey);
+                        if (resolver == null) {
+                            Parameter currentParameter = parameterToUse;
+                            Annotation annotation = bindings[j];
+                            boolean b = useNames();
+                            resolver = currentParameter.resolve(container, this, null, expectedType, expectedNameBinding, b, annotation);
+                            resolvers.put(resolverKey, resolver);
+                        }
+                        if (resolver.isResolved()) {
+                            currentAdapters[j] = resolver.getComponentAdapter();
+                            continue;
+                        }
+                        unsatisfiableDependencyTypes.add(expectedType);
+                        unsatisfiedDependency = box(parameterTypes[j]);
+                        unsatisfiedConstructor = sortedMatchingConstructor;
+                        failedDependency = true;
+                    }
 
-	                if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
-	                    if (conflicts.isEmpty()) {
-	                        // we found our match [aka. greedy and satisfied]
-	                        return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
-	                    }
-	                    // fits although not greedy
-	                    conflicts.add(sortedMatchingConstructor);
-	                } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
-	                    // satisfied and same size as previous one?
-	                    conflicts.add(sortedMatchingConstructor);
-	                    conflicts.add(greediestConstructor);
-	                } else if (!failedDependency) {
-	                    greediestConstructor = sortedMatchingConstructor;
-	                    greediestConstructorsParameters = parametersUsed.toArray(new Parameter[parametersUsed.size()]);
-	                    greediestConstructorsParametersComponentAdapters = currentAdapters;
-	                    lastSatisfiableConstructorSize = parameterTypes.length;
-	                }
+                    if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
+                        if (conflicts.isEmpty()) {
+                            // we found our match [aka. greedy and satisfied]
+                            return new CtorAndAdapters<>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
+                        }
+                        // fits although not greedy
+                        conflicts.add(sortedMatchingConstructor);
+                    } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
+                        // satisfied and same size as previous one?
+                        conflicts.add(sortedMatchingConstructor);
+                        conflicts.add(greediestConstructor);
+                    } else if (!failedDependency) {
+                        greediestConstructor = sortedMatchingConstructor;
+                        greediestConstructorsParameters = parametersUsed.toArray(new Parameter[parametersUsed.size()]);
+                        greediestConstructorsParametersComponentAdapters = currentAdapters;
+                        lastSatisfiableConstructorSize = parameterTypes.length;
+                    }
 
-            	} catch (AmbiguousComponentResolutionException e) {
+                } catch (AmbiguousComponentResolutionException e) {
                     // embellish with the constructor being injected into and
-            		// parameter # causing the problem
+                    // parameter # causing the problem
                     e.setMember(sortedMatchingConstructor);
                     e.setParameterNumber(lastParameterTested);
                     throw e;
                 }
             }
             if (!conflicts.isEmpty()) {
-                throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
+                throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '" + getComponentImplementation() + "'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(), "<init>").replace("public <i", "<i"));
             } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
                 throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName()
                         + " has unsatisfied dependency '" + unsatisfiedDependency
@@ -293,14 +290,15 @@ public class ConstructorInjection extends AbstractInjectionType {
 
         /**
          * Allows for subclasses to override the {@link com.picocontainer.Parameter} for a given constructor argument.
-         * @param constructorToExamine the current constructor candidate.
+         *
+         * @param constructorToExamine      the current constructor candidate.
          * @param constructorParameterIndex the current index of the constructor arguments array.
-         * @param parameter the currently defined parameter.
+         * @param parameter                 the currently defined parameter.
          * @return
          */
-    	protected Parameter getParameterToUse(final Constructor<?> constructorToExamine, final int constructorParameterIndex, final Parameter parameter) {
-    		return parameter;
-    	}
+        protected Parameter getParameterToUse(final Constructor<?> constructorToExamine, final int constructorParameterIndex, final Parameter parameter) {
+            return parameter;
+        }
 
 
         public void enableEmjection(final boolean enableEmjection) {
@@ -331,11 +329,11 @@ public class ConstructorInjection extends AbstractInjectionType {
             @Override
             public boolean equals(final Object o) {
                 if (this == o) {
-					return true;
-				}
+                    return true;
+                }
                 if (o == null || getClass() != o.getClass()) {
-					return false;
-				}
+                    return false;
+                }
 
                 ResolverKey that = (ResolverKey) o;
 
@@ -375,7 +373,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             private final ComponentAdapter<?>[] injecteeAdapters;
 
             @SuppressWarnings("rawtypes")
-			public CtorAndAdapters(final Constructor<TYPE> ctor, final Parameter[] parameters, final ComponentAdapter[] injecteeAdapters) {
+            public CtorAndAdapters(final Constructor<TYPE> ctor, final Parameter[] parameters, final ComponentAdapter[] injecteeAdapters) {
                 this.ctor = ctor;
                 this.constructorParameters = parameters;
                 this.injecteeAdapters = injecteeAdapters;
@@ -410,7 +408,7 @@ public class ConstructorInjection extends AbstractInjectionType {
             }
 
             @SuppressWarnings("rawtypes")
-			public ComponentAdapter[] getInjecteeAdapters() {
+            public ComponentAdapter[] getInjecteeAdapters() {
                 return injecteeAdapters;
             }
 
@@ -421,57 +419,57 @@ public class ConstructorInjection extends AbstractInjectionType {
 
         @Override
         public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        	boolean i_Instantiated = false;
-        	T inst;
-        	try {
-	            if (instantiationGuard == null) {
-	            	i_Instantiated = true;
-	                instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
-	                    @Override
-	                    @SuppressWarnings("synthetic-access")
-	                    public T run(final Object instance) {
-	                        CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
-	                        ComponentMonitor monitor = currentMonitor();
-	                        Constructor<T> ctor = ctorAndAdapters.getConstructor();
-	                        try {
-	                            Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
-	                            ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);
-	                            if(ctor == null) {
-	                                throw new NullPointerException("Component Monitor " + monitor
-	                                                + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
-	                            }
-	                            long startTime = System.currentTimeMillis();
-	                            changeAccessToModifierifNeeded(ctor);
-	                            T inst = newInstance(ctor, ctorParameters);
-	                            monitor.instantiated(container, ConstructorInjector.this,
-	                                    ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
-	                            return inst;
-	                        } catch (InvocationTargetException e) {
-	                            monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
-	                            if (e.getCause() instanceof RuntimeException) {
-	                                throw (RuntimeException) e.getCause();
-	                            } else if (e.getCause() instanceof Error) {
-	                                throw (Error) e.getCause();
-	                            }
-	                            throw new PicoCompositionException(e.getTargetException());
-	                        } catch (InstantiationException e) {
-	                            return caughtInstantiationException(monitor, ctor, e, container);
-	                        } catch (IllegalAccessException e) {
-	                            return caughtIllegalAccessException(monitor, ctor, e, container);
+            boolean i_Instantiated = false;
+            T inst;
+            try {
+                if (instantiationGuard == null) {
+                    i_Instantiated = true;
+                    instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+                        @Override
+                        @SuppressWarnings("synthetic-access")
+                        public T run(final Object instance) {
+                            CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
+                            ComponentMonitor monitor = currentMonitor();
+                            Constructor<T> ctor = ctorAndAdapters.getConstructor();
+                            try {
+                                Object[] ctorParameters = ctorAndAdapters.getParameterArguments(guardedContainer, into);
+                                ctor = monitor.instantiating(container, ConstructorInjector.this, ctor);
+                                if (ctor == null) {
+                                    throw new NullPointerException("Component Monitor " + monitor
+                                            + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
+                                }
+                                long startTime = System.currentTimeMillis();
+                                changeAccessToModifierifNeeded(ctor);
+                                T inst = newInstance(ctor, ctorParameters);
+                                monitor.instantiated(container, ConstructorInjector.this,
+                                        ctor, inst, ctorParameters, System.currentTimeMillis() - startTime);
+                                return inst;
+                            } catch (InvocationTargetException e) {
+                                monitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
+                                if (e.getCause() instanceof RuntimeException) {
+                                    throw (RuntimeException) e.getCause();
+                                } else if (e.getCause() instanceof Error) {
+                                    throw (Error) e.getCause();
+                                }
+                                throw new PicoCompositionException(e.getTargetException());
+                            } catch (InstantiationException e) {
+                                return caughtInstantiationException(monitor, ctor, e, container);
+                            } catch (IllegalAccessException e) {
+                                return caughtIllegalAccessException(monitor, ctor, e, container);
 
-	                        }
-	                    }
-	                };
-	            }
-	            instantiationGuard.setGuardedContainer(container);
-	            inst = instantiationGuard.observe(getComponentImplementation(), null);
-	            decorate(inst, container);
-        	} finally {
-	            if (i_Instantiated) {
-	            	instantiationGuard.remove();
-	            	instantiationGuard = null;
-	            }
-        	}
+                            }
+                        }
+                    };
+                }
+                instantiationGuard.setGuardedContainer(container);
+                inst = instantiationGuard.observe(getComponentImplementation(), null);
+                decorate(inst, container);
+            } finally {
+                if (i_Instantiated) {
+                    instantiationGuard.remove();
+                    instantiationGuard = null;
+                }
+            }
             return inst;
         }
 
@@ -495,23 +493,24 @@ public class ConstructorInjection extends AbstractInjectionType {
             }
             // optimize list of constructors moving the longest at the beginning
             if (paramsToUse == null) {
-                Collections.sort(matchingConstructors,
-                        (Comparator<Constructor>) (arg0, arg1) -> arg1.getParameterTypes().length - arg0.getParameterTypes().length);
+                matchingConstructors.sort((Comparator<Constructor>) (arg0, arg1) -> arg1.getParameterTypes().length - arg0.getParameterTypes().length);
             }
             return matchingConstructors;
         }
 
         /**
          * Tests to see if modifier is public
+         *
          * @param modifiers the modifiers to test
          * @return true if public
          */
         protected boolean hasApplicableConstructorModifiers(final int modifiers) {
-            return allowNonPublicClasses || ( (modifiers & Modifier.PUBLIC) != 0);
+            return allowNonPublicClasses || ((modifiers & Modifier.PUBLIC) != 0);
         }
 
         /**
          * Not by default, but some constructors may need to be setAccessible(true)
+         *
          * @param ctor the ctor to change
          */
         protected void changeAccessToModifierifNeeded(final Constructor<T> ctor) {
@@ -521,42 +520,42 @@ public class ConstructorInjection extends AbstractInjectionType {
             return AccessController.doPrivileged((PrivilegedAction<Constructor<T>[]>) () -> (Constructor<T>[]) getComponentImplementation().getDeclaredConstructors());
         }
 
-		@Override
-        @SuppressWarnings({ "unchecked", "rawtypes" })
+        @Override
+        @SuppressWarnings({"unchecked", "rawtypes"})
         public void verify(final PicoContainer container) throws PicoCompositionException {
-			boolean i_instantiated = false;
-			try {
-	            if (verifyingGuard == null) {
-	            	i_instantiated = true;
-	                verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
-	                    @Override
-	                    public Object run(final Object inst) {
-	                        final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
-	                        final Class[] parameterTypes = constructor.getParameterTypes();
+            boolean i_instantiated = false;
+            try {
+                if (verifyingGuard == null) {
+                    i_instantiated = true;
+                    verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
+                        @Override
+                        public Object run(final Object inst) {
+                            final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
+                            final Class[] parameterTypes = constructor.getParameterTypes();
 
-	    	                final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
-	    	                final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
+                            final ConstructorParameters constructorParameters = (ConstructorParameters) (parameters != null && parameters.length > 0 ? parameters[0] : new ConstructorParameters());
+                            final Parameter[] currentParameters = constructorParameters.getParams() != null ? constructorParameters.getParams() : createDefaultParameters(parameterTypes.length);
 
 
-	                        for (int i = 0; i < currentParameters.length; i++) {
-	                            currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-	                                new ParameterNameBinding(getParanamer(),  constructor, i),
-	                                    useNames(), getBindings(constructor.getParameterAnnotations())[i]);
-	                        }
-	                        return null;
-	                    }
-	                };
-	            }
-	            verifyingGuard.setGuardedContainer(container);
-	            verifyingGuard.observe(getComponentImplementation(), null);
+                            for (int i = 0; i < currentParameters.length; i++) {
+                                currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
+                                        new ParameterNameBinding(getParanamer(), constructor, i),
+                                        useNames(), getBindings(constructor.getParameterAnnotations())[i]);
+                            }
+                            return null;
+                        }
+                    };
+                }
+                verifyingGuard.setGuardedContainer(container);
+                verifyingGuard.observe(getComponentImplementation(), null);
 
-			} finally {
-	            if (i_instantiated) {
-	            	verifyingGuard.remove();
-	            	verifyingGuard = null;
-	            }
-			}
-	      }
+            } finally {
+                if (i_instantiated) {
+                    verifyingGuard.remove();
+                    verifyingGuard = null;
+                }
+            }
+        }
 
         @Override
         public String getDescriptor() {

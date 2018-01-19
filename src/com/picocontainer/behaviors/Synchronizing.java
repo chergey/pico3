@@ -20,39 +20,45 @@ import com.picocontainer.parameters.MethodParameters;
 
 /**
  * This behavior factory provides <strong>synchronized</strong> wrappers to control access to a particular component.
- *  It is recommended that you use {@link com.picocontainer.behaviors.Locking} instead since it results in better performance
- *  and does the same job.
+ * It is recommended that you use {@link com.picocontainer.behaviors.Locking} instead since it results in better performance
+ * and does the same job.
+ *
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
 public class Synchronizing extends AbstractBehavior {
 
-    /** {@inheritDoc} **/
-	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                                 final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
-       if (removePropertiesIfPresent(componentProps, Characteristics.NO_SYNCHRONIZE)) {
-    	   return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
-       }
+    /**
+     * {@inheritDoc}
+     **/
+    @Override
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                                          final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) {
+        if (removePropertiesIfPresent(componentProps, Characteristics.NO_SYNCHRONIZE)) {
+            return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
+        }
 
-    	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
+        removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
         return monitor.changedBehavior(new Synchronized<T>(super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams)));
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
-                                                final ComponentAdapter<T> adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps,
+                                                       final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_SYNCHRONIZE)) {
-        	return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
+            return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
         }
 
-    	removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
+        removePropertiesIfPresent(componentProps, Characteristics.SYNCHRONIZE);
         return monitor.changedBehavior(new Synchronized<>(super.addComponentAdapter(monitor, lifecycle, componentProps, adapter)));
     }
 
     /**
      * Component Adapter that uses java synchronized around getComponentInstance().
+     *
      * @author Aslak Helles&oslash;y
      * @author Manish Shah
      */
@@ -64,7 +70,7 @@ public class Synchronizing extends AbstractBehavior {
         }
 
         @Override
-		public synchronized T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        public synchronized T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return super.getComponentInstance(container, into);
         }
 

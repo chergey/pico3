@@ -45,14 +45,13 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
             Method accept = (Method) retval;
             accept.invoke(node, this);
             return Void.TYPE;
-        } catch (NoSuchMethodException e) {
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException ignored) {
         } catch (InvocationTargetException e) {
             Throwable cause = e.getTargetException();
             if (cause instanceof RuntimeException) {
-                throw (RuntimeException)cause;
+                throw (RuntimeException) cause;
             } else if (cause instanceof Error) {
-                throw (Error)cause;
+                throw (Error) cause;
             }
         } finally {
             traversal = false;
@@ -62,6 +61,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
 
     /**
      * Checks the traversal flag, indicating a currently running traversal of the visitor.
+     *
      * @throws PicoVisitorTraversalException if no traversal is active.
      */
     protected void checkTraversal() {
@@ -84,7 +84,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
          *
          * @param visitor The visitor casing the exception.
          */
-        public PicoVisitorTraversalException(final PicoVisitor visitor) {
+        PicoVisitorTraversalException(final PicoVisitor visitor) {
             super("Traversal for PicoVisitor of type " + visitor.getClass().getName() + " must start with the visitor's traverse method");
         }
     }

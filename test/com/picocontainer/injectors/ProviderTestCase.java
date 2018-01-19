@@ -116,12 +116,15 @@ public class ProviderTestCase {
 
     public static class Chocolatier extends ProviderAdapter {
         private final boolean milky;
+
         public Chocolatier(final boolean milky) {
             this.milky = milky;
         }
+
         public Chocolate provide(final CocaoBeans cocaoBeans, final String name) {
             return new Chocolate(milky, cocaoBeans, name);
         }
+
         @Override
         protected boolean useNames() {
             return true;
@@ -134,13 +137,14 @@ public class ProviderTestCase {
         }
 
         @Override
-		public Chocolate provide(@Nullable final CocaoBeans cocaoBeans, @Nullable final String name) {
+        public Chocolate provide(@Nullable final CocaoBeans cocaoBeans, @Nullable final String name) {
             return super.provide(cocaoBeans, name);
         }
     }
 
     public static class NeedsChocolate {
         private final Chocolate choc;
+
         public NeedsChocolate(final Chocolate choc) {
             this.choc = choc;
         }
@@ -181,15 +185,18 @@ public class ProviderTestCase {
 
     public static class ProviderWithoutProvideMethod extends ProviderAdapter {
     }
+
     public static class ProviderWithBadProvideMethod extends ProviderAdapter {
         public void provide() {
 
         }
     }
+
     public static class ProviderWithTooManyProvideMethods extends ProviderAdapter {
         public String provide(final String str) {
             return null;
         }
+
         public Integer provide() {
             return null;
         }
@@ -213,9 +220,11 @@ public class ProviderTestCase {
 
     public static class Chocolatier2 implements Provider {
         private final boolean milky;
+
         public Chocolatier2(final boolean milky) {
             this.milky = milky;
         }
+
         public Chocolate provide(final CocaoBeans cocaoBeans, final String name) {
             return new Chocolate(milky, cocaoBeans, name);
         }
@@ -265,13 +274,13 @@ public class ProviderTestCase {
         }
 
         @Override
-		public Class getComponentImplementation() {
+        public Class getComponentImplementation() {
             return clazz;
         }
 
         public Object provide(final StubHttpRequest req) {
             try {
-            	return clazz.getConstructor(String.class).newInstance(req.getParameter(paramName));
+                return clazz.getConstructor(String.class).newInstance(req.getParameter(paramName));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -346,6 +355,7 @@ public class ProviderTestCase {
         public void start() {
             sb.append("<");
         }
+
         public void stop() {
             sb.append(">");
         }

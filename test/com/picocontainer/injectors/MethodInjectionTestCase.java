@@ -48,7 +48,7 @@ import com.picocontainer.parameters.MethodParameters;
 
 public class MethodInjectionTestCase {
 
-    public static interface IFoo {
+    public interface IFoo {
         void inject(Bar bar, Integer num);
     }
 

@@ -18,17 +18,17 @@ package com.picocontainer;
 public interface PicoVisitor {
 
 
-	/**
-	 * Constant that indicates that the traversal should continue after the
-	 * visit*() method has been called.
-	 */
-	boolean CONTINUE_TRAVERSAL = true;
+    /**
+     * Constant that indicates that the traversal should continue after the
+     * visit*() method has been called.
+     */
+    boolean CONTINUE_TRAVERSAL = true;
 
-	/**
-	 * Constant that indicates that the traversal should abort after the
-	 * visit*() method has been called.
-	 */
-	boolean ABORT_TRAVERSAL = false;
+    /**
+     * Constant that indicates that the traversal should abort after the
+     * visit*() method has been called.
+     */
+    boolean ABORT_TRAVERSAL = false;
 
     /**
      * Entry point for the PicoVisitor traversal. The given node is the first object, that is

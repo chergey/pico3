@@ -17,9 +17,7 @@ public class SpecificFieldInjectorTestCase {
 
 
 	public static class TestInjection {
-
 		public static String something;
-
 		public String somethingElse;
 
 	}

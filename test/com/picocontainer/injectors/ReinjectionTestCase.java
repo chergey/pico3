@@ -55,11 +55,9 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     public @interface Hurrah {
     }
 
-    public static interface INeedsShoe {
+    public interface INeedsShoe {
         int doIt(String s);
-
         Object getBar();
-
         Object getString();
     }
 

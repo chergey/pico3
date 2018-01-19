@@ -32,24 +32,23 @@ import com.thoughtworks.paranamer.Paranamer;
  * Member can be either Constructor or Method of course. See subclasses.
  *
  * @author Paul Hammant
- *
  */
 @SuppressWarnings("serial")
 public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     private transient Paranamer paranamer;
 
-	private final boolean useAllParameters;
+    private final boolean useAllParameters;
 
     public MultiArgMemberInjector(final Object key,
-                                final Class<T> impl,
-                                final AccessibleObjectParameterSet[] parameters,
-                                final ComponentMonitor monitor,
-                                final boolean useNames,
-                                final boolean useAllParameters
-                                ) {
+                                  final Class<T> impl,
+                                  final AccessibleObjectParameterSet[] parameters,
+                                  final ComponentMonitor monitor,
+                                  final boolean useNames,
+                                  final boolean useAllParameters
+    ) {
         super(key, impl, monitor, useNames, parameters);
-		this.useAllParameters = useAllParameters;
+        this.useAllParameters = useAllParameters;
     }
 
     protected Paranamer getParanamer() {
@@ -69,31 +68,31 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
         for (int i = 0; i < currentParameters.length; i++) {
             try {
-				Object parameterResult = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null, into);
-				if (parameterResult != Parameter.NULL_RESULT) {
-					result.add(parameterResult);
-				}
-			} catch (AmbiguousComponentResolutionException e) {
-				e.setComponent(getComponentImplementation());
-				e.setMember(member);
-				e.setParameterNumber(i);
-				throw e;
-			}
+                Object parameterResult = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null, into);
+                if (parameterResult != Parameter.NULL_RESULT) {
+                    result.add(parameterResult);
+                }
+            } catch (AmbiguousComponentResolutionException e) {
+                e.setComponent(getComponentImplementation());
+                e.setMember(member);
+                e.setParameterNumber(i);
+                throw e;
+            }
         }
 
         return result.toArray();
     }
 
 
-	/**
-	 * Allow injector-based substitution of the parameters defined in the composition script
-	 */
-	@Override
-	protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, final AccessibleObject member) {
-		return currentParameters;
-	}
+    /**
+     * Allow injector-based substitution of the parameters defined in the composition script
+     */
+    @Override
+    protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, final AccessibleObject member) {
+        return currentParameters;
+    }
 
-	protected void boxParameters(final Type[] parameterTypes) {
+    protected void boxParameters(final Type[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
         }
@@ -103,14 +102,13 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
                                   final Parameter currentParameter, final ComponentAdapter<?> injecteeAdapter, final Type into) {
 
 
-
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);
         Resolver resolver = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding);
 
         if (!resolver.isResolved()) {
-        	if (!this.useAllParameters) {
-        		return Parameter.NULL_RESULT;
-        	}
+            if (!this.useAllParameters) {
+                return Parameter.NULL_RESULT;
+            }
         }
 
         Object result = resolver.resolveInstance(into);
@@ -140,8 +138,9 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
      * Checks to see if a null parameter is allowed in the given
      * constructor/field/method.  The default version allows null
      * if the target object is not a primitive type.
+     *
      * @param member constructor method or field
-     * @param i parameter #.
+     * @param i      parameter #.
      * @return true if the null parameter might be allowed.
      */
     protected boolean isNullParamAllowed(final AccessibleObject member, final int i) {
@@ -164,10 +163,12 @@ public abstract class MultiArgMemberInjector<T> extends AbstractInjector<T> {
 
     public static class ParameterCannotBeNullException extends PicoCompositionException {
         private final String name;
+
         private ParameterCannotBeNullException(final int ix, final AccessibleObject member, final String name) {
             super("Parameter " + ix + " of '" + member + "' named '" + name + "' cannot be null");
             this.name = name;
         }
+
         public String getParameterName() {
             return name;
         }

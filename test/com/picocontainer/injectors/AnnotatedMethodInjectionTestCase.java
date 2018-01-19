@@ -42,7 +42,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
 
 	@Override
 	@Before
-    public void setUp() throws Exception {
+    public void setUp() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
@@ -51,7 +51,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         return new AnnotatedMethodInjection();
     }
 
-    public static interface Bean {
+    public interface Bean {
     }
 
     public static class NamedBean implements Bean {
@@ -144,11 +144,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
 
 
     public static class OrderBase {
-
-
     	protected static boolean twoInvoked = false;
-
-
 
     	@Inject
     	public void two() {
@@ -160,10 +156,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
 
 
     public static class OrderDerived extends OrderBase {
-
-
     	protected static boolean fourInvoked = false;
-
 
     	@Inject
     	public void four() {
@@ -184,7 +177,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
     public void testBaseClassInjectedFirst() throws NoSuchMethodException {
     	OrderDerived.reset();
 
-    	AnnotatedMethodInjector<OrderDerived> adapter = new AnnotatedMethodInjector<OrderDerived>(OrderDerived.class, OrderDerived.class, null, new NullComponentMonitor(), false, false, Inject.class);
+    	AnnotatedMethodInjector<OrderDerived> adapter = new AnnotatedMethodInjector<>(OrderDerived.class, OrderDerived.class, null, new NullComponentMonitor(), false, false, Inject.class);
     	OrderDerived derived = adapter.getComponentInstance(null, null);
     	assertTrue(OrderBase.twoInvoked);
     	assertTrue(OrderDerived.fourInvoked);

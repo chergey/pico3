@@ -36,22 +36,28 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         super(monitor);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void start(final Object component) {
         doLifecycleMethod(component, PostConstruct.class, true);
     }
 
-	/** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void stop(final Object component) {
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     public void dispose(final Object component) {
         doLifecycleMethod(component, PreDestroy.class, false);
     }
 
     private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final boolean superFirst) {
-    	doLifecycleMethod(component, annotation, component.getClass(), superFirst, new HashSet<>());
+        doLifecycleMethod(component, annotation, component.getClass(), superFirst, new HashSet<>());
     }
 
     private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final Class<? extends Object> clazz, final boolean superFirst, final Set<String> doneAlready) {
@@ -91,6 +97,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         }
         return sb.toString();
     }
+
     /**
      * {@inheritDoc} The component has a lifecycle PreDestroy or PostConstruct are on a method
      */

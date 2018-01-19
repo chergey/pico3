@@ -98,7 +98,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * All picocontainer children.
      */
-    private final Set<PicoContainer> children = new HashSet<PicoContainer>();
+    private final Set<PicoContainer> children = new HashSet<>();
 
     /**
      * Current state of the container.
@@ -108,7 +108,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Keeps track of child containers started status.
      */
-    private final Set<WeakReference<PicoContainer>> childrenStarted = new HashSet<WeakReference<PicoContainer>>();
+    private final Set<WeakReference<PicoContainer>> childrenStarted = new HashSet<>();
 
     /**
      * Lifecycle strategy instance.
@@ -128,12 +128,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     /**
      * Map used for looking up component adapters by their key.
      */
-    private final Map<Object, ComponentAdapter<?>> keyToAdapterCache = new HashMap<Object, ComponentAdapter<?>>();
+    private final Map<Object, ComponentAdapter<?>> keyToAdapterCache = new HashMap<>();
 
 
-    private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
+    private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<>();
 
-    protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
+    protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<>();
 
     private Converters converters;
 
@@ -153,8 +153,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
      * @param monitor the ComponentMonitor to use
      */
     public DefaultPicoContainer(final ComponentMonitor monitor) {
-        this((PicoContainer) null, new StartableLifecycleStrategy(monitor), monitor);
+        this(null, new StartableLifecycleStrategy(monitor), monitor);
     }
+
 
     /**
      * Creates a new container with a (caching) {@link AdaptingInjection}
@@ -593,6 +594,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return addComponent(implOrInstance, this.containerProperties);
     }
 
+    @Override
+    public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+        return addComponent(implOrInstance, lifecycle, null, null, null, null);
+    }
+
+    @Override
+    public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+        return addComponent(key, implOrInstance, lifecycle, containerProperties, null, null, null);
+    }
+
     private MutablePicoContainer addComponent(final Object implOrInstance, final Properties props) {
         Class<?> clazz;
         if (implOrInstance instanceof String) {
@@ -603,7 +614,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         } else {
             clazz = implOrInstance.getClass();
         }
-        return addComponent(clazz, implOrInstance, props, null, null, null);
+        return addComponent(clazz, implOrInstance, null, props, null, null, null);
     }
 
 
@@ -621,7 +632,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                                              final Parameter... constructorParameters) {
 
 
-        return this.addComponent(key, implOrInstance, this.containerProperties,
+        return addComponent(key, implOrInstance, null, this.containerProperties,
                 new ConstructorParameters(constructorParameters), null, null);
     }
 
@@ -630,15 +641,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                                              final ConstructorParameters constructorParams,
                                              final FieldParameters[] fieldParameters,
                                              final MethodParameters[] methodParams) {
-        return this.addComponent(key, implOrInstance, containerProperties, constructorParams, fieldParameters, methodParams);
+        return addComponent(key, implOrInstance, null, containerProperties, constructorParams, fieldParameters, methodParams);
     }
 
     private MutablePicoContainer addComponent(Object key,
                                               final Object implOrInstance,
+                                              final LifecycleStrategy lifecycleStrategy,
                                               final Properties properties,
                                               final ConstructorParameters constructorParameters,
                                               final FieldParameters[] fieldParameters,
-                                              final MethodParameters[] methodParameters) {
+                                              final MethodParameters[] methodParameters
+    ) {
 
         Parameter[] tweakedParameters = (constructorParameters != null) ? constructorParameters.getParams() : null;
 
@@ -654,11 +667,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             tweakedParameters = new Parameter[0];
         }
 
+        LifecycleStrategy actualLifecycle = lifecycleStrategy == null ? lifecycle : lifecycleStrategy;
+
 
         if (implOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(monitor,
-                    lifecycle,
+                    actualLifecycle,
                     tmpProperties,
                     key,
                     (Class<?>) implOrInstance,
@@ -1364,6 +1379,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                                                  final Parameter... parameters) throws PicoCompositionException {
             return DefaultPicoContainer.this.addComponent(key,
                     implOrInstance,
+                    null,
                     properties,
                     new ConstructorParameters(parameters), null, null);
         }
@@ -1376,6 +1392,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                                                  final MethodParameters[] methodParams) throws PicoCompositionException {
             return DefaultPicoContainer.this.addComponent(key,
                     implOrInstance,
+                    null,
                     properties,
                     constructorParams, fieldParams, methodParams);
         }
@@ -1383,6 +1400,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         @Override
         public MutablePicoContainer addComponent(final Object implOrInstance) throws PicoCompositionException {
             return DefaultPicoContainer.this.addComponent(implOrInstance, properties);
+        }
+
+        @Override
+        public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
+        }
+
+        @Override
+        public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
         }
 
         @Override

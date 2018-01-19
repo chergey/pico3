@@ -1,7 +1,6 @@
 package com.picocontainer.converters;
 
 
-
 /**
  * Converts string to single-character.  It does so by only grabbing
  * the first character in the string.

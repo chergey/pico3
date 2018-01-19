@@ -41,7 +41,7 @@ public class SpecificMethodInjectorTestCase {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		TestModel.staticInjectCount = 0;
 	}
 
@@ -61,7 +61,7 @@ public class SpecificMethodInjectorTestCase {
 
 	@Test
 	public void testStaticMethodInjection() {
-		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, staticInjectMethod);
+		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<>(TestModel.class, TestModel.class, staticInjectMethod);
 		adapter.injectStatics(null, null, null);
 
 		assertEquals(1, TestModel.staticInjectCount);
@@ -69,7 +69,7 @@ public class SpecificMethodInjectorTestCase {
 
 	@Test
 	public void testNormalMethodInjection() {
-		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<TestModel>(TestModel.class, TestModel.class, injectSomethingElse);
+		SpecificMethodInjector<TestModel> adapter = new SpecificMethodInjector<>(TestModel.class, TestModel.class, injectSomethingElse);
 		TestModel model = adapter.getComponentInstance(null, null);
 		assertNotNull(model);
 

@@ -53,8 +53,8 @@ public class ClassPathElement implements Serializable {
     }
 
     @Override
-	public String toString() {
-        return "[" + System.identityHashCode(this) + " " + url + " " + permissions.size() +"]";
+    public String toString() {
+        return "[" + System.identityHashCode(this) + " " + url + " " + permissions.size() + "]";
     }
 
 }

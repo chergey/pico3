@@ -27,21 +27,23 @@ import com.picocontainer.visitors.VerifyingVisitor;
 
 /**
  * Test general PicoVisitor behaviour.
+ *
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
 public class PicoVisitorTestCase {
 
-	private final Mockery mockery = mockeryWithCountingNamingScheme();
+    private final Mockery mockery = mockeryWithCountingNamingScheme();
 
-    @Test public void testVisitorThatMustBeInvokedUsingTraverse() {
+    @Test
+    public void testVisitorThatMustBeInvokedUsingTraverse() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         try {
             pico.accept(new VerifyingVisitor());
             fail("PicoVisitorTraversalException expected");
         } catch (AbstractPicoVisitor.PicoVisitorTraversalException e) {
-            assertTrue(e.getMessage().indexOf(VerifyingVisitor.class.getName()) >= 0);
+            assertTrue(e.getMessage().contains(VerifyingVisitor.class.getName()));
         }
     }
 
@@ -53,27 +55,30 @@ public class PicoVisitorTestCase {
         }
     }
 
-    @Test public void testUnusualTraverseNode() {
+    @Test
+    public void testUnusualTraverseNode() {
         UnusualNode node = new UnusualNode();
         new VerifyingVisitor().traverse(node);
         assertTrue(node.visited);
     }
 
-    @Test public void testIllegalTraverseNode() {
+    @Test
+    public void testIllegalTraverseNode() {
         try {
             new VerifyingVisitor().traverse("Gosh!");
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().indexOf(String.class.getName()) >= 0);
+            assertTrue(e.getMessage().contains(String.class.getName()));
         }
     }
 
-    @Test public void testThrownRuntimeExceptionIsUnwrapped() {
-    	final PicoContainer pico = mockery.mock(PicoContainer.class);
+    @Test
+    public void testThrownRuntimeExceptionIsUnwrapped() {
+        final PicoContainer pico = mockery.mock(PicoContainer.class);
         final PicoVisitor visitor = new VerifyingVisitor();
         final Error exception = new Error("junit");
         mockery.checking(new Expectations() {{
-            one(pico).accept(with(same(visitor)));
+            oneOf(pico).accept(with(same(visitor)));
             will(throwException(new PicoCompositionException("message", exception)));
         }});
         try {
@@ -85,21 +90,24 @@ public class PicoVisitorTestCase {
         }
     }
 
-    @Test public void testThrownErrorIsUnwrapped() {
-    	final PicoContainer pico = mockery.mock(PicoContainer.class);
+    @Test
+    public void testThrownErrorIsUnwrapped() {
+        final PicoContainer pico = mockery.mock(PicoContainer.class);
         final PicoVisitor visitor = new VerifyingVisitor();
         final Error error = new InternalError("junit");
         final Sequence sequence = mockery.sequence("accepting");
         mockery.checking(new Expectations() {{
-            one(pico).accept(with(same(visitor))); inSequence(sequence);
-            one(pico).accept(with(same(visitor))); inSequence(sequence);
+            oneOf(pico).accept(with(same(visitor)));
+            inSequence(sequence);
+            oneOf(pico).accept(with(same(visitor)));
+            inSequence(sequence);
             will(throwException(error));
         }});
         visitor.traverse(pico);
         try {
             visitor.traverse(pico);
             fail("UndeclaredThrowableException expected");
-        } catch(InternalError e) {
+        } catch (InternalError e) {
             assertEquals("junit", e.getMessage());
         }
     }

@@ -27,13 +27,13 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
 
     public void start(final Object component) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
-    		lifecycle.start(component);
+            lifecycle.start(component);
         }
     }
 
     public void stop(final Object component) {
         for (LifecycleStrategy lifecycle : alternateStrategies) {
-    		lifecycle.stop(component);
+            lifecycle.stop(component);
         }
     }
 

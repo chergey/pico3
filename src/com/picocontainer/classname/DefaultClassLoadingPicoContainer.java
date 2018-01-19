@@ -69,7 +69,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     /**
      * Converting Map to allow for primitives to be boxed to Object types.
      */
-    private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
+    private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<>();
 
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -328,6 +328,16 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     }
 
     @Override
+    public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+        return null;
+    }
+
+    @Override
+    public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+        return null;
+    }
+
+    @Override
     public MutablePicoContainer addComponent(final Object key, final Object implOrInstance,
                                              final Parameter... parameters) {
         super.addComponent(classNameToClassIfApplicable(key),
@@ -472,6 +482,16 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this;
         }
 
+        @Override
+        public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
+        }
+
+        @Override
+        public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+            return null;
+        }
+
         public MutablePicoContainer addConfig(final String name, final Object val) {
             delegate.addConfig(name, val);
             return DefaultClassLoadingPicoContainer.this;
@@ -492,11 +512,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             return DefaultClassLoadingPicoContainer.this;
         }
 
-        public ComponentAdapter removeComponent(final Object key) {
+        public ComponentAdapter<?> removeComponent(final Object key) {
             return delegate.removeComponent(key);
         }
 
-        public ComponentAdapter removeComponentByInstance(final Object componentInstance) {
+        public ComponentAdapter<?> removeComponentByInstance(final Object componentInstance) {
             return delegate.removeComponentByInstance(componentInstance);
         }
 

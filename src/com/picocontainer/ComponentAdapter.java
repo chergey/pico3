@@ -31,13 +31,15 @@ public interface ComponentAdapter<T> {
     class NOTHING {
         private NOTHING() {
         }
-    };
+    }
+
+    ;
 
     /**
      * Retrieve the key associated with the component.
      *
      * @return the component's key. Should either be a class type (normally an interface) or an identifier that is
-     *         unique (within the scope of the current PicoContainer).
+     * unique (within the scope of the current PicoContainer).
      */
     Object getComponentKey();
 
@@ -45,7 +47,7 @@ public interface ComponentAdapter<T> {
      * Retrieve the class of the component.
      *
      * @return the component's implementation class. Should normally be a concrete class (ie, a class that can be
-     *         instantiated).
+     * instantiated).
      */
     Class<? extends T> getComponentImplementation();
 
@@ -55,11 +57,11 @@ public interface ComponentAdapter<T> {
      * same instance.
      *
      * @param container the {@link com.picocontainer.PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @param into the class that is about to be injected into. Use ComponentAdapter.NOTHING.class if this is not important to you.
+     * @param into      the class that is about to be injected into. Use ComponentAdapter.NOTHING.class if this is not important to you.
      * @return the component instance.
-     * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
-     *                                     instantiation of the component lead to an ambiguous situation within the
-     *                                     container.
+     * @throws PicoCompositionException if the component has dependencies which could not be resolved, or
+     *                                  instantiation of the component lead to an ambiguous situation within the
+     *                                  container.
      */
     T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
@@ -82,6 +84,7 @@ public interface ComponentAdapter<T> {
 
     /**
      * Component adapters may be nested in a chain, and this method is used to grab the next ComponentAdapter in the chain.
+     *
      * @return the next component adapter in line or null if there is no delegate ComponentAdapter.
      */
     ComponentAdapter<T> getDelegate();
@@ -89,7 +92,8 @@ public interface ComponentAdapter<T> {
     /**
      * Locates a component adapter of type <em>componentAdapterType</em> in the ComponentAdapter chain.  Will return null
      * if there is no adapter of the given type.
-     * @param <U> the type of ComponentAdapter being located.
+     *
+     * @param <U>         the type of ComponentAdapter being located.
      * @param adapterType the class of the adapter type being located.  Never null.
      * @return the appropriate component adapter of type <em>U</em>.  May return null if the component adapter type is not
      * returned.
@@ -98,10 +102,10 @@ public interface ComponentAdapter<T> {
 
     /**
      * Get a string key descriptor of the component adapter for use in toString()
+     *
      * @return the descriptor
      */
     String getDescriptor();
-
 
 
 }

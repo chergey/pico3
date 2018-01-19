@@ -28,10 +28,9 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * </em>
      *
      * @param componentFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycle
-     *                                the lifecycle strategy chosen for registered
-     *                                instance (not implementations!)
-     * @param parent                  the parent container (used for component dependency lookups).
+     * @param lifecycle        the lifecycle strategy chosen for registered
+     *                         instance (not implementations!)
+     * @param parent           the parent container (used for component dependency lookups).
      */
     public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycle,
                                 final PicoContainer parent) {
@@ -58,9 +57,9 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor and lifecycle strategy
      *
-     * @param monitor           the ComponentMonitor to use
+     * @param monitor   the ComponentMonitor to use
      * @param lifecycle the lifecycle strategy to use.
-     * @param parent            the parent container (used for component dependency lookups).
+     * @param parent    the parent container (used for component dependency lookups).
      */
     public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
                                 final PicoContainer parent) {
@@ -72,7 +71,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * custom lifecycle strategy
      *
      * @param lifecycle the lifecycle strategy to use.
-     * @param parent            the parent container (used for component dependency lookups).
+     * @param parent    the parent container (used for component dependency lookups).
      */
     public TieringPicoContainer(final LifecycleStrategy lifecycle, final PicoContainer parent) {
         super(parent, lifecycle);
@@ -108,18 +107,20 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         super(parent);
     }
 
-    /** Creates a new container with a {@link AdaptingBehavior} and no parent container. */
+    /**
+     * Creates a new container with a {@link AdaptingBehavior} and no parent container.
+     */
     public TieringPicoContainer() {
         super();
     }
 
     @Override
-	public PicoContainer getParent() {
+    public PicoContainer getParent() {
         return new TieringGuard(super.getParent());
     }
 
     @Override
-	public MutablePicoContainer makeChildContainer() {
+    public MutablePicoContainer makeChildContainer() {
         return new TieringPicoContainer(super.componentFactory, super.lifecycle, this, super.monitor);
     }
 
@@ -133,12 +134,12 @@ public class TieringPicoContainer extends DefaultPicoContainer {
 
 
         @Override
-		public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding nameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding nameBinding) {
             return getComponentAdapter(Generic.get(componentType), nameBinding);
         }
 
         @Override
-		public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding nameBinding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final NameBinding nameBinding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -160,12 +161,12 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         }
 
         @Override
-		public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
             return getComponentAdapter(Generic.get(componentType), binding);
         }
 
         @Override
-		public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
+        public <T> ComponentAdapter<T> getComponentAdapter(final Generic<T> componentType, final Class<? extends Annotation> binding) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -191,7 +192,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         }
 
         @Override
-		public ComponentAdapter<?> getComponentAdapter(final Object key) {
+        public ComponentAdapter<?> getComponentAdapter(final Object key) {
             boolean iDidIt = false;
             try {
                 if (notYetAskingParentForComponent()) {
@@ -208,9 +209,10 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             }
         }
     }
-    private static class AskingParentForComponent extends ThreadLocal {
+
+    private static class AskingParentForComponent extends ThreadLocal<Object> {
         @Override
-		protected Object initialValue() {
+        protected Object initialValue() {
             return Boolean.FALSE;
         }
     }

@@ -37,6 +37,7 @@ public class Reinjector {
     /**
      * Make a reinjector with a parent container from which to pull components to be reinjected to.
      * With this constructor, a NullComponentMonitor is used.
+     *
      * @param parentContainer the parent container
      */
     public Reinjector(final PicoContainer parentContainer) {
@@ -47,8 +48,9 @@ public class Reinjector {
 
     /**
      * Make a reinjector with a parent container from which to pull components to be reinjected to
+     *
      * @param parentContainer the parent container
-     * @param monitor the monitor to use for 'instantiating' events
+     * @param monitor         the monitor to use for 'instantiating' events
      */
     public Reinjector(final PicoContainer parentContainer, final ComponentMonitor monitor) {
         this.parent = parentContainer;
@@ -57,7 +59,8 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into
+     *
+     * @param key               the component-key from the parent set of components to inject into
      * @param reinjectionMethod the reflection method to use for injection.
      * @return the result of the reinjection-method invocation.
      */
@@ -67,7 +70,8 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into
+     *
+     * @param key                   the component-key from the parent set of components to inject into
      * @param reinjectionMethodEnum the enum for the reflection method to use for injection.
      * @return the result of the reinjection-method invocation.
      */
@@ -96,19 +100,21 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into (key and impl are the same)
+     *
+     * @param key             the component-key from the parent set of components to inject into (key and impl are the same)
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(final Class<?> key, final InjectionType reinjectionType) {
-        Object o = reinject(key, key, parent.getComponentInto(Generic.get( key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
+        Object o = reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
         return o;
     }
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into
-     * @param impl the implementation of the component that is going to result.
+     *
+     * @param key             the component-key from the parent set of components to inject into
+     * @param impl            the implementation of the component that is going to result.
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return
      */
@@ -118,9 +124,10 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into
-     * @param implementation the implementation of the component that is going to result.
-     * @param instance the object that has the provider method to be invoked
+     *
+     * @param key             the component-key from the parent set of components to inject into
+     * @param implementation  the implementation of the component that is going to result.
+     * @param instance        the object that has the provider method to be invoked
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
@@ -130,10 +137,11 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
-     * @param key the component-key from the parent set of components to inject into
-     * @param implementation the implementation of the component that is going to result.
-     * @param instance the object that has the provider method to be invoked
-     * @param properties for reinjection
+     *
+     * @param key             the component-key from the parent set of components to inject into
+     * @param implementation  the implementation of the component that is going to result.
+     * @param instance        the object that has the provider method to be invoked
+     * @param properties      for reinjection
      * @param reinjectionType the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */

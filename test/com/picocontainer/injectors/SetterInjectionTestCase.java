@@ -39,7 +39,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         return new SetterInjection();
     }
 
-    public static interface Bean {
+    public interface Bean {
     }
 
     public static class NamedBean implements Bean {

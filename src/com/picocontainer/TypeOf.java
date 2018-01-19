@@ -63,17 +63,11 @@ public abstract class TypeOf<T> {
     }
 
     public boolean isAssignableFrom(final Class<?> aClass) {
-        if (type instanceof Class) {
-            return ((Class) type).isAssignableFrom(aClass);
-        }
-        return false;
+        return type instanceof Class && ((Class) type).isAssignableFrom(aClass);
     }
 
     public boolean isAssignableTo(final Class aClass) {
-        if (type instanceof Class) {
-            return aClass.isAssignableFrom((Class<?>) type);
-        }
-        return false;
+        return type instanceof Class && aClass.isAssignableFrom((Class<?>) type);
     }
 
     private static class ClassType<T> extends TypeOf<T> {
@@ -101,11 +95,7 @@ public abstract class TypeOf<T> {
 
         TypeOf typeOf = (TypeOf) o;
 
-        if (type != null ? !type.equals(typeOf.type) : typeOf.type != null) {
-			return false;
-		}
-
-        return true;
+        return type != null ? type.equals(typeOf.type) : typeOf.type == null;
     }
 
     @Override

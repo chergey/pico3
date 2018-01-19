@@ -35,7 +35,7 @@ public class FactoryInjectorTestCase {
         pico.addAdapter(new BrendansLoggerInjector());
 
         BrendansComponent bc = pico.getComponent(BrendansComponent.class);
-        assertEquals("InjectInto", bc.logger.canonicalName);
+        assertEquals(this.getClass().getPackage().getName() + ".InjectInto", bc.logger.canonicalName);
     }
 
     public static class BrendansLogger {

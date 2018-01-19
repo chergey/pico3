@@ -16,7 +16,7 @@ import com.picocontainer.Startable;
 /**
  * Startable lifecycle strategy.  Starts and stops component if Startable,
  * and disposes it if Disposable.
- *
+ * <p>
  * A subclass of this class can define other intrfaces for Startable/Disposable as well as other method names
  * for start/stop/dispose
  *
@@ -29,14 +29,14 @@ import com.picocontainer.Startable;
 public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
 
-	private transient Method start, stop, dispose;
+    private transient Method start, stop, dispose;
 
     public StartableLifecycleStrategy(final ComponentMonitor monitor) {
         super(monitor);
     }
 
     @SuppressWarnings("unchecked")
-	private void doMethodsIfNotDone() {
+    private void doMethodsIfNotDone() {
         try {
             if (start == null) {
                 start = getStartableInterface().getMethod(getStartMethodName());
@@ -53,6 +53,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     /**
      * Retrieve the lifecycle method name that represents the dispose method.
+     *
      * @return the dispose method name. ('dispose')
      */
     protected String getDisposeMethodName() {
@@ -61,6 +62,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     /**
      * Retrieve the lifecycle method name that represents the stop method.
+     *
      * @return the stop method name ('stop')
      */
     protected String getStopMethodName() {
@@ -69,6 +71,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     /**
      * Retrieve the lifecycle method name that represents the start method.
+     *
      * @return the stop method name ('start')
      */
     protected String getStartMethodName() {
@@ -76,9 +79,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @SuppressWarnings("unchecked")
-	public void start(final Object component) {
+    public void start(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -112,13 +117,16 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     protected void stopComponent(final Object component) {
         doLifecycleMethod(component, stop);
     }
+
     protected void disposeComponent(final Object component) {
         doLifecycleMethod(component, dispose);
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @SuppressWarnings("unchecked")
-	public void stop(final Object component) {
+    public void stop(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -132,9 +140,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @SuppressWarnings("unchecked")
-	public void dispose(final Object component) {
+    public void dispose(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -148,9 +158,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     **/
     @SuppressWarnings("unchecked")
-	public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<?> type) {
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 

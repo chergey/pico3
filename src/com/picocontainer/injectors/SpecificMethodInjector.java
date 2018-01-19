@@ -27,22 +27,24 @@ import com.picocontainer.parameters.MethodParameters;
 @SuppressWarnings("serial")
 public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T> implements StaticInjector<T> {
     private final List<Method> injectionMethods;
-	private boolean isStaticInjection;
+    private boolean isStaticInjection;
     private transient ThreadLocalCyclicDependencyGuard<Object> instantiationGuard;
-	private StaticsInitializedReferenceSet initializedReferenceSet;
+    private StaticsInitializedReferenceSet initializedReferenceSet;
 
 
     /**
      * Simple testable constructor
+     *
      * @param key
      * @param impl
      */
     public SpecificMethodInjector(final Object key, final Class<T> impl, final Method... injectionMethods) {
-    	this(key, impl, new NullComponentMonitor(), true, true, null, injectionMethods);
+        this(key, impl, new NullComponentMonitor(), true, true, null, injectionMethods);
     }
 
     /**
      * Typical constructor used in deployments
+     *
      * @param key
      * @param impl
      * @param monitor
@@ -57,7 +59,7 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
 
 
         this.injectionMethods = Arrays.asList(injectionMethods);
-		this.isStaticInjection = isStaticInjection(injectionMethods);
+        this.isStaticInjection = isStaticInjection(injectionMethods);
 
     }
 
@@ -72,21 +74,20 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
         for (Method method : injectionMethods) {
             mthds.append(",").append(method.getDeclaringClass().getName()).append(".").append(method.getName());
         }
-        return "SpecificReflectionMethodInjector" + (isStaticInjection ? "_static_" : "") + "[" +  mthds.substring(1) + "]-";
+        return "SpecificReflectionMethodInjector" + (isStaticInjection ? "_static_" : "") + "[" + mthds.substring(1) + "]-";
     }
 
 
+    public void injectStatics(final PicoContainer container, final Type into, final StaticsInitializedReferenceSet initializedReferenceSet) {
+        this.initializedReferenceSet = initializedReferenceSet;
+        if (!isStaticInjection) {
+            throw new PicoCompositionException(Arrays.deepToString(injectionMethods.toArray()) + " are non static fields, injectStatics should not be called.");
+        }
 
-	public void injectStatics(final PicoContainer container, final Type into, final StaticsInitializedReferenceSet initializedReferenceSet) {
-		this.initializedReferenceSet = initializedReferenceSet;
-		if (!isStaticInjection) {
-			throw new PicoCompositionException(Arrays.deepToString(injectionMethods.toArray()) + " are non static fields, injectStatics should not be called.");
-		}
-
-    	boolean i_Instantiated = false;
-    	try {
+        boolean i_Instantiated = false;
+        try {
             if (instantiationGuard == null) {
-            	i_Instantiated = true;
+                i_Instantiated = true;
                 instantiationGuard = new ThreadLocalCyclicDependencyGuard<Object>() {
                     @Override
                     @SuppressWarnings("synthetic-access")
@@ -103,62 +104,63 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
             }
             instantiationGuard.setGuardedContainer(container);
             instantiationGuard.observe(getComponentImplementation(), null);
-    	} finally {
+        } finally {
             if (i_Instantiated) {
-            	instantiationGuard.remove();
-            	instantiationGuard = null;
+                instantiationGuard.remove();
+                instantiationGuard = null;
             }
-    	}
+        }
 
-	}
+    }
 
-	@Override
-	public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-		if (isStaticInjection) {
-			throw new PicoCompositionException(Arrays.deepToString(injectionMethods.toArray()) + " are static methods, getComponentInstance() on this adapter should not be called.");
-		}
+    @Override
+    public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        if (isStaticInjection) {
+            throw new PicoCompositionException(Arrays.deepToString(injectionMethods.toArray()) + " are static methods, getComponentInstance() on this adapter should not be called.");
+        }
 
-		return super.getComponentInstance(container, into);
-	}
+        return super.getComponentInstance(container, into);
+    }
 
-	@Override
-	Object invokeMethod(final Method method, final Object[] methodParameters, final T instance, final PicoContainer container) {
-		AnnotationInjectionUtils.setMemberAccessible(method);
+    @Override
+    Object invokeMethod(final Method method, final Object[] methodParameters, final T instance, final PicoContainer container) {
+        AnnotationInjectionUtils.setMemberAccessible(method);
         if (initializedReferenceSet != null) {
-        	//Static injection = threading issues
-        	//have to lock at the method's class level
-            synchronized(method.getDeclaringClass()) {
-        		if (!this.initializedReferenceSet.isMemberAlreadyInitialized(method)) {
-        			Object result = super.invokeMethod(method, methodParameters, instance, container);
-        			initializedReferenceSet.markMemberInitialized(method);
-        			return result;
-        		}
-        	}
+            //Static injection = threading issues
+            //have to lock at the method's class level
+            synchronized (method.getDeclaringClass()) {
+                if (!this.initializedReferenceSet.isMemberAlreadyInitialized(method)) {
+                    Object result = super.invokeMethod(method, methodParameters, instance, container);
+                    initializedReferenceSet.markMemberInitialized(method);
+                    return result;
+                }
+            }
             //Already initialized statics -- skipping.
             return null;
-        }  else {
+        } else {
             return super.invokeMethod(method, methodParameters, instance, container);
         }
 
-	}
+    }
 
 
-	/**
-	 * Allows for annotation-based key swapping.
-	 */
-	@Override
-	protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, final AccessibleObject member) {
-		return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
-	}
+    /**
+     * Allows for annotation-based key swapping.
+     */
+    @Override
+    protected Parameter[] interceptParametersToUse(final Parameter[] currentParameters, final AccessibleObject member) {
+        return AnnotationInjectionUtils.interceptParametersToUse(currentParameters, member);
+    }
 
 
     /**
      * Allows Different swapping of types.
+     *
      * @return
      */
     @Override
     protected Parameter constructDefaultComponentParameter() {
-    	return JSR330ComponentParameter.DEFAULT;
+        return JSR330ComponentParameter.DEFAULT;
     }
 
 }

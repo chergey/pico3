@@ -11,13 +11,7 @@ import java.util.Properties;
 import javax.inject.Provider;
 
 import com.googlecode.jtype.Generic;
-import com.picocontainer.ComponentAdapter;
-import com.picocontainer.ComponentMonitor;
-import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.NameBinding;
-import com.picocontainer.Parameter;
-import com.picocontainer.PicoContainer;
-import com.picocontainer.PicoVisitor;
+import com.picocontainer.*;
 import com.picocontainer.lifecycle.LifecycleState;
 import com.picocontainer.parameters.ConstructorParameters;
 import com.picocontainer.parameters.FieldParameters;
@@ -99,6 +93,16 @@ public final class SecurityWrappingPicoContainer implements MutablePicoContainer
 	public MutablePicoContainer addComponent(Object implOrInstance) {
 		checkWritePermission();
 		return pico.addComponent(implOrInstance);
+	}
+
+	@Override
+	public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+		return null;
+	}
+
+	@Override
+	public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
+		return null;
 	}
 
 	/**

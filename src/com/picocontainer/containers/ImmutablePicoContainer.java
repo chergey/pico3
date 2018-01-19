@@ -26,7 +26,7 @@ import com.picocontainer.PicoVisitor;
 import com.picocontainer.converters.ConvertsNothing;
 
 /**
-* wrap pico container to achieve immutability
+ * wrap pico container to achieve immutability
  * Typically its used to mock a parent container.
  *
  * @author Konstantin Pribluda
@@ -75,7 +75,7 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
         return delegate.getComponent(componentType, binding);
     }
 
-    public List getComponents() {
+    public List<Object> getComponents() {
         return delegate.getComponents();
     }
 
@@ -133,20 +133,20 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
     }
 
     @Override
-	public boolean equals(final Object obj) {
+    public boolean equals(final Object obj) {
         return obj == this
-               || (obj != null && obj == delegate)
-               || (obj instanceof ImmutablePicoContainer && ((ImmutablePicoContainer) obj).delegate == delegate)
-            ;
+                || (obj != null && obj == delegate)
+                || (obj instanceof ImmutablePicoContainer && ((ImmutablePicoContainer) obj).delegate == delegate)
+                ;
     }
 
     @Override
-	public int hashCode() {
+    public int hashCode() {
         return delegate.hashCode();
     }
 
     @Override
-	public String toString() {
+    public String toString() {
         return "[Immutable]:" + delegate.toString();
     }
 

@@ -48,7 +48,7 @@ import com.picocontainer.parameters.MethodParameters;
 public class SimpleNamedBindingAnnotationTestCase {
     @Test
     public void testNamedBinding2() {
-        ComponentMonitor cm  = mock(NullComponentMonitor.class, new CallsRealMethods());
+        ComponentMonitor cm = mock(NullComponentMonitor.class, new CallsRealMethods());
         MutablePicoContainer mpc = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(),
                 cm, new FieldInjection());
         mpc.addComponent(FruitBasket2.class);
@@ -71,7 +71,7 @@ public class SimpleNamedBindingAnnotationTestCase {
 
     }
 
-    public class FruitBasket2 {
+    public static class FruitBasket2 {
         private @Named("one")
         Apple one;
         private @Named("two")
@@ -81,12 +81,11 @@ public class SimpleNamedBindingAnnotationTestCase {
         private @Named("four")
         Apple four;
 
-        public FruitBasket2() {
-        }
     }
 
-    @Test public void testNamedBinding() {
-        ComponentMonitor cm  = mock(NullComponentMonitor.class, new CallsRealMethods());
+    @Test
+    public void testNamedBinding() {
+        ComponentMonitor cm = mock(NullComponentMonitor.class, new CallsRealMethods());
         MutablePicoContainer mpc = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(),
                 cm, new FieldInjection());
         mpc.addComponent(FruitBasket.class);
@@ -147,15 +146,13 @@ public class SimpleNamedBindingAnnotationTestCase {
         private @Named("four")
         Apple four;
 
-        public FruitBasket() {
-        }
     }
 
     // to become an annotation
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     public @interface Named {
-    	String value();
+        String value();
     }
 
     // implicitly this function goes into DPC
@@ -166,12 +163,12 @@ public class SimpleNamedBindingAnnotationTestCase {
     public class FieldInjection extends AbstractInjectionType {
 
         public <T> ComponentAdapter<T> createComponentAdapter(
-            final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-            final Properties componentProps, final Object key,
-            final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
-            throws PicoCompositionException {
+                final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                final Properties componentProps, final Object key,
+                final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams)
+                throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(
-                componentProps, Characteristics.USE_NAMES, true);
+                    componentProps, Characteristics.USE_NAMES, true);
             return new FieldInjector<T>(key, impl, null, monitor, useNames);
         }
     }
@@ -188,15 +185,15 @@ public class SimpleNamedBindingAnnotationTestCase {
         }
 
         @Override
-		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             final T inst;
             try {
                 inst = getComponentImplementation().newInstance();
                 Field[] declaredFields = getComponentImplementation().getDeclaredFields();
                 for (final Field field : declaredFields) {
-                	if (Modifier.isFinal( field.getModifiers())) {
-                		continue;
-                	}
+                    if (Modifier.isFinal(field.getModifiers())) {
+                        continue;
+                    }
                     Object value = null;
                     if (!isStatic(field.getModifiers())) {
                         Named bindAnnotation = field.getAnnotation(Named.class);
@@ -222,7 +219,7 @@ public class SimpleNamedBindingAnnotationTestCase {
         }
 
         @Override
-		public String getDescriptor() {
+        public String getDescriptor() {
             return "FieldInjector";
         }
 

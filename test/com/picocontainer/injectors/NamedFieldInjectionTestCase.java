@@ -26,7 +26,8 @@ import com.picocontainer.monitors.ConsoleComponentMonitor;
 
 public class NamedFieldInjectionTestCase {
 
-    @Test public void testFactoryMakesNamedInjector() {
+    @Test
+    public void testFactoryMakesNamedInjector() {
 
         NamedFieldInjection injectionFactory = new NamedFieldInjection();
 
@@ -44,8 +45,9 @@ public class NamedFieldInjectionTestCase {
         assertEquals("pogo", nfi.getInjectionFieldNames().get(1));
     }
 
-    @Test public void testPropertiesAreRight() {
-        Properties props = NamedFieldInjection.injectionFieldNames("aa","pogo","bb");
+    @Test
+    public void testPropertiesAreRight() {
+        Properties props = NamedFieldInjection.injectionFieldNames("aa", "pogo", "bb");
         assertTrue(props instanceof Characteristics.ImmutableProperties);
         assertEquals("aa pogo bb", props.getProperty("injectionFieldNames"));
         assertEquals(1, props.size());

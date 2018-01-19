@@ -27,23 +27,23 @@ public class Reinjection extends CompositeInjection {
         super(new ReinjectionInjectionType(parent), reinjectionType);
     }
 
-	private static class ReinjectionInjector<T> extends AbstractInjector<T> {
+    private static class ReinjectionInjector<T> extends AbstractInjector<T> {
         private final PicoContainer parent;
 
         public ReinjectionInjector(final Object key, final Class<T> impl, final ComponentMonitor monitor, final PicoContainer parent,
-				final boolean useNames, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams,
-				final MethodParameters[] methodParams) {
+                                   final boolean useNames, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams,
+                                   final MethodParameters[] methodParams) {
             super(key, impl, monitor, useNames, methodParams);
             this.parent = parent;
-		}
+        }
 
-		@Override
-		public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
+        @Override
+        public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
             return (T) parent.getComponentInto(getComponentKey(), into);
         }
     }
 
-	private static class ReinjectionInjectionType extends AbstractInjectionType {
+    private static class ReinjectionInjectionType extends AbstractInjectionType {
         private final PicoContainer parent;
 
         public ReinjectionInjectionType(final PicoContainer parent) {
@@ -51,7 +51,7 @@ public class Reinjection extends CompositeInjection {
         }
 
         public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-                final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+                                                              final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
             boolean useNames = AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.USE_NAMES, true);
             return new ReinjectionInjector<T>(key, impl, monitor, parent, useNames, constructorParams, fieldParams, methodParams);
         }

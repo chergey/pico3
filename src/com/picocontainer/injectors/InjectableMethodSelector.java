@@ -12,101 +12,100 @@ import java.util.Map;
 
 public class InjectableMethodSelector {
 
-	private final Class<Annotation>[] annotation;
+    private final Class<Annotation>[] annotation;
 
 
-	@SuppressWarnings("unchecked")
-	public InjectableMethodSelector(final Class<? extends Annotation>... searchingAnnotation) {
-		//this.annotation = searchingAnnotation;
+    @SuppressWarnings("unchecked")
+    public InjectableMethodSelector(final Class<? extends Annotation>... searchingAnnotation) {
+        //this.annotation = searchingAnnotation;
 
 
-		//
-		//Add javax.inject.Inject method if its available.
-		//
+        //
+        //Add javax.inject.Inject method if its available.
+        //
 
-		ArrayList<Class<? extends Annotation>> annotations = new ArrayList<>(Arrays.asList(searchingAnnotation));
-		try {
-			Class<? extends Annotation> javaxInject = (Class<? extends Annotation>) Class.forName("javax.inject.Inject");
-			annotations.add(javaxInject);
-		} catch (ClassNotFoundException e) {
-			//Ignore
-		}
+        ArrayList<Class<? extends Annotation>> annotations = new ArrayList<>(Arrays.asList(searchingAnnotation));
+        try {
+            Class<? extends Annotation> javaxInject = (Class<? extends Annotation>) Class.forName("javax.inject.Inject");
+            annotations.add(javaxInject);
+        } catch (ClassNotFoundException e) {
+            //Ignore
+        }
 
-		annotation = annotations.toArray(new Class[annotations.size()]);
-	}
+        annotation = annotations.toArray(new Class[annotations.size()]);
+    }
 
 
-	public List<Method> retreiveAllInjectableMethods(final Class<?> type) {
+    public List<Method> retreiveAllInjectableMethods(final Class<?> type) {
 
         Map<String, List<Method>> allMethodsAnalyzed = new HashMap<>();
         List<Method> methodz = new ArrayList<>();
         recursiveCheckInjectorMethods(type, type, methodz, allMethodsAnalyzed);
         return methodz;
 
-	}
+    }
 
 
     protected void recursiveCheckInjectorMethods(final Class<?> originalType,
-    			final Class<?> type, final List<Method> receiver,
-    			final Map<String, List<Method>> allMethodsAnalyzed) {
+                                                 final Class<?> type, final List<Method> receiver,
+                                                 final Map<String, List<Method>> allMethodsAnalyzed) {
 
-    	//Ignore interfaces for this.
-    	if (originalType.isInterface()) {
-    		return;
-    	}
-
-
-    	if (type.isAssignableFrom(Object.class)) {
-    		return;
-    	}
+        //Ignore interfaces for this.
+        if (originalType.isInterface()) {
+            return;
+        }
 
 
-    	for (Method eachMethod : type.getDeclaredMethods()) {
-
-    		//We're not dealing with statics here.
-        	if (Modifier.isStatic(eachMethod.getModifiers())) {
-        		continue;
-        	}
+        if (type.isAssignableFrom(Object.class)) {
+            return;
+        }
 
 
+        for (Method eachMethod : type.getDeclaredMethods()) {
 
-    		if(isChildClassMethodOverridingCurrentMethod(eachMethod, allMethodsAnalyzed)) {
-    			//This method was defined in a child class, what the child class says, goes.
-    			continue;
-    		}
+            //We're not dealing with statics here.
+            if (Modifier.isStatic(eachMethod.getModifiers())) {
+                continue;
+            }
 
-    		if (isInjectorMethod(originalType, eachMethod, allMethodsAnalyzed)) {
-    			receiver.add(eachMethod);
-    		}
 
-    		addToMethodsAnalyzed(allMethodsAnalyzed, eachMethod);
+            if (isChildClassMethodOverridingCurrentMethod(eachMethod, allMethodsAnalyzed)) {
+                //This method was defined in a child class, what the child class says, goes.
+                continue;
+            }
 
-    	}
+            if (isInjectorMethod(originalType, eachMethod, allMethodsAnalyzed)) {
+                receiver.add(eachMethod);
+            }
 
-    	recursiveCheckInjectorMethods(originalType, type.getSuperclass(), receiver, allMethodsAnalyzed);
+            addToMethodsAnalyzed(allMethodsAnalyzed, eachMethod);
+
+        }
+
+        recursiveCheckInjectorMethods(originalType, type.getSuperclass(), receiver, allMethodsAnalyzed);
     }
 
 
     private void addToMethodsAnalyzed(final Map<String, List<Method>> allMethodsAnalyzed, final Method eachMethod) {
-    	final String signature = getMethodSignature(eachMethod);
-		List<Method> methodsWithThisSignature =
-				allMethodsAnalyzed.computeIfAbsent(signature, k -> new LinkedList<>());
+        final String signature = getMethodSignature(eachMethod);
+        List<Method> methodsWithThisSignature =
+                allMethodsAnalyzed.computeIfAbsent(signature, k -> new LinkedList<>());
 
-		//Bottom of the hierarchy methods should be last in the list.
-    	methodsWithThisSignature.add(0,eachMethod);
-	}
+        //Bottom of the hierarchy methods should be last in the list.
+        methodsWithThisSignature.add(0, eachMethod);
+    }
 
     protected final boolean isInjectorMethod(final Class<?> originalType, final Method method, final Map<String, List<Method>> allMethodsAnalyzed) {
 
-    	boolean returnResult = false;
+        boolean returnResult = false;
         for (Class<? extends Annotation> injectionAnnotation : annotation) {
             if (method.isAnnotationPresent(injectionAnnotation)) {
-            	returnResult = true;
+                returnResult = true;
             }
         }
 
         if (returnResult) {
-        	returnResult = isStillViableGivenOverrides(method, allMethodsAnalyzed);
+            returnResult = isStillViableGivenOverrides(method, allMethodsAnalyzed);
         }
 
         return returnResult;
@@ -115,87 +114,88 @@ public class InjectableMethodSelector {
 
     /**
      * Returns a string showing the method signature.
+     *
      * @param eachMethod
      * @return
      */
     private String getMethodSignature(final Method eachMethod) {
-    	//At this point going to ignore return type since covarient return types (I think) would
-    	//qualify as the same method.
-    	return eachMethod.getName() + "(" + Arrays.deepToString(eachMethod.getParameterTypes()) + ")";
+        //At this point going to ignore return type since covarient return types (I think) would
+        //qualify as the same method.
+        return eachMethod.getName() + "(" + Arrays.deepToString(eachMethod.getParameterTypes()) + ")";
     }
 
     /**
      * Returns true if a child method has been already declared with this signature.
+     *
      * @param currentMethod
      * @param allMethodsAnalyzed
      * @return true if the child method has already been found, ignore the new one, the child
      * one overrides.
      */
-	private boolean isChildClassMethodOverridingCurrentMethod(final Method currentMethod, final Map<String, List<Method>> allMethodsAnalyzed) {
+    private boolean isChildClassMethodOverridingCurrentMethod(final Method currentMethod, final Map<String, List<Method>> allMethodsAnalyzed) {
 
-    	/**
-    	 * Private methods can't be overridden.
-    	 */
-    	if (Modifier.isPrivate(currentMethod.getModifiers())) {
-    		return false;
-    	}
-
-
-    	if (allMethodsAnalyzed.containsKey(getMethodSignature(currentMethod))) {
-
-    		//Go through the list of ones to potentially show that we haven't already analyzed it.
-    		for (Method eachMethod : allMethodsAnalyzed.get(getMethodSignature(currentMethod))) {
-
-    			//We don't count private methods.
-    			if (Modifier.isPrivate(eachMethod.getModifiers())) {
-    				continue;
-    			}
-
-    			if (this.isPackagePrivate(eachMethod) && isClassDefinitionsInDifferentPackages(currentMethod, eachMethod)) {
-    				continue;
-    			}
-
-    			return true;
-    		}
-
-    		//If we went through all the methods and none met the overriding criteria
-    		//Then there is no child class method overriding this one.
-    	}
-
-    	return false;
-	}
+        /**
+         * Private methods can't be overridden.
+         */
+        if (Modifier.isPrivate(currentMethod.getModifiers())) {
+            return false;
+        }
 
 
-	/**
-	 * Compares method's class' defining packages and returns true if the packages are different.
-	 * @param currentMethod
-	 * @param eachMethod
-	 * @return
-	 */
+        if (allMethodsAnalyzed.containsKey(getMethodSignature(currentMethod))) {
+
+            //Go through the list of ones to potentially show that we haven't already analyzed it.
+            for (Method eachMethod : allMethodsAnalyzed.get(getMethodSignature(currentMethod))) {
+
+                //We don't count private methods.
+                if (Modifier.isPrivate(eachMethod.getModifiers())) {
+                    continue;
+                }
+
+                if (this.isPackagePrivate(eachMethod) && isClassDefinitionsInDifferentPackages(currentMethod, eachMethod)) {
+                    continue;
+                }
+
+                return true;
+            }
+
+            //If we went through all the methods and none met the overriding criteria
+            //Then there is no child class method overriding this one.
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Compares method's class' defining packages and returns true if the packages are different.
+     *
+     * @param currentMethod
+     * @param eachMethod
+     * @return
+     */
     private boolean isClassDefinitionsInDifferentPackages(final Method currentMethod, final Method eachMethod) {
-    	Package currentMethodPackage = currentMethod.getDeclaringClass().getPackage();
-    	Package testMethodPackage = eachMethod.getDeclaringClass().getPackage();
+        Package currentMethodPackage = currentMethod.getDeclaringClass().getPackage();
+        Package testMethodPackage = eachMethod.getDeclaringClass().getPackage();
 
-    	return !(currentMethodPackage.getName().equals(testMethodPackage.getName()));
+        return !(currentMethodPackage.getName().equals(testMethodPackage.getName()));
 
     }
 
 
-	private boolean isStillViableGivenOverrides(final Method method, final Map<String, List<Method>> allMethodsAnalyzed) {
+    private boolean isStillViableGivenOverrides(final Method method, final Map<String, List<Method>> allMethodsAnalyzed) {
 
-    	if (Modifier.isPublic(method.getModifiers()) || isPackagePrivate(method)) {
-    		if (isChildClassMethodOverridingCurrentMethod(method, allMethodsAnalyzed)) {
-    			return false;
-    		}
+        if (Modifier.isPublic(method.getModifiers()) || isPackagePrivate(method)) {
+            return !isChildClassMethodOverridingCurrentMethod(method, allMethodsAnalyzed);
 
-    	}
+        }
 
-    	return true;
+        return true;
     }
 
     protected boolean isPackagePrivate(final Method m) {
-    	int methodModifiers = m.getModifiers();
-    	return (!Modifier.isPrivate(methodModifiers) && !Modifier.isPublic(methodModifiers) && !Modifier.isProtected(methodModifiers));
+        int methodModifiers = m.getModifiers();
+        return (!Modifier.isPrivate(methodModifiers) && !Modifier.isPublic(methodModifiers) && !Modifier.isProtected(methodModifiers));
     }
 
 

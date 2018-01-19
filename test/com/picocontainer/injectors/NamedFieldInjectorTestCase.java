@@ -51,7 +51,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByName() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Biplane>(Biplane.class, Biplane.class, new NullComponentMonitor(), " aa wing1 cc wing2 dd ", true));
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<>(Biplane.class, Biplane.class, new NullComponentMonitor(), " aa wing1 cc wing2 dd ", true));
         pico.addConfig("wing1", "hello");
         pico.addConfig("wing2", "goodbye");
         Biplane biplane = pico.getComponent(Biplane.class);

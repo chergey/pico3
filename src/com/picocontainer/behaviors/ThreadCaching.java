@@ -18,13 +18,15 @@ import com.picocontainer.parameters.FieldParameters;
 import com.picocontainer.parameters.MethodParameters;
 import com.picocontainer.references.ThreadLocalReference;
 
-/** @author Paul Hammant */
+/**
+ * @author Paul Hammant
+ */
 @SuppressWarnings("serial")
 public class ThreadCaching extends AbstractBehavior {
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
-                        final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(monitor, lifecycle, componentProps, key, impl, constructorParams, fieldParams, methodParams);
         }
@@ -35,7 +37,7 @@ public class ThreadCaching extends AbstractBehavior {
     }
 
     @Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
+    public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle,
                                                        final Properties componentProps, final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(monitor, lifecycle, componentProps, adapter);
@@ -58,7 +60,7 @@ public class ThreadCaching extends AbstractBehavior {
         }
 
         @Override
-		public String getDescriptor() {
+        public String getDescriptor() {
             return "ThreadCached" + getLifecycleDescriptor();
         }
     }

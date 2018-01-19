@@ -31,7 +31,6 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         visitor.visitComponentFactory(this);
     }
 
-
     protected <T> ComponentAdapter<T> wrapLifeCycle(final Injector<T> injector, final LifecycleStrategy lifecycle) {
         if (lifecycle instanceof NullLifecycleStrategy) {
             return injector;
@@ -39,13 +38,12 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return new LifecycleAdapter<T>(injector, lifecycle);
         }
     }
-    
 
-	public void dispose() {
-		
-	}    
 
-	private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+    public void dispose() {
+    }
+
+    private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
         private final Injector<T> delegate;
         private final LifecycleStrategy lifecycle;
 
@@ -79,7 +77,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         @SuppressWarnings("rawtypes")
-		public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
+        public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
             return delegate.findAdapterOfType(adapterType);
         }
 
@@ -88,7 +86,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         }
 
         @Override
-		public String toString() {
+        public String toString() {
             return getDescriptor() + ":" + delegate.toString();
         }
 
@@ -116,7 +114,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             if (delegate instanceof ComponentMonitorStrategy) {
                 return ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
             }
-            
+
             return new NullComponentMonitor();
         }
 
@@ -131,10 +129,10 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return delegate.decorateComponentInstance(container, into, instance);
         }
 
-		public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance,
-				final Class<?> superclassPortion) {
-			return delegate.partiallyDecorateComponentInstance(container, into, instance, superclassPortion);
-		}
+        public Object partiallyDecorateComponentInstance(final PicoContainer container, final Type into, final T instance,
+                                                         final Class<?> superclassPortion) {
+            return delegate.partiallyDecorateComponentInstance(container, into, instance, superclassPortion);
+        }
     }
 
 }

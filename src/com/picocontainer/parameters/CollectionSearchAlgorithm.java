@@ -9,7 +9,7 @@ import com.picocontainer.PicoContainer;
 
 public interface CollectionSearchAlgorithm {
 
-	Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
-                                 Class keyType, Generic<?> valueType);
+    Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
+                                                                  Class keyType, Generic<?> valueType);
 
 }

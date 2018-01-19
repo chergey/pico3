@@ -21,66 +21,43 @@ import com.picocontainer.injectors.JSR330AccessibleObjectOrderComparator;
 public class JSR330AccessibleObjectOrderComparatorTestCase {
 
 	public static class Base {
-
 		public static int one;
-
 		public static int two;
-
 		public int three;
-
 		public static void one() {
-
 		}
 
 		public static void two() {
-
 		}
 
 		public  void three() {
-
 		}
 	}
 
 	public static class Derived extends Base {
 
 		public static int four;
-
 		public int five;
-
 		public int six;
-
 		public static void four() {
-
 		}
 
 		public  void five() {
-
 		}
 
 	}
 
 	private Field oneField;
-
 	private Field twoField;
-
 	private Field threeField;
-
 	private Field fourField;
-
 	private Field fiveField;
-
 	private Field sixField;
-
 	private Method oneMethod;
-
 	private Method twoMethod;
-
 	private Method threeMethod;
-
 	private Method fourMethod;
-
 	private Method fiveMethod;
-
 	private JSR330AccessibleObjectOrderComparator comparator;
 
 

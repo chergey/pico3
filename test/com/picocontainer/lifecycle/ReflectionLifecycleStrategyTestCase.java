@@ -136,30 +136,30 @@ public class ReflectionLifecycleStrategyTestCase {
 		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
 		mockery.checking(new Expectations() {
 			{
-				one(lifecycle).start();
-				one(lifecycle).stop();
-				one(lifecycle).dispose();
-				one(monitor).invoking(
+				oneOf(lifecycle).start();
+				oneOf(lifecycle).stop();
+				oneOf(lifecycle).dispose();
+				oneOf(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStartMember), with(same(lifecycle)), with(any(Object[].class)));
-				one(monitor).invoked(with(aNull(PicoContainer.class)),
+				oneOf(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStartMethod), with(same(lifecycle)),
                         with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
-				one(monitor).invoking(
+				oneOf(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStopMember), with(same(lifecycle)), with(any(Object[].class)));
-				one(monitor).invoked(with(aNull(PicoContainer.class)),
+				oneOf(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStopMethod), with(same(lifecycle)),
                         with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
-				one(monitor).invoking(
+				oneOf(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMember), with(same(lifecycle)), with(any(Object[].class)));
-				one(monitor).invoked(with(aNull(PicoContainer.class)),
+				oneOf(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(lifecycle)),
                         with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
@@ -245,20 +245,20 @@ public class ReflectionLifecycleStrategyTestCase {
 				{
 					atLeast(1).of(mock).start();
 					atLeast(1).of(mock).stop();
-					one(monitor).invoking(
+					oneOf(monitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
 							with(isStartMember), with(same(mock)), with(any(Object[].class)));
-					one(monitor)
+					oneOf(monitor)
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isStartMethod), with(same(mock)),
                                     with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
-					one(monitor).invoking(
+					oneOf(monitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
 							with(isStopMember), with(same(mock)), with(any(Object[].class)));
-					one(monitor).invoked(
+					oneOf(monitor).invoked(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
 							with(isStopMethod), with(same(mock)), with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
@@ -271,11 +271,11 @@ public class ReflectionLifecycleStrategyTestCase {
 			mockery.checking(new Expectations() {
 				{
 					atLeast(1).of(mock).dispose();
-					one(monitor).invoking(
+					oneOf(monitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
 							with(isDisposeMember), with(same(mock)), with(any(Object[].class)));
-					one(monitor)
+					oneOf(monitor)
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isDisposeMethod), with(same(mock)),
@@ -287,11 +287,9 @@ public class ReflectionLifecycleStrategyTestCase {
 		return mockery.mock(Serializable.class);
 	}
 
-	public static interface MyLifecycle {
+	public interface MyLifecycle {
 		void start();
-
 		void stop();
-
 		void dispose();
 	}
 

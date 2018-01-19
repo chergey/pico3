@@ -31,24 +31,24 @@ import com.picocontainer.parameters.MethodParameters;
 @SuppressWarnings("serial")
 public class AdaptingBehavior extends AbstractBehavior implements Behavior, Serializable {
 
-	private transient StaticsInitializedReferenceSet referenceSet;
+    private transient StaticsInitializedReferenceSet referenceSet;
 
-	public AdaptingBehavior() {
-		this(null);
-	}
+    public AdaptingBehavior() {
+        this(null);
+    }
 
     public AdaptingBehavior(final StaticsInitializedReferenceSet referenceSet) {
-		this.referenceSet = referenceSet;
-	}
+        this.referenceSet = referenceSet;
+    }
 
 
-	@Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
-                                                   final LifecycleStrategy lifecycle,
-                                                   final Properties componentProps,
-                                                   final Object key,
-                                                   final Class<T> impl,
-                                                   final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
+    @Override
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+                                                          final LifecycleStrategy lifecycle,
+                                                          final Properties componentProps,
+                                                          final Object key,
+                                                          final Class<T> impl,
+                                                          final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
         List<Behavior> list = new ArrayList<>();
         ComponentFactory lastFactory = makeInjectionFactory();
         processSynchronizing(componentProps, list);
@@ -63,7 +63,7 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
             if (lastFactory != null && componentFactory instanceof Behavior) {
-                ((Behavior)componentFactory).wrap(lastFactory);
+                ((Behavior) componentFactory).wrap(lastFactory);
             }
             lastFactory = componentFactory;
         }
@@ -71,28 +71,29 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
         ComponentFactory completedFactory = createStaticInjection(lastFactory);
 
         return completedFactory.createComponentAdapter(monitor,
-                                                  lifecycle,
-                                                  componentProps,
-                                                  key,
-                                                  impl,
-                                                  constructorParams, fieldParams, methodParams);
+                lifecycle,
+                componentProps,
+                key,
+                impl,
+                constructorParams, fieldParams, methodParams);
     }
 
 
-	/**
-	 * Override to return lastFactory parameter to completely disable static injection.
-	 * @param lastFactory
-	 * @return
-	 */
+    /**
+     * Override to return lastFactory parameter to completely disable static injection.
+     *
+     * @param lastFactory
+     * @return
+     */
     protected ComponentFactory createStaticInjection(final ComponentFactory lastFactory) {
         return new AnnotatedStaticInjection(referenceSet).wrap(lastFactory);
-	}
+    }
 
-	@Override
-	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
-                                                final LifecycleStrategy lifecycle,
-                                                final Properties componentProps,
-                                                final ComponentAdapter<T> adapter) {
+    @Override
+    public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor monitor,
+                                                       final LifecycleStrategy lifecycle,
+                                                       final Properties componentProps,
+                                                       final ComponentAdapter<T> adapter) {
         List<Behavior> list = new ArrayList<>();
         processSynchronizing(componentProps, list);
         processImplementationHiding(componentProps, list);
@@ -117,11 +118,11 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
     }
 
     @Override
-	public void verify(final PicoContainer container) {
+    public void verify(final PicoContainer container) {
     }
 
     @Override
-	public void accept(final PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
 
     }
@@ -143,16 +144,16 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
     }
 
     protected void processCaching(final Properties componentProps,
-                                       final Class<?> impl,
-                                       final List<Behavior> list) {
+                                  final Class<?> impl,
+                                  final List<Behavior> list) {
         if (AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.CACHE) ||
-            impl.getAnnotation(Cache.class) != null) {
+                impl.getAnnotation(Cache.class) != null) {
             list.add(new Caching());
         }
         AbstractBehavior.removePropertiesIfPresent(componentProps, Characteristics.NO_CACHE);
     }
 
-    protected  void processGuarding(final Properties componentProps, final Class<?> impl, final List<Behavior> list) {
+    protected void processGuarding(final Properties componentProps, final Class<?> impl, final List<Behavior> list) {
         if (AbstractBehavior.arePropertiesPresent(componentProps, Characteristics.GUARD, false)) {
             list.add(new Guarding());
         }
@@ -179,14 +180,14 @@ public class AdaptingBehavior extends AbstractBehavior implements Behavior, Seri
 
     private void writeObject(final java.io.ObjectOutputStream stream)
             throws IOException {
-    	stream.defaultWriteObject();
+        stream.defaultWriteObject();
     }
 
     private void readObject(final java.io.ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
 
-    	stream.defaultReadObject();
-    	referenceSet = new StaticsInitializedReferenceSet();
+        stream.defaultReadObject();
+        referenceSet = new StaticsInitializedReferenceSet();
     }
 
 }

@@ -124,12 +124,10 @@ public class SpecificFieldInjector<T> extends AbstractFieldInjector<T> implement
         injectionMembers = new ArrayList<>();
         List<Annotation> bindingIds = new ArrayList<>();
         final List<Type> typeList = new ArrayList<>();
-        for (Field eachFieldToInject : fieldsToInject) {
-            injectionMembers.add(eachFieldToInject);
-        }
+        injectionMembers.addAll(Arrays.asList(fieldsToInject));
 
         //Sort for injection.
-        Collections.sort(injectionMembers, new JSR330AccessibleObjectOrderComparator());
+        injectionMembers.sort(new JSR330AccessibleObjectOrderComparator());
 
         for (AccessibleObject eachMember : injectionMembers) {
             Field field = (Field) eachMember;

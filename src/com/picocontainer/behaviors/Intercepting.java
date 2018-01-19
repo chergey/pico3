@@ -28,7 +28,7 @@ import com.picocontainer.parameters.MethodParameters;
 public class Intercepting extends AbstractBehavior {
 
     @Override
-	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor,
                                                           final LifecycleStrategy lifecycle,
                                                           final Properties componentProps,
                                                           final Object key,
@@ -93,7 +93,7 @@ public class Intercepting extends AbstractBehavior {
         }
 
         @Override
-		public String getDescriptor() {
+        public String getDescriptor() {
             return "Intercepted";
         }
     }
@@ -101,7 +101,7 @@ public class Intercepting extends AbstractBehavior {
     public static class InterceptorThreadLocal extends ThreadLocal<Controller> implements Serializable {
 
         @Override
-		protected Controller initialValue() {
+        protected Controller initialValue() {
             return new ControllerImpl();
         }
     }

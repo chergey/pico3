@@ -31,7 +31,7 @@ public class Issue0388TestCase {
 	    public static final class Carrot {
 	    }
 
-	    public static interface Utensil {
+	    public interface Utensil {
 	        String use();
 	    }
 

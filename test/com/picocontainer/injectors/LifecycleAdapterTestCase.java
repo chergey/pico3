@@ -42,7 +42,7 @@ public class LifecycleAdapterTestCase {
     public void passesOnLifecycleOperations() {
 
         LifecycleStrategy adapter = (LifecycleStrategy) ais.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), null, null, null, null, null);
-        assertEquals("AbstractInjectionType$LifecycleAdapter", adapter.getClass().getName());
+        assertEquals("com.picocontainer.injectors.AbstractInjectionType$LifecycleAdapter", adapter.getClass().getName());
         Touchable touchable = new SimpleTouchable();
         adapter.start(touchable);
         adapter.stop(touchable);

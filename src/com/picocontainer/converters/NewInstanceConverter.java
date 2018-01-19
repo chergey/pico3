@@ -12,18 +12,17 @@ public class NewInstanceConverter implements Converter<Object> {
     public NewInstanceConverter(final Class<?> clazz) {
         try {
             c = clazz.getConstructor(String.class);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException ignored) {
         }
     }
+
     public Object convert(final String paramValue) {
         if (c == null) {
             return null;
         }
         try {
             return c.newInstance(paramValue);
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException ignored) {
         }
         return null;
     }

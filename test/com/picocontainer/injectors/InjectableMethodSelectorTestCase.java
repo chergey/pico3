@@ -18,8 +18,6 @@ import com.picocontainer.injectors.InjectableMethodSelector;
 public class InjectableMethodSelectorTestCase {
 
 
-
-
     public static class PackageTestParent {
     	boolean injected = false;
     	boolean otherInjected = false;

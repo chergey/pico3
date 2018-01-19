@@ -13,10 +13,11 @@ package com.picocontainer;
  * An interface which is implemented by components that need to dispose of resources during the shutdown of that
  * component. The {@link Disposable#dispose()} must be called once during shutdown, directly after {@link
  * Startable#stop()} (if the component implements the {@link Startable} interface).
+ *
  * @see com.picocontainer.Startable the Startable interface if you need to <code>start()</code> and
- *      <code>stop()</code> semantics.
+ * <code>stop()</code> semantics.
  * @see com.picocontainer.PicoContainer the main PicoContainer interface (and hence its subinterfaces and
- *      implementations like {@link DefaultPicoContainer}) implement this interface.
+ * implementations like {@link DefaultPicoContainer}) implement this interface.
  */
 public interface Disposable {
     /**

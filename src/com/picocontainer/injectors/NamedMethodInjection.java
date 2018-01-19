@@ -75,8 +75,8 @@ public class NamedMethodInjection extends AbstractInjectionType {
         protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
             return new NameBinding() {
                 public String getName() {
-                    String name = ((Method)member).getName().substring(prefix.length()); // string off 'set' or chosen prefix
-                    return name.substring(0,1).toLowerCase() + name.substring(1);  // change "SomeThing" to "someThing"
+                    String name = ((Method) member).getName().substring(prefix.length()); // string off 'set' or chosen prefix
+                    return name.substring(0, 1).toLowerCase() + name.substring(1);  // change "SomeThing" to "someThing"
                 }
             };
         }

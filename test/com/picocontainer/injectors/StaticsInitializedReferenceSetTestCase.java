@@ -19,24 +19,18 @@ public class StaticsInitializedReferenceSetTestCase {
 		public static String staticField;
 
 		public static void staticMethod() {
-
 		}
 
 		public String nonStaticField;
 
 		public void nonStaticMethod() {
-
 		}
 	}
 
 	private Field staticFieldRef;
-
 	private Field nonStaticFieldRef;
-
 	private Method staticMethodRef;
-
 	private Method nonStaticMethodRef;
-
 	private StaticsInitializedReferenceSet referenceSet;
 
 	@Before

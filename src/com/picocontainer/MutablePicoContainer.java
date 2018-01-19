@@ -8,6 +8,7 @@ package com.picocontainer;
 import java.lang.annotation.Annotation;
 import java.util.Properties;
 
+import com.picocontainer.containers.JSR330PicoContainer;
 import com.picocontainer.exceptions.PicoCompositionException;
 import com.picocontainer.injectors.Provider;
 import com.picocontainer.lifecycle.LifecycleState;
@@ -26,18 +27,21 @@ import com.picocontainer.parameters.MethodParameters;
  */
 public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {
 
-    public static interface BindTo<T> {
+    interface BindTo<T> {
         MutablePicoContainer to(Class<? extends T> impl);
+
         MutablePicoContainer to(T instance);
+
         MutablePicoContainer toProvider(javax.inject.Provider<? extends T> provider);
+
         MutablePicoContainer toProvider(Provider provider);
     }
 
-    public static interface BindWithOrTo<T> extends BindTo<T> {
+    interface BindWithOrTo<T> extends BindTo<T> {
         <T> BindTo<T> withAnnotation(Class<? extends Annotation> annotation);
+
         <T> BindTo<T> named(String name);
     }
-
 
 
     <T> BindWithOrTo<T> bind(Class<T> type);
@@ -59,18 +63,15 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code>
      * <ul>
      *
-     * @param key a key that identifies the component. Must be unique within the container. The type
-     *                     of the key object has no semantic significance unless explicitly specified in the
-     *                     documentation of the implementing container.
-     * @param implOrInstance
-     *                     the component's implementation class. This must be a concrete class (ie, a
-     *                     class that can be instantiated). Or an instance of the compoent.
-     * @param constructorParameters   the parameters that gives the container hints about what arguments to pass
-     *                     to the constructor when it is instantiated. Container implementations may ignore
-     *                     one or more of these hints.
-     *
+     * @param key                   a key that identifies the component. Must be unique within the container. The type
+     *                              of the key object has no semantic significance unless explicitly specified in the
+     *                              documentation of the implementing container.
+     * @param implOrInstance        the component's implementation class. This must be a concrete class (ie, a
+     *                              class that can be instantiated). Or an instance of the compoent.
+     * @param constructorParameters the parameters that gives the container hints about what arguments to pass
+     *                              to the constructor when it is instantiated. Container implementations may ignore
+     *                              one or more of these hints.
      * @return the same instance of MutablePicoContainer
-     *
      * @throws PicoCompositionException if registration of the component fails.
      * @see com.picocontainer.Parameter
      * @see com.picocontainer.parameters.ConstantParameter
@@ -82,18 +83,19 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Longhand method for adding components when multiple injection is used
-     * @param key the object key.  Most often either a string or a Class.
-     * @param implOrInstance the component's implementation class.
+     *
+     * @param key               the object key.  Most often either a string or a Class.
+     * @param implOrInstance    the component's implementation class.
      * @param constructorParams Parameters for the constructor of the object may be
-     * 	zero length by using {@linkplain com.picocontainer.parameters.ConstructorParameters.NO_ARG_CONSTRUCTOR}
-     * @param fieldParams an array of field parameters to override Picocontainer's Autowiring capabilities.
-     * @param methodParams an array of method parameters to override PicoContainer's autowiring capabilities.
+     *                          zero length by using {@linkplain com.picocontainer.parameters.ConstructorParameters.NO_ARG_CONSTRUCTOR}
+     * @param fieldParams       an array of field parameters to override Picocontainer's Autowiring capabilities.
+     * @param methodParams      an array of method parameters to override PicoContainer's autowiring capabilities.
      * @return <code>this</code> to allow for method chaining.
      */
     MutablePicoContainer addComponent(Object key, Object implOrInstance,
-    			ConstructorParameters constructorParams,
-    			FieldParameters[] fieldParams,
-    			MethodParameters[] methodParams);
+                                      ConstructorParameters constructorParams,
+                                      FieldParameters[] fieldParams,
+                                      MethodParameters[] methodParams);
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
@@ -106,13 +108,31 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     MutablePicoContainer addComponent(Object implOrInstance);
 
     /**
+     * Register object with lifecycle strategy
+     *
+     * @param implOrInstance
+     * @param strategy
+     * @return
+     */
+
+    MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy);
+
+    /**
+     * Register object with lifecycle strategy
+     *
+     * @param implOrInstance
+     * @param strategy
+     * @return
+     */
+
+    MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy);
+
+    /**
      * Register a config item.
      *
      * @param name the name of the config item
-     * @param val the value of the config item
-     *
+     * @param val  the value of the config item
      * @return the same instance of MutablePicoContainer
-     *
      * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addConfig(String name, Object val);
@@ -124,15 +144,14 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * you should use Characteristics.NONE like so pico.as(Characteristics.NONE).addAdapter(...)
      *
      * @param componentAdapter the adapter
-     *
      * @return the same instance of MutablePicoContainer
-     *
      * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter);
 
     /**
      * Adds a {@linkplain javax.inject.Provider} to the container.
+     *
      * @param provider
      * @return the same instance of the PicoContainer to allow for method chaining.
      */
@@ -140,7 +159,8 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Adds a {@linkplain javax.inject.Provider} with a particular key to the container.
-     * @param key if you use this, its usually a string value.
+     *
+     * @param key      if you use this, its usually a string value.
      * @param provider
      * @return the same instance of the PicoContainer to allow for method chaining.
      */
@@ -150,7 +170,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * Unregister a component by key.
      *
      * @param key key of the component to unregister.
-     *
      * @return the ComponentAdapter that was associated with this component.
      */
     <T> ComponentAdapter<T> removeComponent(Object key);
@@ -159,7 +178,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * Unregister a component by instance.
      *
      * @param componentInstance the component instance to unregister.
-     *
      * @return the same instance of MutablePicoContainer
      */
     <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance);
@@ -186,6 +204,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *   parent.removeChildContainer(child); //Remove the bi-directional references.
      *   child = null;
      * </pre>
+     *
      * @return the new child container.
      */
     MutablePicoContainer makeChildContainer();
@@ -197,9 +216,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * as a consequence of calling this method.
      *
      * @param child the child container
-     *
      * @return the same instance of MutablePicoContainer
-     *
      */
     MutablePicoContainer addChildContainer(PicoContainer child);
 
@@ -208,9 +225,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * Lifecycle event will no longer be cascaded from the parent to the child.
      *
      * @param child the child container
-     *
      * @return <code>true</code> if the child container has been removed.
-     *
      */
     boolean removeChildContainer(PicoContainer child);
 
@@ -241,6 +256,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * To assist ThreadLocal usage, LifecycleState can be set.  No need to use this for normal usages.
+     *
      * @param lifecycleState the lifecyle state to use.
      * @since 2.8
      */
@@ -248,6 +264,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Retrieve the name set (if any).
+     *
      * @return Retrieve the arbitrary name of the container set by calling {@link #setName(String) setName}.
      * @since 2.10.2
      */
@@ -256,6 +273,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Allow querying of the current lifecycle state of a MutablePicoContainer.
+     *
      * @return the current Lifecycle State.
      * @since 2.10.2
      */
@@ -265,11 +283,11 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * Changes monitor in the ComponentFactory, the component adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
-     * @since 3.0
+     *
      * @return the old component monitor
+     * @since 3.0
      */
     ComponentMonitor changeMonitor(final ComponentMonitor monitor);
-
 
 
 }

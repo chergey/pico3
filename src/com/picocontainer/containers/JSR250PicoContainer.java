@@ -6,7 +6,9 @@
 
 package com.picocontainer.containers;
 
+import com.picocontainer.LifecycleStrategy;
 import com.picocontainer.MutablePicoContainer;
+import com.picocontainer.Parameter;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.injectors.StaticsInitializedReferenceSet;
 import com.picocontainer.monitors.NullComponentMonitor;
@@ -18,12 +20,19 @@ public class JSR250PicoContainer extends JSR330PicoContainer {
 
     public JSR250PicoContainer(final PicoContainer parent, final Class<?> resourceRegistryClazz) {
         super(parent, new NullComponentMonitor(), new StaticsInitializedReferenceSet());
+        if (resourceRegistryClazz.isInterface()) {
+            throw new RuntimeException("resourceRegistryClazz must not be abstract or interface");
+        }
         addComponent(resourceRegistryClazz);
     }
 
     public JSR250PicoContainer(final MutablePicoContainer delegate, final Class<?> resourceRegistryClazz) {
         super(delegate);
+        if (resourceRegistryClazz.isInterface()) {
+            throw new RuntimeException("resourceRegistryClazz must not be abstract or interface");
+        }
         addComponent(resourceRegistryClazz);
     }
+
 
 }
