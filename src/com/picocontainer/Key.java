@@ -12,11 +12,13 @@ package com.picocontainer;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
-/** @author Paul Hammant */
+/**
+ * @author Paul Hammant
+ */
 @SuppressWarnings("serial")
 public class Key<T> implements Serializable {
 
-	private final Class<T> type;
+    private final Class<T> type;
     private final Class<? extends Annotation> annotation;
 
     public Key(final Class<T> type, final Class<? extends Annotation> annotation) {
@@ -33,33 +35,33 @@ public class Key<T> implements Serializable {
     }
 
     @Override
-	public String toString() {
+    public String toString() {
         return type.getName() + ":" + annotation.getName();
     }
 
     @Override
-	public boolean equals(final Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
-			return true;
-		}
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+            return false;
+        }
 
-        Key<?> key = (Key<?>)o;
+        Key<?> key = (Key<?>) o;
 
         if (!annotation.equals(key.annotation)) {
-			return false;
-		}
+            return false;
+        }
         if (!type.equals(key.type)) {
-			return false;
-		}
+            return false;
+        }
 
         return true;
     }
 
     @Override
-	public int hashCode() {
+    public int hashCode() {
         int result;
         result = type.hashCode();
         result = 31 * result + annotation.hashCode();
@@ -67,7 +69,7 @@ public class Key<T> implements Serializable {
     }
 
     public static <T> Key<T> annotatedKey(final Class<T> type, final Class<? extends Annotation> annotation) {
-        return new Key<T>(type, annotation);
+        return new Key<>(type, annotation);
     }
 
 }
