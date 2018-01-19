@@ -79,13 +79,12 @@ public class JSR330PicoContainer extends AbstractDelegatingMutablePicoContainer 
     public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
         Object key = determineKey(implOrInstance);
 
-        addComponent(key, implOrInstance);
-        return this;
+        return addComponent(key, implOrInstance);
     }
 
     @Override
     public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
-        return null;
+        return getDelegate().addComponent(key, implOrInstance, strategy);
     }
 
     /**
