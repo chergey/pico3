@@ -358,6 +358,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return this;
     }
 
+    @Override
+    public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+        return getDelegate().addAssistedComponent(clazz);
+    }
+
 
     public ClassLoader getComponentClassLoader() {
         if (componentClassLoader == null) {
@@ -510,6 +515,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         public MutablePicoContainer addProvider(final Object key, final Provider<?> provider) {
             delegate.addProvider(key, provider);
             return DefaultClassLoadingPicoContainer.this;
+        }
+
+        @Override
+        public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+            return getDelegate().addAssistedComponent(clazz);
         }
 
         public ComponentAdapter<?> removeComponent(final Object key) {

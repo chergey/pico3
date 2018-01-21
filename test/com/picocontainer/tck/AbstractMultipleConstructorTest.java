@@ -35,31 +35,24 @@ public abstract class AbstractMultipleConstructorTest {
         public Multi(final One one, final Two two, final Three three) {
             message = "one two three";
         }
-
         public Multi(final One one, final Two two) {
             message = "one two";
         }
-
         public Multi(final Two two, final One one) {
             message = "two one";
         }
-
         public Multi(final Two two, final Three three) {
             message = "two three";
         }
-
         public Multi(final Three three, final One one) {
             message = "three one";
         }
-
         public Multi(final One one, final String string) {
             message = "one string";
         }
-
         public Multi(final One one, final int i) {
             message = "one int";
         }
-
         public Multi() {
             message = "none";
         }

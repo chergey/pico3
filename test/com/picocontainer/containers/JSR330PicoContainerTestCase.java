@@ -75,12 +75,10 @@ public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
     @Named("test")
     public static class B {
         public int number = 0;
-
     }
 
     @SomeQualifier
     public static class C {
-
     }
 
 
@@ -116,22 +114,16 @@ public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
     @Test
     public void testAddProvidersWithNonAnnotatedKeys() {
 
-        Provider<B> provider1 = new Provider<B>() {
-            public B get() {
-                B returnValue = new B();
-                returnValue.number = 2;
-                return returnValue;
-            }
+        Provider<B> provider1 = () -> {
+            B returnValue = new B();
+            returnValue.number = 2;
+            return returnValue;
         };
 
-        Provider<B> provider2 = new Provider<B>() {
-
-            public B get() {
-                B returnValue = new B();
-                returnValue.number = 42;
-                return returnValue;
-            }
-
+        Provider<B> provider2 = () -> {
+            B returnValue = new B();
+            returnValue.number = 42;
+            return returnValue;
         };
 
         MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
@@ -704,6 +696,8 @@ public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
         assertSame(c, result.getMethodInjection());
         assertSame(d, result.getSetterInjection());
     }
+
+
 
 
 }

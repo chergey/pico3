@@ -5,7 +5,7 @@
  * For more details take a look at the Java Quickstart chapter in the Gradle
  * user guide available at https://docs.gradle.org/4.2/userguide/tutorial_java_projects.html
  */
-ext.artifactGroup = 'com.haulmont.monaco'
+ext.artifactGroup = 'com.picocontainer'
 ext.artifactVersion = '3.1'
 ext.isSnapshot = true
 
@@ -16,13 +16,7 @@ apply plugin: 'idea'
 
 
 repositories {
-    maven {
-        credentials {
-            username System.getenv('HAULMONT_REPOSITORY_USER')
-            password System.getenv('HAULMONT_REPOSITORY_PASSWORD')
-        }
-        url "http://repository.haulmont.com:8587/nexus/content/groups/shamrock-work"
-    }
+    mavenCentral()
 }
 group = artifactGroup
 version = artifactVersion + (isSnapshot ? '-SNAPSHOT' : '')
@@ -69,17 +63,4 @@ task sourceJar(type: Jar) {
 
 artifacts {
     archives sourceJar
-}
-
-uploadArchives.configure {
-    repositories.mavenDeployer {
-        name = 'httpDeployer'
-        configuration = configurations.deployerJars
-        repository(url: "http://repository.haulmont.com:8587/nexus/content/repositories/shamrock" + (isSnapshot ? '-snapshots' : '')) {
-            authentication(
-                    userName: System.getenv('HAULMONT_REPOSITORY_USER'),
-                    password: System.getenv('HAULMONT_REPOSITORY_PASSWORD')
-            )
-        }
-    }
 }

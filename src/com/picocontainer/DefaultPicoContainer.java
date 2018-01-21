@@ -8,18 +8,11 @@ package com.picocontainer;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.lang.reflect.*;
+import java.util.*;
 
+import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.inject.Provider;
 
 
@@ -29,10 +22,7 @@ import com.picocontainer.adapters.InstanceAdapter;
 import com.picocontainer.behaviors.AbstractBehavior;
 import com.picocontainer.behaviors.AdaptingBehavior;
 import com.picocontainer.behaviors.Caching;
-import com.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import com.picocontainer.containers.AbstractDelegatingPicoContainer;
-import com.picocontainer.containers.EmptyPicoContainer;
-import com.picocontainer.containers.ImmutablePicoContainer;
+import com.picocontainer.containers.*;
 import com.picocontainer.converters.BuiltInConverters;
 import com.picocontainer.converters.ConvertsNothing;
 import com.picocontainer.exceptions.PicoCompositionException;
@@ -49,6 +39,8 @@ import com.picocontainer.parameters.ConstructorParameters;
 import com.picocontainer.parameters.DefaultConstructorParameter;
 import com.picocontainer.parameters.FieldParameters;
 import com.picocontainer.parameters.MethodParameters;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
  * <p/>
@@ -1371,7 +1363,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
         @Override
         public <T> BindWithOrTo<T> bind(final Class<T> type) {
-            return new DpcBindWithOrTo<T>(AsPropertiesPicoContainer.this, type);
+            return new DpcBindWithOrTo<>(AsPropertiesPicoContainer.this, type);
         }
 
         @Override
@@ -1423,6 +1415,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return DefaultPicoContainer.this.addAdapter(new ProviderAdapter(provider), properties);
         }
 
+        @Override
+        public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+            return getDelegate().addAssistedComponent(clazz);
+        }
+
         /**
          * {@inheritDoc}
          *
@@ -1461,6 +1458,52 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         @Override
         public void dispose() {
             throw new PicoCompositionException("Cannot have  .as().dispose()  Register a component or delete the as() statement");
+        }
+    }
+
+
+    public DefaultPicoContainer addAssistedComponent(Class<?> clazz) {
+
+        if (!clazz.isInterface()) {
+            throw new IllegalArgumentException("Argument should be interface");
+        }
+        if (clazz.getDeclaredMethods().length != 1) {
+            throw new IllegalArgumentException("Interface should have exactly 1 method");
+        }
+
+        Object proxy = Proxy.newProxyInstance(
+                Thread.currentThread().getContextClassLoader(), new Class<?>[]{clazz}, new AssistedInvocationHandler<>(clazz));
+        addComponent(clazz, proxy);
+        return this;
+    }
+
+    private class AssistedInvocationHandler<T> implements InvocationHandler {
+        private Class<T> clazz;
+
+        AssistedInvocationHandler(Class<T> clazz) {
+            this.clazz = clazz;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+            Class<?> returnType = clazz.getDeclaredMethods()[0].getReturnType();
+
+            Class<?>[] classes = Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
+            Constructor<?> ctor = returnType.getDeclaredConstructor(classes);
+            ctor.setAccessible(true);
+            Object newInstance = ctor.newInstance(args);
+            for (Field f : newInstance.getClass().getDeclaredFields()) {
+                if (f.isAnnotationPresent(Inject.class)) {
+                    FieldUtils.writeField(f, newInstance, getComponent(f.getType()), true);
+                }
+                Resource res = f.getDeclaredAnnotation(Resource.class);
+                if (res != null) {
+                    String name = res.name();
+                    FieldUtils.writeField(f, newInstance, getComponent(name), true);
+                }
+
+            }
+            return newInstance;
         }
     }
 

@@ -121,22 +121,22 @@ public class TypedBindingAnnotationTestCase  {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Bramley {}
+    public @interface Bramley {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Cox {}
+    public @interface Cox {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Granny {}
+    public @interface Granny {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface Braeburn {}
+    public @interface Braeburn {}
 
     public static class FruitBasketViaConstructor extends FruitBasket {
         // used in testBindingAnnotationsWithConstructorInjection()

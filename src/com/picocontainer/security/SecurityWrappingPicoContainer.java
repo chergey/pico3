@@ -142,6 +142,11 @@ public final class SecurityWrappingPicoContainer implements MutablePicoContainer
 		return pico.addProvider(key, provider);
 	}
 
+	@Override
+	public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+		return addComponent(clazz);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>Requires <tt>write</tt> permission.

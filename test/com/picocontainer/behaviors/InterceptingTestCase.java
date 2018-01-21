@@ -21,11 +21,11 @@ import com.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class InterceptingTestCase {
 
-    public static interface Person {
+    public interface Person {
         String greeting();
         String parting(String who);
         void sleep(int howLong);
-        public static class nullobject implements Person {
+        class nullobject implements Person {
             public String greeting() {
                 return null;
             }

@@ -63,10 +63,10 @@ public class Issue0214TestCase {
         new VerifyingVisitor().traverse(pico);
     }
 
-    public static interface I1 {
+    public interface I1 {
     }
 
-    public static interface I2 {
+    public interface I2 {
     }
 
     public static class A {

@@ -101,7 +101,7 @@ public class CollectionComponentParameterTestCase {
 		assertEquals(expected, actual);
 	}
 
-	static public interface Fish {
+	public interface Fish {
 	}
 
 	static public class Cod implements Fish {
@@ -423,7 +423,7 @@ public class CollectionComponentParameterTestCase {
 		}
 	}
 
-	public static interface GenericInterface<T> {
+	public interface GenericInterface<T> {
 
 	}
 

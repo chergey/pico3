@@ -224,7 +224,7 @@ public class CachedTestCase {
         return ca;
     }
 
-    public static interface ComponentAdapterSupportingLifecycleStrategy extends ComponentAdapter,
+    public interface ComponentAdapterSupportingLifecycleStrategy extends ComponentAdapter,
             LifecycleStrategy {
     }
 }

@@ -6,9 +6,7 @@
 
 package com.picocontainer.containers;
 
-import com.picocontainer.LifecycleStrategy;
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.Parameter;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.injectors.StaticsInitializedReferenceSet;
 import com.picocontainer.monitors.NullComponentMonitor;
@@ -33,6 +31,8 @@ public class JSR250PicoContainer extends JSR330PicoContainer {
         }
         addComponent(resourceRegistryClazz);
     }
+
+
 
 
 }

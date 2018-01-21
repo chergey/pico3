@@ -20,14 +20,14 @@ import com.picocontainer.injectors.ConstructorInjection.ConstructorInjector;
 public final class NonPublicConstructorsTestCase {
 
     @Test
-   public void doFirstSampleWithNotPublicConstructor() {
+    public void doFirstSampleWithNotPublicConstructor() {
         MutablePicoContainer container = new DefaultPicoContainer();
 
         ComponentAdapter<DummyNotPublicConstructor> dummyComponentAdapter =
                 new ConstructorInjector<>(
                         DummyNotPublicConstructor.class,
                         DummyNotPublicConstructor.class)
-                .withNonPublicConstructors();
+                        .withNonPublicConstructors();
 
         container.addAdapter(dummyComponentAdapter);
 
@@ -43,7 +43,7 @@ public final class NonPublicConstructorsTestCase {
                 new ConstructorInjector<>(
                         DummyNotPublicClass.class.getCanonicalName(),
                         DummyNotPublicClass.class)
-                .withNonPublicConstructors();
+                        .withNonPublicConstructors();
 
         container.addAdapter(dummyComponentAdapter);
 
@@ -59,7 +59,7 @@ public final class NonPublicConstructorsTestCase {
                 new ConstructorInjector<>(
                         DummyProtectedConstructor.class,
                         DummyProtectedConstructor.class)
-                .withNonPublicConstructors();
+                        .withNonPublicConstructors();
 
 
         container.addAdapter(dummyComponentAdapter);

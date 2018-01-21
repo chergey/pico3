@@ -152,6 +152,6 @@ public class AbstractComponentMonitorTestCase {
         }
     }
 
-    public static interface TestMonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
+    public interface TestMonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
     }
 }

@@ -83,20 +83,20 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected ComponentAdapter prepDEF_visitable() {
-        return new ConstructorInjection.ConstructorInjector("bar", B.class, new ConstructorParameters(new Parameter[] {ComponentParameter.DEFAULT}));
+        return new ConstructorInjection.ConstructorInjector<>("bar", B.class, new ConstructorParameters(new Parameter[] {ComponentParameter.DEFAULT}));
     }
 
     @Override
 	protected ComponentAdapter prepDEF_isAbleToTakeParameters(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
-        return new ConstructorInjection.ConstructorInjector(
+        return new ConstructorInjection.ConstructorInjector<>(
                 NamedDependsOnTouchable.class, NamedDependsOnTouchable.class,
                 new ConstructorParameters(new Parameter[] {ComponentParameter.DEFAULT, new ConstantParameter("Name")}));
     }
 
     @Override
 	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class);
+        return new ConstructorInjection.ConstructorInjector<>(SimpleTouchable.class, SimpleTouchable.class);
     }
 
     @Override
@@ -112,12 +112,12 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected ComponentAdapter prepVER_verificationFails(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class);
+        return new ConstructorInjection.ConstructorInjector<>(DependsOnTouchable.class, DependsOnTouchable.class);
     }
 
     @Override
 	protected ComponentAdapter prepINS_createsNewInstances(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class);
+        return new ConstructorInjection.ConstructorInjector<>(SimpleTouchable.class, SimpleTouchable.class);
     }
 
     public static class Erroneous {
@@ -128,7 +128,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected ComponentAdapter prepINS_errorIsRethrown(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(Erroneous.class, Erroneous.class);
+        return new ConstructorInjection.ConstructorInjector<>(Erroneous.class, Erroneous.class);
     }
 
     public static class RuntimeThrowing {
@@ -139,7 +139,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     @Override
 	protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(RuntimeThrowing.class, RuntimeThrowing.class);
+        return new ConstructorInjection.ConstructorInjector<>(RuntimeThrowing.class, RuntimeThrowing.class);
     }
 
     public static class NormalExceptionThrowing {
@@ -151,13 +151,13 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     @Override
 	protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             final MutablePicoContainer picoContainer) {
-        return new ConstructorInjection.ConstructorInjector(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
+        return new ConstructorInjection.ConstructorInjector<>(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
     }
 
     @Override
 	protected ComponentAdapter prepRES_dependenciesAreResolved(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
-        return new ConstructorInjection.ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class);
+        return new ConstructorInjection.ConstructorInjector<>(DependsOnTouchable.class, DependsOnTouchable.class);
     }
 
     public static class C1 {
@@ -283,7 +283,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     	//Fix, default constructor gives adapting behavior, not straight constructorinjection.
         DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addComponent(Component201.class);
-        pico.addComponent(new Integer(2));
+        pico.addComponent(2);
         pico.addComponent(Boolean.TRUE);
         pico.addComponent("Hello");
         assertNotNull(pico.getComponent(Component201.class));
@@ -324,14 +324,14 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         };
 
         mockery.checking(new Expectations() {{
-        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
+        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter<?>)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
         	will(returnValue(emptyHashMapCtor));
-        	one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)),
+        	one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter<?>)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(emptyHashMapCtor)),
         			with(isAHashMapThatWozCreated), with(injectedIsEmptyArray),
         			with(durationIsGreaterThanOrEqualToZero));
         }});
 
-        ConstructorInjection.ConstructorInjector cica = new ConstructorInjection.ConstructorInjector(monitor, false,
+        ConstructorInjection.ConstructorInjector cica = new ConstructorInjection.ConstructorInjector<>(monitor, false,
                 Map.class, HashMap.class, new ConstructorParameters(new Parameter[0]));
         cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);
     }
@@ -352,14 +352,14 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         };
 
         mockery.checking(new Expectations() {{
-        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
+        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter<?>)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
         	will(returnValue(barfingActionListenerCtor));
-        	one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),
+        	one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter<?>)with(a(ConstructorInjection.ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),
         			with(isITE));
         }});
 
 
-        ConstructorInjection.ConstructorInjector cica = new ConstructorInjection.ConstructorInjector(monitor, false,
+        ConstructorInjection.ConstructorInjector cica = new ConstructorInjection.ConstructorInjector<>(monitor, false,
                 ActionListener.class, BarfingActionListener.class, new ConstructorParameters(new Parameter[0]));
         try {
             cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);

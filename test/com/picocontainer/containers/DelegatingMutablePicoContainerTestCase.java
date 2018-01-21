@@ -52,6 +52,11 @@ public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContaine
         }
 
         @Override
+        public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+            return getDelegate().addAssistedComponent(clazz);
+        }
+
+        @Override
 		public MutablePicoContainer makeChildContainer() {
             return new MyDelegatingMutablePicoContainer(this);
         }

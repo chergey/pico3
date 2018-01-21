@@ -16,7 +16,7 @@ import com.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class CircularTestCase {
 
-    public static interface IFish {
+    public interface IFish {
         IWater getWater();
     }
     public static class Fish implements IFish {
@@ -31,7 +31,7 @@ public class CircularTestCase {
         }
     }
 
-    public static interface IWater {
+    public interface IWater {
         IFish getFish();
 
     }

@@ -58,7 +58,7 @@ public final class UserQuestionTestCase {
         }
     }
 
-    public static interface Cheese {
+    public interface Cheese {
         String getName();
     }
 
@@ -104,7 +104,7 @@ public final class UserQuestionTestCase {
         assertSame(roquefort, roquefortOmelette.getCheese());
     }
 
-    public static interface InterfaceX {
+    public interface InterfaceX {
         String getIt();
     }
 
@@ -170,10 +170,10 @@ public final class UserQuestionTestCase {
     }
 
     // From John Tal 23/03/2004
-    public static interface ABC {
+    public interface ABC {
     }
 
-    public static interface DEF {
+    public interface DEF {
     }
 
     public static class ABCImpl implements ABC {
@@ -195,10 +195,10 @@ public final class UserQuestionTestCase {
         assertEquals(ABCImpl.class, picoContainer.getComponent("ABC").getClass());
     }
 
-    public static interface Foo {
+    public interface Foo {
     }
 
-    public static interface Bar {
+    public interface Bar {
     }
 
     public static class FooBar implements Foo, Bar {

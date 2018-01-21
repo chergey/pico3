@@ -26,7 +26,6 @@ import com.picocontainer.JTypeHelper;
 public class JTypeHelperTestCase {
 
 	public interface HttpServletRequest {
-
 	}
 
 	@Test

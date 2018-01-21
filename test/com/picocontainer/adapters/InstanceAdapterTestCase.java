@@ -43,7 +43,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
 
     @Test public void testComponentAdapterReturnsSame() {
         final Touchable touchable = new SimpleTouchable();
-        final ComponentAdapter componentAdapter = new InstanceAdapter(Touchable.class, touchable, new NullLifecycleStrategy(),
+        final ComponentAdapter componentAdapter = new InstanceAdapter<>(Touchable.class, touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
         assertSame(touchable, componentAdapter.getComponentInstance(null, null));
     }
@@ -51,7 +51,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
     @Test public void testDefaultLifecycleStrategy() {
         LifecycleComponent component = new LifecycleComponent();
         InstanceAdapter adapter =
-            new InstanceAdapter(LifecycleComponent.class, component, new StartableLifecycleStrategy(new NullComponentMonitor()),
+            new InstanceAdapter<>(LifecycleComponent.class, component, new StartableLifecycleStrategy(new NullComponentMonitor()),
                                                                         new NullComponentMonitor());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -149,7 +149,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      */
     @Override
 	protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
-        return new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(),
+        return new InstanceAdapter<>("foo", "bar", new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
 
@@ -160,7 +160,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
     @Override
 	protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
             final MutablePicoContainer picoContainer) {
-        return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
+        return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
 
@@ -170,7 +170,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      */
     @Override
 	protected ComponentAdapter prepDEF_visitable() {
-        return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
+        return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
 
@@ -180,7 +180,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      */
     @Override
 	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
-        return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
+        return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
 
@@ -190,7 +190,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
      */
     @Override
 	protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
-        return new InstanceAdapter("Key", 4711, new NullLifecycleStrategy(),
+        return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
     }
 

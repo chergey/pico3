@@ -99,7 +99,7 @@ public class BehaviorAdapterTestCase {
     	 return mockery.mock(ComponentAdapter.class);
     }
 
-    public static interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
+    public interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
     }
 
     private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {
@@ -115,7 +115,7 @@ public class BehaviorAdapterTestCase {
         return ca;
     }
 
-    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, ChangedBehavior, LifecycleStrategy {
+    public interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, ChangedBehavior, LifecycleStrategy {
     }
 
     static class FooAbstractChangedBehavior extends AbstractBehavior.AbstractChangedBehavior {

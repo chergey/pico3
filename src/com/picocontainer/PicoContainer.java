@@ -22,7 +22,7 @@ import com.picocontainer.exceptions.PicoException;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use
- *      PicoContainer.</a>
+ * PicoContainer.</a>
  */
 public interface PicoContainer {
 
@@ -32,7 +32,7 @@ public interface PicoContainer {
      *
      * @param keyOrType the key or Type that the component was registered with.
      * @return an instantiated component, or <code>null</code> if no component has been registered for the specified
-     *         key.
+     * key.
      */
     Object getComponent(Object keyOrType);
 
@@ -40,6 +40,7 @@ public interface PicoContainer {
 
     /**
      * Retrieve a component keyed by the component type.
+     *
      * @param componentType the type of the component
      * @return the typed resulting object instance or null if the object does not exist.
      */
@@ -49,6 +50,7 @@ public interface PicoContainer {
 
     /**
      * Retrieve a component keyed by the component type.
+     *
      * @param componentType the type of the component
      * @param into
      * @return the typed resulting object instance or null if the object does not exist.
@@ -59,8 +61,9 @@ public interface PicoContainer {
 
     /**
      * Retrieve a component keyed by the component type and binding type.
+     *
      * @param componentType the type of the component
-     * @param binding the binding type of the component
+     * @param binding       the binding type of the component
      * @param into
      * @return the typed resulting object instance or null if the object does not exist.
      */
@@ -90,7 +93,7 @@ public interface PicoContainer {
      *
      * @param key the key that the component was registered with.
      * @return the component adapter associated with this key, or <code>null</code> if no component has been
-     *         registered for the specified key.
+     * registered for the specified key.
      */
     ComponentAdapter<?> getComponentAdapter(Object key);
 
@@ -99,23 +102,24 @@ public interface PicoContainer {
      * container, the parent container (if one exists) will be searched.
      *
      * @param componentType the type of the component.
-     * @param nameBinding the name binding to use. May be {@link com.picocontainer.NameBinding.NULL NameBinding.NULL}
-     * 			if name binding is not going to be used to resolve the component adapter.
+     * @param nameBinding   the name binding to use. May be {@link com.picocontainer.NameBinding.NULL NameBinding.NULL}
+     *                      if name binding is not going to be used to resolve the component adapter.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key.
+     * registered for the specified key.
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding nameBinding);
 
     /**
      * Similar to {@link #getComponentAdapter(Class, NameBinding)}, except that it uses a JType generic
      * as its type.
-     * @param <T> refers to the type of object the ComponentAdapter will construct.
+     *
+     * @param <T>           refers to the type of object the ComponentAdapter will construct.
      * @param componentType the type of the component that a ComponentAdapter retrieved by
-     * this call will construct.
-     * @param nameBinding the name binding to use. May be {@link com.picocontainer.NameBinding.NULL NameBinding.NULL}
-     * 			if name binding is not going to be used to resolve the component adapter.
+     *                      this call will construct.
+     * @param nameBinding   the name binding to use. May be {@link com.picocontainer.NameBinding.NULL NameBinding.NULL}
+     *                      if name binding is not going to be used to resolve the component adapter.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key.
+     * registered for the specified key.
      */
     <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, NameBinding nameBinding);
 
@@ -123,11 +127,12 @@ public interface PicoContainer {
      * Find a component adapter associated with the specified type and binding type. If a component adapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
      *
-     * @return the component adapter associated with this class, or <code>null</code> if no component has been
-     *         registered for the specified key.  @param componentType the type of the component.
      * @param binding the typed binding to use
+     * @return the component adapter associated with this class, or <code>null</code> if no component has been
+     * registered for the specified key.  @param componentType the type of the component.
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding);
+
     <T> ComponentAdapter<T> getComponentAdapter(Generic<T> componentType, Class<? extends Annotation> binding);
 
     /**
@@ -135,9 +140,9 @@ public interface PicoContainer {
      * not returned.
      *
      * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will not
-     *         be modifiable.
+     * be modifiable.
      * @see #getComponentAdapters(Generic a variant of this method which returns the component adapters inside this
-     *      container that are associated with the specified type.
+     * container that are associated with the specified type.
      */
     Collection<ComponentAdapter<?>> getComponentAdapters();
 
@@ -147,7 +152,7 @@ public interface PicoContainer {
      *
      * @param componentType the type of the components.
      * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
-     *         the specified type. Changes to this collection will not be reflected in the container itself.
+     * the specified type. Changes to this collection will not be reflected in the container itself.
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType);
 
@@ -158,11 +163,12 @@ public interface PicoContainer {
      * adapters from the parent container are not returned.
      *
      * @param componentType the type of the components.
-     * @param binding the typed binding to use
+     * @param binding       the typed binding to use
      * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
-     *         the specified type. Changes to this collection will not be reflected in the container itself.
+     * the specified type. Changes to this collection will not be reflected in the container itself.
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding);
+
     <T> List<ComponentAdapter<T>> getComponentAdapters(Generic<T> componentType, Class<? extends Annotation> binding);
 
     /**

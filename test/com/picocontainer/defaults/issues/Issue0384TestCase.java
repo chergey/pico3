@@ -9,10 +9,10 @@ import com.picocontainer.containers.CompositePicoContainer;
 
 public class Issue0384TestCase {
 
-  public static interface AnInterface {
+  public interface AnInterface {
 
   }
-  public static interface AnInterface2 {
+  public interface AnInterface2 {
 
   }
 

@@ -25,7 +25,7 @@ import com.picocontainer.injectors.ConstructorInjection;
 
 public class DecoratingTestCase {
 
-    public static interface Swede {
+    public interface Swede {
     }
 
     public static class Turnip {

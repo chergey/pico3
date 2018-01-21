@@ -25,7 +25,7 @@ import com.picocontainer.annotations.Inject;
 
 public class FactoryInjectorTestCase {
 
-    public static interface Swede {
+    public interface Swede {
     }
 
     @Test
@@ -257,7 +257,7 @@ public class FactoryInjectorTestCase {
         }
     }
 
-    public static interface Tree {
+    public interface Tree {
         String leafColor();
     }
     public static class OakTree implements Tree {

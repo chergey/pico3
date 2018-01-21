@@ -56,22 +56,22 @@ public class ImmutablePicoContainerTestCase {
 
         final PicoVisitor fooVisitor = mockery.mock(PicoVisitor.class);
         mockery.checking(new Expectations() {{
-            one(fooVisitor).visitContainer(with(same(pico))); will(returnValue(true));
-        	one(fooVisitor).visitComponentFactory(with(same(ai)));
-        	one(fooVisitor).visitComponentAdapter(with(same(componentAdapter)));
+            oneOf(fooVisitor).visitContainer(with(same(pico))); will(returnValue(true));
+        	oneOf(fooVisitor).visitComponentFactory(with(same(ai)));
+            oneOf(fooVisitor).visitComponentAdapter(with(same(componentAdapter)));
         }});
         PicoContainer ipc = new ImmutablePicoContainer(pico);
         ipc.accept(fooVisitor);
     }
 
-    @Test public void testProxyEquals() throws Exception {
+    @Test public void testProxyEquals() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         PicoContainer ipc = new ImmutablePicoContainer(pico);
         assertEquals(ipc, ipc);
         assertEquals(ipc, new ImmutablePicoContainer(pico));
     }
 
-    @Test public void testHashCodeIsSame() throws Exception {
+    @Test public void testHashCodeIsSame() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         assertEquals(pico.hashCode(), new ImmutablePicoContainer(pico).hashCode());
     }

@@ -24,14 +24,14 @@ public class ThreadLocalReference<T> extends ThreadLocal<T> implements ObjectRef
     private void writeObject(final ObjectOutputStream out) {
         if(out != null)
 		 {
-			; // eliminate warning because of unused parameter
+			// eliminate warning because of unused parameter
 		}
     }
 
     private void readObject(final ObjectInputStream in) {
         if(in != null)
 		 {
-			; // eliminate warning because of unused parameter
+		     // eliminate warning because of unused parameter
 		}
     }
 

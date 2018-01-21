@@ -95,7 +95,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
     }
 
 
-    public static interface NeedsStringBuilder {
+    public interface NeedsStringBuilder {
         void foo();
     }
     public static class NeedsStringBuilderImpl implements NeedsStringBuilder {

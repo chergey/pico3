@@ -6,7 +6,6 @@ public class PackageSeparateBaseTestModel {
 
 	static String aValue;
 
-
 	@Inject
 	private void testSomething() {
 

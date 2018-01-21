@@ -101,19 +101,19 @@ public class ReflectionLifecycleStrategyTestCase {
 		mockery.checking(new Expectations() {
 			{
 				atLeast(1).of(disposable).dispose();
-				one(monitor).invoking(
+				oneOf(monitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));
-				one(monitor).invoked(with(aNull(PicoContainer.class)),
+				oneOf(monitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
                         with(any(Long.class)), with(same((Boolean)null)), with(any(Object[].class)));
-				one(monitor2).invoking(
+				oneOf(monitor2).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));
-				one(monitor2).invoked(
+				oneOf(monitor2).invoked(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),

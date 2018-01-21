@@ -35,7 +35,7 @@ public class Issue0354TestCase {
         assertEquals(2, bowl.fishes.size());
     }
 
-    public static interface Fish {
+    public interface Fish {
     }
 
     public static class Cod implements Fish {

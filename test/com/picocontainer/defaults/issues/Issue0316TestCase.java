@@ -36,8 +36,8 @@ public class Issue0316TestCase {
     }
 
 
-    public static interface Fruit {
-        public String eat();
+    public interface Fruit {
+        String eat();
     }
     public static class Apple implements Fruit {
         public String eat() { return "apple"; }
@@ -46,7 +46,7 @@ public class Issue0316TestCase {
         public String eat() { return "pear"; }
     }
 
-    public static interface Target {
+    public interface Target {
         String eat1();
         String eat2();
         int getNumber();

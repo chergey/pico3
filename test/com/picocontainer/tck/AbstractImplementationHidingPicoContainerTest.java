@@ -56,17 +56,17 @@ public abstract class AbstractImplementationHidingPicoContainerTest extends Abst
     @Test public void testNonInterfaceImplementaionIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(HashMap.class, HashMap.class);
-        Map map = pc.getComponent(HashMap.class);
+        Map<?,?> map = pc.getComponent(HashMap.class);
         assertNotNull(map);
-        assertTrue(map instanceof HashMap);
+        assertTrue(map instanceof HashMap<?,?>);
     }
 
     @Test public void testNonInterfaceImplementaionWithParametersIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(HashMap.class, HashMap.class);
-        Map map = pc.getComponent(HashMap.class);
+        Map<?,?> map = pc.getComponent(HashMap.class);
         assertNotNull(map);
-        assertTrue(map instanceof HashMap);
+        assertTrue(map instanceof HashMap<?,?>);
     }
 
 

@@ -29,13 +29,11 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
     public Object traverse(final Object node) {
         traversal = true;
         Object retval =
-                AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                    public Object run() {
-                        try {
-                            return node.getClass().getMethod("accept", PicoVisitor.class);
-                        } catch (NoSuchMethodException e) {
-                            return e;
-                        }
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    try {
+                        return node.getClass().getMethod("accept", PicoVisitor.class);
+                    } catch (NoSuchMethodException e) {
+                        return e;
                     }
                 });
         try {

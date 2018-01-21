@@ -336,11 +336,11 @@ public class ProviderTestCase {
 
     }
 
-    public static interface Component {
+    public interface Component {
 
-        public void start();
+        void start();
 
-        public void stop();
+        void stop();
 
     }
 

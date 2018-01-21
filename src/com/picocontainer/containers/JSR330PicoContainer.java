@@ -76,15 +76,15 @@ public class JSR330PicoContainer extends AbstractDelegatingMutablePicoContainer 
     }
 
     @Override
-    public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy strategy) {
+    public MutablePicoContainer addComponent(Object implOrInstance, LifecycleStrategy lifecycleStrategy) {
         Object key = determineKey(implOrInstance);
 
-        return addComponent(key, implOrInstance);
+        return addComponent(key, implOrInstance, lifecycleStrategy);
     }
 
     @Override
-    public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy strategy) {
-        return getDelegate().addComponent(key, implOrInstance, strategy);
+    public MutablePicoContainer addComponent(Object key, Object implOrInstance, LifecycleStrategy lifecycleStrategy) {
+        return getDelegate().addComponent(key, implOrInstance, lifecycleStrategy);
     }
 
     /**
@@ -184,6 +184,11 @@ public class JSR330PicoContainer extends AbstractDelegatingMutablePicoContainer 
         Object key = determineKey(provider);
         super.addProvider(key, provider);
         return this;
+    }
+
+    @Override
+    public MutablePicoContainer addAssistedComponent(Class<?> clazz) {
+        return getDelegate().addAssistedComponent(clazz);
     }
 
     protected void applyInstanceAnnotations(final Class<?> objectImplementation) {

@@ -553,7 +553,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		}
 	}
 
-	public static interface A {
+	public interface A {
 
 	}
 
