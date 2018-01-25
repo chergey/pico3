@@ -59,9 +59,9 @@ public interface PicoVisitor {
     void visitComponentAdapter(ComponentAdapter<?> componentAdapter);
 
     /**
-     * Visit a {@link ComponentAdapter} that has to accept the visitor.
+     * Visit a {@link ComponentFactory} that has to accept the visitor.
      *
-     * @param componentAdapter the visited ComponentAdapter.
+     * @param componentFactory the visited ComponentFactory.
      */
     void visitComponentFactory(ComponentFactory componentFactory);
 

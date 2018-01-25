@@ -35,7 +35,7 @@ import com.picocontainer.references.ThreadLocalMapObjectReference;
 public class Storing extends AbstractBehavior {
 
     @SuppressWarnings("rawtypes")
-    private StoreThreadLocal<Object> mapThreadLocalObjectReference = new StoreThreadLocal<>();
+    private StoreThreadLocal<?> mapThreadLocalObjectReference = new StoreThreadLocal<>();
 
     @Override
     public void dispose() {
@@ -49,7 +49,7 @@ public class Storing extends AbstractBehavior {
         }
     }
 
-    protected <T> StoreThreadLocal<T> getThreadLocalStore() {
+    private  <T> StoreThreadLocal<T> getThreadLocalStore() {
         return (StoreThreadLocal<T>) mapThreadLocalObjectReference;
     }
 

@@ -522,12 +522,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 null, new FailingLifecycleStrategy());
         dpc.as(Characteristics.CACHE).addComponent(Startable.class,
                 MyStartable.class);
-        try {
-            dpc.start();
-            fail("should have barfed");
-        } catch (RuntimeException e) {
-            assertEquals("foo", e.getMessage());
-        }
+
+        Utils.shouldThrow(dpc::start, "should have barfed", "foo", RuntimeException.class);
+
+
     }
 
     @Test
@@ -536,12 +534,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 null, new FailingLifecycleStrategy());
         Startable myStartable = new MyStartable();
         dpc.addComponent(Startable.class, myStartable);
-        try {
-            dpc.start();
-            fail("should have barfed");
-        } catch (RuntimeException e) {
-            assertEquals("foo", e.getMessage());
-        }
+        Utils.shouldThrow(dpc::start, "should have barfed", "foo", RuntimeException.class);
     }
 
     public static class FailingLifecycleStrategy implements LifecycleStrategy {
@@ -861,11 +854,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer container = createPicoContainer(null);
         container.addComponent(Map.class, HashMap.class);
         container.start();
-        try {
-            container.removeComponent(Map.class);
-            fail("should have barfed");
-        } catch (PicoCompositionException e) {
-        }
+        Utils.shouldThrow(() ->
+                container.removeComponent(Map.class), "should have barfed", PicoCompositionException.class);
+
     }
 
     @Test
@@ -934,13 +925,13 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     @Test
     public void testMessedUpVarargsComponentFactories() {
-        try {
-            new DefaultPicoContainer(new ConstructorInjection(), new Caching());
-            fail("should have barfed");
-        } catch (PicoCompositionException e) {
-            assertEquals("Check the order of the BehaviorFactories in the varargs list of ComponentFactories. " +
-                    "Index 0 (ConstructorInjection) should be a BehaviorFactory but is not.", e.getMessage());
-        }
+
+        Utils.shouldThrow(() -> new DefaultPicoContainer(new ConstructorInjection(), new Caching()),
+                "should have barfed",
+                "Check the order of the BehaviorFactories in the varargs list of ComponentFactories. " +
+                        "Index 0 (com.picocontainer.injectors.ConstructorInjection) should be a BehaviorFactory but is not.",
+                 PicoCompositionException.class);
+
     }
 
     public static class NeedsColorProvider {
@@ -954,13 +945,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     @Test
     public void testJsr330ProviderAsConstructorArgument() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
-        Provider<Color> provider = new Provider<Color>() {
-            public Color get() {
-                return Color.red;
-            }
-        };
-        pico
-                .addProvider(provider)
+        Provider<Color> provider = () -> Color.red;
+        pico.addProvider(provider)
                 .addComponent(NeedsColorProvider.class);
 
         NeedsColorProvider ncp = pico.getComponent(NeedsColorProvider.class);
@@ -980,11 +966,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     @Test
     public void testJsr330ProviderWithCicaCallingGetMethod() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching(), new ConstructorInjection());
-        Provider<Color> provider = new Provider<Color>() {
-            public Color get() {
-                return Color.green;
-            }
-        };
+        Provider<Color> provider = () -> Color.green;
 
         pico.addProvider(provider).addComponent(NeedsColorProviderTwo.class);
         NeedsColorProviderTwo ncp = pico.getComponent(NeedsColorProviderTwo.class);
@@ -1053,12 +1035,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
         mpc.start();
 
-        try {
-            mpc.stop();
-            fail("Error should have been thrown by component");
-        } catch (PicoLifecycleException e) {
-            assertNotNull(e.getMessage());
-        }
+        Utils.shouldThrow(mpc::stop,
+                "Error should have been thrown by component", PicoLifecycleException.class );
 
         assertTrue(mpc.getLifecycleState().isStopped());
 

@@ -41,18 +41,20 @@ import com.picocontainer.monitors.NullComponentMonitor;
  */
 public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest {
 
-    @Test public void testComponentAdapterReturnsSame() {
+    @Test
+    public void testComponentAdapterReturnsSame() {
         final Touchable touchable = new SimpleTouchable();
         final ComponentAdapter componentAdapter = new InstanceAdapter<>(Touchable.class, touchable, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
         assertSame(touchable, componentAdapter.getComponentInstance(null, null));
     }
 
-    @Test public void testDefaultLifecycleStrategy() {
+    @Test
+    public void testDefaultLifecycleStrategy() {
         LifecycleComponent component = new LifecycleComponent();
         InstanceAdapter adapter =
-            new InstanceAdapter<>(LifecycleComponent.class, component, new StartableLifecycleStrategy(new NullComponentMonitor()),
-                                                                        new NullComponentMonitor());
+                new InstanceAdapter<>(LifecycleComponent.class, component, new StartableLifecycleStrategy(new NullComponentMonitor()),
+                        new NullComponentMonitor());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -80,7 +82,8 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
         }
     }
 
-    @Test public void testCustomLifecycleCanBeInjected() {
+    @Test
+    public void testCustomLifecycleCanBeInjected() {
         NullLifecycle component = new NullLifecycle();
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         InstanceAdapter adapter = new InstanceAdapter<>(NullLifecycle.class, component, strategy, new NullComponentMonitor());
@@ -95,10 +98,11 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
         assertEquals("<start<stop<dispose<start<stop<dispose", strategy.recording());
     }
 
-    @Test public void testComponentAdapterCanIgnoreLifecycle() {
+    @Test
+    public void testComponentAdapterCanIgnoreLifecycle() {
         final Touchable touchable = new SimpleTouchable();
         InstanceAdapter adapter = new InstanceAdapter<>(Touchable.class, touchable, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -108,10 +112,11 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
         adapter.dispose(touchable);
     }
 
-    @Test public void testGuardAgainstNullInstance() {
+    @Test
+    public void testGuardAgainstNullInstance() {
         try {
             new InstanceAdapter<>(Map.class, null, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                    new NullComponentMonitor());
             fail("should have barfed");
         } catch (NullPointerException e) {
             assertEquals("componentInstance cannot be null", e.getMessage());
@@ -120,78 +125,85 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
 
     @Test
     public void testFindAdapterOfType() {
-    	ComponentAdapter adapter = new InstanceAdapter<>("test", "test");
-    	assertEquals(adapter, adapter.findAdapterOfType(InstanceAdapter.class));
+        ComponentAdapter adapter = new InstanceAdapter<>("test", "test");
+        assertEquals(adapter, adapter.findAdapterOfType(InstanceAdapter.class));
     }
 
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
      */
     @Override
-	protected Class getComponentAdapterType() {
+    protected Class getComponentAdapterType() {
         return InstanceAdapter.class;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
      */
     @Override
-	protected int getComponentAdapterNature() {
+    protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(com.picocontainer.MutablePicoContainer)
      */
     @Override
-	protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter<>("foo", "bar", new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(com.picocontainer.MutablePicoContainer)
      */
     @Override
-	protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
+    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
             final MutablePicoContainer picoContainer) {
         return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
     @Override
-	protected ComponentAdapter prepDEF_visitable() {
+    protected ComponentAdapter prepDEF_visitable() {
         return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(com.picocontainer.MutablePicoContainer)
      */
     @Override
-	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @see com.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(com.picocontainer.MutablePicoContainer)
      */
     @Override
-	protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return new InstanceAdapter<>("Key", 4711, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor());
+                new NullComponentMonitor());
     }
 
 }
