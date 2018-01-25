@@ -85,6 +85,7 @@ public class EmjectionTestCase {
 
     public static class Giraffe {
     }
+
     public static class Antelope {
     }
 

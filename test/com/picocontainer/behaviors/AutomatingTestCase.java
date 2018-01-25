@@ -80,7 +80,7 @@ public class AutomatingTestCase {
     @Test public void testNonAutomaticBehaviorAsContrastToTheAboveViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjection.ConstructorInjector(Foo.class, Foo.class));
+        pico.addAdapter(new ConstructorInjection.ConstructorInjector<>(Foo.class, Foo.class));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -103,7 +103,7 @@ public class AutomatingTestCase {
     @Test public void testAutomaticBehaviorByBuilderViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withCaching().withAutomatic().build();
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjection.ConstructorInjector(Foo.class, Foo.class));
+        pico.addAdapter(new ConstructorInjection.ConstructorInjector<>(Foo.class, Foo.class));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -127,7 +127,7 @@ public class AutomatingTestCase {
         @Test public void testAutomaticBehaviorByBuilderADifferentWayViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjection.ConstructorInjector(Foo.class, Foo.class));
+        pico.addAdapter(new ConstructorInjection.ConstructorInjector<>(Foo.class, Foo.class));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -151,7 +151,7 @@ public class AutomatingTestCase {
     @Test public void testAutomaticBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
-        pico.as(AUTOMATIC).addAdapter(new ConstructorInjection.ConstructorInjector(Foo.class, Foo.class));
+        pico.as(AUTOMATIC).addAdapter(new ConstructorInjection.ConstructorInjector<>(Foo.class, Foo.class));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));

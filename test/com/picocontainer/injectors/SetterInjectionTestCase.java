@@ -30,7 +30,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
 
 	@Override
 	@Before
-    public void setUp() throws Exception {
+    public void setUp() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
@@ -145,7 +145,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
             picoContainer.getComponent(AnotherNamedBean2.class);
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             // into class is in message
-            assertTrue(e.getMessage().indexOf("class com.picocontainer.injectors.SetterInjectionTestCase$AnotherNamedBean2 needs a") > -1);
+            assertTrue(e.getMessage().contains("class com.picocontainer.injectors.SetterInjectionTestCase$AnotherNamedBean2 needs a"));
         }
     }
 

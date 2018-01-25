@@ -13,16 +13,18 @@ import com.picocontainer.Behavior;
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.behaviors.Locking;
 
-/** @author Paul Hammant */
+/**
+ * @author Paul Hammant
+ */
 public final class LockedTestCase extends SynchronizedTestCase {
 
     @Override
-	protected ComponentAdapter makeComponentAdapter(final ComponentAdapter componentAdapter) {
-        return new Locking.Locked(componentAdapter);
+    protected ComponentAdapter<?> makeComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+        return new Locking.Locked<>(componentAdapter);
     }
 
     @Override
-	protected Behavior makeBehaviorFactory() {
+    protected Behavior makeBehaviorFactory() {
         return new Locking();
     }
 

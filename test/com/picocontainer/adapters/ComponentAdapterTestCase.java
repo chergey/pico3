@@ -138,7 +138,7 @@ public class ComponentAdapterTestCase {
 
     @Test public void testParameterMayNotBeNull() throws Exception {
         try {
-            new TestInstantiatingAdapter<String>("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
+            new TestInstantiatingAdapter<>("Key", String.class, new Parameter[]{new ConstantParameter<>("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
         	assertTrue(e.getMessage().contains("Parameter 1"));
@@ -147,7 +147,7 @@ public class ComponentAdapterTestCase {
     }
 
     @Test public void testStringRepresentation() {
-        ComponentAdapter<Integer> componentAdapter = new TestAdapter<Integer>("Key", Integer.class);
+        ComponentAdapter<Integer> componentAdapter = new TestAdapter<>("Key", Integer.class);
         assertEquals(TestAdapter.class.getName() + ":Key", componentAdapter.toString());
     }
 }

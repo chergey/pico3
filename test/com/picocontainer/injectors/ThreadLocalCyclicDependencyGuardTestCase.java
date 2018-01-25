@@ -28,7 +28,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
     class ThreadLocalRunner implements Runnable {
         public AbstractInjector.CyclicDependencyException exception;
         private final Blocker blocker;
-        private final AbstractInjector.ThreadLocalCyclicDependencyGuard guard;
+        private final AbstractInjector.ThreadLocalCyclicDependencyGuard<?> guard;
 
         public ThreadLocalRunner() {
             this.blocker = new Blocker();
@@ -104,7 +104,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase {
         assertEquals(2, classes.length);
         assertSame(getClass(), classes[0]);
         assertSame(String.class, classes[1]);
-        assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
+        assertTrue(cdEx.getMessage().contains(getClass().getName()));
     }
 
 

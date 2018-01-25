@@ -166,30 +166,30 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {
         }
     }
 
-    @Test public void testParameterCanBePassedToConstructor() throws Exception {
+    @Test public void testParameterCanBePassedToConstructor() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class,
                 Dino.class,
-                new ConstantParameter("bones"));
+                new ConstantParameter<>("bones"));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("bones", animal.getFood());
     }
 
-    @Test public void testParameterCanBePrimitive() throws Exception {
+    @Test public void testParameterCanBePrimitive() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino2.class, new ConstantParameter(22));
+        pico.addComponent(Animal.class, Dino2.class, new ConstantParameter<>(22));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("22", animal.getFood());
     }
 
-    @Test public void testMultipleParametersCanBePassed() throws Exception {
+    @Test public void testMultipleParametersCanBePassed() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino3.class, new ConstantParameter("a"),
-                new ConstantParameter("b"));
+        pico.addComponent(Animal.class, Dino3.class, new ConstantParameter<>("a"),
+                new ConstantParameter<>("b"));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -197,12 +197,12 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {
 
     }
 
-    @Test public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
+    @Test public void testParametersCanBeMixedWithComponentsCanBePassed() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Touchable.class, SimpleTouchable.class);
-        pico.addComponent(Animal.class, Dino4.class, new ConstantParameter("a"),
-                new ConstantParameter(3),
-                new ConstantParameter("b"),
+        pico.addComponent(Animal.class, Dino4.class, new ConstantParameter<>("a"),
+                new ConstantParameter<>(3),
+                new ConstantParameter<>("b"),
                 ComponentParameter.DEFAULT);
 
         Animal animal = pico.getComponent(Animal.class);

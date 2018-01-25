@@ -32,12 +32,12 @@ import com.picocontainer.PicoVisitor;
  * @author Thomas Heller
  */
 @SuppressWarnings("serial")
-public class ConstantParameter extends AbstractParameter implements Parameter, Serializable {
+public class ConstantParameter<T> extends AbstractParameter implements Parameter, Serializable {
 
-    private final Object value;
+    private final T value;
 
 
-    public ConstantParameter(final Object value) {
+    public ConstantParameter(final T value) {
 		this.value = value;
 
     }
@@ -46,11 +46,11 @@ public class ConstantParameter extends AbstractParameter implements Parameter, S
                             final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
                             final boolean useNames, final Annotation binding) {
         if (expectedType instanceof Class) {
-            return new Parameter.ValueResolver(isAssignable(expectedType), value, null);
+            return new Parameter.ValueResolver<>(isAssignable(expectedType), value, null);
         } else if (expectedType instanceof ParameterizedType) {
-        	return new Parameter.ValueResolver(isAssignable(((ParameterizedType)expectedType).getRawType()), value, null);
+        	return new Parameter.ValueResolver<>(isAssignable(((ParameterizedType)expectedType).getRawType()), value, null);
         }
-        return new Parameter.ValueResolver(true, value, null);
+        return new Parameter.ValueResolver<>(true, value, null);
     }
 
     /**

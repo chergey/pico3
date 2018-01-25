@@ -10,9 +10,10 @@
 
 package com.picocontainer.testmodel;
 
+import org.junit.Assert;
+
 import java.io.Serializable;
 
-import junit.framework.Assert;
 
 /**
  * @author steve.freeman@m3p.co.uk

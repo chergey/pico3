@@ -9,17 +9,12 @@
  *****************************************************************************/
 package com.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
-
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.injectors.AbstractInjector;
-import com.picocontainer.injectors.TypedFieldInjection;
 import com.picocontainer.monitors.NullComponentMonitor;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class TypedFieldInjectorTestCase {
 

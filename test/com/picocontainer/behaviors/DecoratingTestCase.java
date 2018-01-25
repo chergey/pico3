@@ -67,7 +67,7 @@ public class DecoratingTestCase {
                     public Object decorate(final Object instance) {
                         return new Swede() {
                             @Override
-							public String toString() {
+                            public String toString() {
                                 return "Swede:" + instance.getClass().getName();
                             }
                         };
@@ -90,7 +90,7 @@ public class DecoratingTestCase {
                 if (field.getType() == Swede.class) {
                     Swede value = new Swede() {
                         @Override
-						public String toString() {
+                        public String toString() {
                             return "Swede:" + instance.getClass().getName();
                         }
                     };

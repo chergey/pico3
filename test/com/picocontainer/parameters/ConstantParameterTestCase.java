@@ -31,7 +31,7 @@ public class ConstantParameterTestCase {
      * @throws Exception
      */
     @Test public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
-        ConstantParameter param = new ConstantParameter(239);
+        ConstantParameter<?> param = new ConstantParameter<>(239);
         try{
             param.verify(null,null,Integer.TYPE, null, false, null);
         } catch(PicoCompositionException ex) {
@@ -40,8 +40,8 @@ public class ConstantParameterTestCase {
     }
 
     @Test
-    public void testClassTypesAllowed() throws Exception {
-        ConstantParameter param = new ConstantParameter(String.class);
+    public void testClassTypesAllowed() {
+        ConstantParameter<?> param = new ConstantParameter<>(String.class);
         param.verify(null, null, Class.class, null, false, null);
     }
 
@@ -54,11 +54,11 @@ public class ConstantParameterTestCase {
 
 
     @Test
-    public void testParameterizedTypesAllowed() throws Exception {
+    public void testParameterizedTypesAllowed() {
 
     	Constructor<?>[] ctors = ConstantParameterTestClass.class.getConstructors();
     	Type[] t = ctors[0].getGenericParameterTypes();
-        ConstantParameter param = new ConstantParameter(String.class);
+        ConstantParameter<?> param = new ConstantParameter<>(String.class);
         assertTrue(param.resolve(null, null, null, t[0], null, false, null).isResolved());
 
     }

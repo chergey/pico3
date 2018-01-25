@@ -44,7 +44,7 @@ public abstract class AbstractComponentFactoryTest {
     }
 
     @Test public void testEquals() throws PicoCompositionException {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
+        ComponentAdapter<?> componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                                             new NullLifecycleStrategy(),
                                                                                             new Properties(
                                                                                                 Characteristics

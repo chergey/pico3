@@ -68,15 +68,15 @@ public class StartableLifecycleStrategyTestCase {
         if (startable) {
         	 final Startable mock = mockery.mock(Startable.class);
         	 mockery.checking(new Expectations() {{
-                 one(mock).start();
-                 one(mock).stop();
+                 oneOf(mock).start();
+                 oneOf(mock).stop();
              }});
         	 return mock;
         }
         if (disposeable) {
        	 final Disposable mock = mockery.mock(Disposable.class);
     	 mockery.checking(new Expectations() {{
-             one(mock).dispose();
+             oneOf(mock).dispose();
          }});
     	 return mock;
         }

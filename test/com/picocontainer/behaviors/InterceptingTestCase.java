@@ -23,15 +23,20 @@ public class InterceptingTestCase {
 
     public interface Person {
         String greeting();
+
         String parting(String who);
+
         void sleep(int howLong);
+
         class nullobject implements Person {
             public String greeting() {
                 return null;
             }
+
             public String parting(final String who) {
                 return null;
             }
+
             public void sleep(final int howLong) {
             }
         }
@@ -62,7 +67,8 @@ public class InterceptingTestCase {
         }
     }
 
-    @Test public void testPreAndPostObservation() {
+    @Test
+    public void testPreAndPostObservation() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(StringBuilder.class, sb);
@@ -72,14 +78,14 @@ public class InterceptingTestCase {
         final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String greeting() {
+            public String greeting() {
                 sb.append("</english-greeting>");
                 return null;
             }
         });
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String greeting() {
+            public String greeting() {
                 sb.append("<english-greeting>");
                 return null;
             }
@@ -93,7 +99,8 @@ public class InterceptingTestCase {
         assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface com.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
-    @Test public void testPreAndPostObservationWithParameter() {
+    @Test
+    public void testPreAndPostObservationWithParameter() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(StringBuilder.class, sb);
@@ -103,7 +110,7 @@ public class InterceptingTestCase {
         final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String parting(final String a) {
+            public String parting(final String a) {
                 assertEquals("Goodbye Fred.", interceptor.getOriginalRetVal().toString());
                 sb.append("</english-parting>");
                 return null;
@@ -111,8 +118,8 @@ public class InterceptingTestCase {
         });
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String parting(final String who) {
-                sb.append("<english-parting who='"+who+"'>");
+            public String parting(final String who) {
+                sb.append("<english-parting who='" + who + "'>");
                 return null;
             }
         });
@@ -124,7 +131,8 @@ public class InterceptingTestCase {
         assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface com.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
-    @Test public void testPreCanPreventInvocationWithAlternateReturnValue() {
+    @Test
+    public void testPreCanPreventInvocationWithAlternateReturnValue() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(Person.class, Englishman.class);
@@ -134,7 +142,7 @@ public class InterceptingTestCase {
         final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String parting(final String who) {
+            public String parting(final String who) {
                 interceptor.veto();
                 return "Au revoir " + who + ".";
             }
@@ -147,7 +155,8 @@ public class InterceptingTestCase {
         assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface com.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
-    @Test public void testOverrideOfReturnValue() {
+    @Test
+    public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(Person.class, Englishman.class);
@@ -156,7 +165,7 @@ public class InterceptingTestCase {
         final Intercepting.Controller interceptor = intercepted.getController();
         intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             @Override
-			public String parting(final String who) {
+            public String parting(final String who) {
                 sb.append("[Before parting]");
                 return null;
             }
@@ -164,7 +173,7 @@ public class InterceptingTestCase {
         intercepted.addPostInvocation(Person.class, new Person() {
             public String greeting() {
                 return null;
-             }
+            }
 
             public String parting(final String who) {
                 interceptor.override();
@@ -183,7 +192,8 @@ public class InterceptingTestCase {
         assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface com.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
-    @Test public void testNothingHappensIfNoPreOrPost() {
+    @Test
+    public void testNothingHappensIfNoPreOrPost() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new NullLifecycleStrategy(), new Intercepting());
         pico.addComponent(Person.class, Englishman.class);
@@ -194,7 +204,6 @@ public class InterceptingTestCase {
         assertEquals("Goodbye Fred.", sb.toString());
         assertEquals("Intercepted:CompositeInjector(ConstructorInjector)-interface com.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
-
 
 
 }

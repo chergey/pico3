@@ -28,14 +28,17 @@ import com.picocontainer.exceptions.PicoLifecycleException;
 @RunWith(JMock.class)
 public class NullComponentMonitorTestCase {
 
-	private final Mockery mockery = mockeryWithCountingNamingScheme();
+    private final Mockery mockery = mockeryWithCountingNamingScheme();
 
-    @Test public void testItAll() throws NoSuchMethodException {
+    @Test
+    public void testItAll() throws NoSuchMethodException {
 
         NullComponentMonitor ncm = new NullComponentMonitor();
-        ncm.instantiated(makePico(), makeCA(), makeConstructor(), "foo", new Object[0], 10);
-        assertEquals(makeConstructor(), ncm.instantiating(makePico(), makeCA(), makeConstructor()));
-        ncm.instantiationFailed(makePico(), makeCA(), makeConstructor(), new Exception());
+        Constructor<Object> constructor = (Constructor<Object>) makeConstructor();
+        ComponentAdapter<Object> componentAdapter = (ComponentAdapter<Object>) makeCA();
+        ncm.instantiated(makePico(), componentAdapter, constructor, "foo", new Object[0], 10);
+        assertEquals(makeConstructor(), ncm.instantiating(makePico(), componentAdapter, constructor));
+        ncm.instantiationFailed(makePico(), componentAdapter, constructor, new Exception());
         ncm.invocationFailed(makeConstructor(), "foo", new Exception());
         ncm.invoked(makePico(), makeCA(), makeMethod(), "foo", 10, null, new Object[0]);
         ncm.invoking(makePico(), makeCA(), makeMethod(), "foo", new Object[0]);
@@ -54,11 +57,11 @@ public class NullComponentMonitorTestCase {
         return mockery.mock(MutablePicoContainer.class);
     }
 
-    private ComponentAdapter makeCA() {
+    private ComponentAdapter<?> makeCA() {
         return mockery.mock(ComponentAdapter.class);
     }
 
-    private Constructor makeConstructor() {
+    private Constructor<?> makeConstructor() {
         return String.class.getConstructors()[0];
     }
 

@@ -87,7 +87,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         public Object getString() {
             return string;
         }
-        public static enum M {
+        public enum M {
             doIt("doIt", String.class);
             private Method method;
 

@@ -37,7 +37,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
 
 	@Override
 	@Before
-    public void setUp() throws Exception {
+    public void setUp() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
@@ -93,7 +93,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
 
         ConstructorInjection.ConstructorInjector<ClassAsConstructor> cica =  (ConstructorInjection.ConstructorInjector<ClassAsConstructor>)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
-        		new ConstructorParameters(new ConstantParameter(String.class)),
+        		new ConstructorParameters(new ConstantParameter<>(String.class)),
         		null,
         		null);
 
@@ -108,12 +108,12 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
 
         ConstructorInjection.ConstructorInjector<ClassAsConstructor> cica =  (ConstructorInjector<ClassAsConstructor>)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
-        		new ConstructorParameters(new ConstantParameter(String.class)),
+        		new ConstructorParameters(new ConstantParameter<>(String.class)),
         		null,
         		null);
 
         assertTrue(cica.parameters.length == 1);
-        assertEquals(String.class, ((ConstantParameter)cica.parameters[0].getParams()[0]).getValue());
+        assertEquals(String.class, ((ConstantParameter<?>)cica.parameters[0].getParams()[0]).getValue());
 	}
 
 

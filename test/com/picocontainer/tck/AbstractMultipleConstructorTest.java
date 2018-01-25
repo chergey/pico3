@@ -117,9 +117,9 @@ public abstract class AbstractMultipleConstructorTest {
         pico.addComponent("MultiTwoOne", Multi.class, new ComponentParameter("Two"),
                 ComponentParameter.DEFAULT);
         pico.addComponent("MultiOneString", Multi.class, ComponentParameter.DEFAULT,
-                new ConstantParameter(""));
+                new ConstantParameter<>(""));
         pico.addComponent("MultiOneInt", Multi.class, ComponentParameter.DEFAULT,
-                new ConstantParameter(5));
+                new ConstantParameter<>(5));
         pico.addComponent("MultiNone", Multi.class, Parameter.ZERO);
         pico.addComponent(One.class);
         pico.addComponent("Two", Two.class);

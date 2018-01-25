@@ -65,7 +65,7 @@ public class SetterInjectorTestCase
     @Override
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return new SetterInjection.SetterInjector(PersonBean.class, PersonBean.class, new NullComponentMonitor(), "set", false, "", false,
-                new BeanParameters("name", new ConstantParameter(
+                new BeanParameters("name", new ConstantParameter<>(
                         "Pico Container")));
     }
 
@@ -85,7 +85,7 @@ public class SetterInjectorTestCase
                 false,
                 "",
                 false,
-                new BeanParameters("name", new ConstantParameter("Pico Container")));
+                new BeanParameters("name", new ConstantParameter<>("Pico Container")));
 
     }
 
@@ -109,7 +109,7 @@ public class SetterInjectorTestCase
         SetterInjection.SetterInjector componentAdapter = new SetterInjection.SetterInjector(
                 PurseBean.class, MoneyPurse.class, new NullComponentMonitor(), "set", false, "", false,
                 new MethodParameters("setOwner", Parameter.DEFAULT),
-                new MethodParameters("setMoney", new ConstantParameter(100.0)));
+                new MethodParameters("setMoney", new ConstantParameter<>(100.0)));
         return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, (NameBinding) null);
     }
 
@@ -388,6 +388,7 @@ public class SetterInjectorTestCase
 
     public static class InitBurp {
         private Wind wind;
+
         public void initWind(final Wind wind) {
             this.wind = wind;
         }
@@ -395,6 +396,7 @@ public class SetterInjectorTestCase
 
     public static class SetterBurp {
         private Wind wind;
+
         public void setWind(final Wind wind) {
             this.wind = wind;
         }
@@ -676,7 +678,7 @@ public class SetterInjectorTestCase
                 null,
                 null,
                 new MethodParameters[]{
-                        new MethodParameters("setAValue", new ConstantParameter(3))
+                        new MethodParameters("setAValue", new ConstantParameter<>(3))
                 });
 
         ConstantParameterTest test = pico.getComponent(ConstantParameterTest.class);

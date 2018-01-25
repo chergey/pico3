@@ -100,8 +100,8 @@ public class SynchronizedTestCase {
     }
 
     @Test public void testRaceConditionIsHandledBySynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(), false, "key", Blocker.class, null));
-        ComponentAdapter synchronizedComponentAdapter = makeComponentAdapter(componentAdapter);
+        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<>(new ConstructorInjection.ConstructorInjector<>(new NullComponentMonitor(), false, "key", Blocker.class, null));
+        ComponentAdapter<?> synchronizedComponentAdapter = makeComponentAdapter(componentAdapter);
         initTest(synchronizedComponentAdapter);
 
         assertEquals(1, blockerCounter);
@@ -116,15 +116,15 @@ public class SynchronizedTestCase {
         }
     }
 
-    protected ComponentAdapter makeComponentAdapter(final ComponentAdapter componentAdapter) {
-        return new Synchronizing.Synchronized(componentAdapter);
+    protected ComponentAdapter<?> makeComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+        return new Synchronizing.Synchronized<>(componentAdapter);
     }
 
     @Test public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<Blocker>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(),
-        		false,
-        		"key",
-        		Blocker.class, null));
+        ComponentAdapter<Blocker> componentAdapter = new Caching.Cached<>(new ConstructorInjection.ConstructorInjector<Blocker>(new NullComponentMonitor(),
+                false,
+                "key",
+                Blocker.class, null));
         initTest(componentAdapter);
 
         assertNull(runner[0].exception);
@@ -142,20 +142,21 @@ public class SynchronizedTestCase {
 
     public void THIS_NATURALLY_FAILS_testSingletonCreationWithSynchronizedAdapter() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new Caching.Cached<SlowCtor>(makeComponentAdapter(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null))));
+        pico.addAdapter(new Caching.Cached<>(makeComponentAdapter(
+                new ConstructorInjection.ConstructorInjector<>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null))));
         runConcurrencyTest(pico);
     }
 
     // This is overkill - an outer sync adapter is enough
     @Test public void testSingletonCreationWithSynchronizedAdapterAndDoubleLocking() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(makeComponentAdapter(new Caching.Cached<SlowCtor>(new Synchronizing.Synchronized<SlowCtor>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null)))));
+        pico.addAdapter(makeComponentAdapter(new Caching.Cached<>(new Synchronizing.Synchronized<>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null)))));
         runConcurrencyTest(pico);
     }
 
     @Test public void testSingletonCreationWithSynchronizedAdapterOutside() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(makeComponentAdapter(new Caching.Cached<SlowCtor>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null))));
+        pico.addAdapter(makeComponentAdapter(new Caching.Cached<>(new ConstructorInjection.ConstructorInjector<SlowCtor>(new NullComponentMonitor(), false, "slow", SlowCtor.class, null))));
         runConcurrencyTest(pico);
     }
 
@@ -176,18 +177,16 @@ public class SynchronizedTestCase {
 
         Thread[] threads = new Thread[size];
 
-        final List out = Collections.synchronizedList(new ArrayList<Object>());
+        final List<Object> out = Collections.synchronizedList(new ArrayList<>());
 
         for (int i = 0; i < size; i++) {
 
-            threads[i] = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        out.add(pico.getComponent("slow"));
-                    } catch (Exception e) {
-                        // add ex? is e.equals(anotherEOfTheSameType) == true?
-                        out.add(new Date()); // add something else to indicate miss
-                    }
+            threads[i] = new Thread(() -> {
+                try {
+                    out.add(pico.getComponent("slow"));
+                } catch (Exception e) {
+                    // add ex? is e.equals(anotherEOfTheSameType) == true?
+                    out.add(new Date()); // add something else to indicate miss
                 }
             });
         }
@@ -199,7 +198,7 @@ public class SynchronizedTestCase {
             thread.join();
         }
 
-        List differentInstances = new ArrayList();
+        List<Object> differentInstances = new ArrayList<>();
 
         for (Object anOut : out) {
 

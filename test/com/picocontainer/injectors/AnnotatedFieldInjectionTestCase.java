@@ -30,7 +30,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class AnnotatedFieldInjectionTestCase {
 
-    @Test public void testFactoryMakesAnnotationInjector() {
+    @Test
+    public void testFactoryMakesAnnotationInjector() {
 
         AnnotatedFieldInjection injectionFactory = new AnnotatedFieldInjection();
 
@@ -42,7 +43,7 @@ public class AnnotatedFieldInjectionTestCase {
         xs.registerConverter(new Converter() {
             public boolean canConvert(final Class aClass) {
                 return aClass.getName().equals("ConsoleComponentMonitor") ||
-                       aClass.getName().equals("ReflectionLifecycleStrategy");
+                        aClass.getName().equals("ReflectionLifecycleStrategy");
 
             }
 
@@ -57,19 +58,26 @@ public class AnnotatedFieldInjectionTestCase {
             }
         });
 
-        String foo = xs.toXML(ca);
+        String foo = xs.toXML(ca).replace("\t", "");
 
-        assertEquals("<com.picocontainer.injectors.AnnotatedFieldInjection_-AnnotatedFieldInjector>\n" +
-                     "  <key class=\"java-class\">java.util.Map</key>\n" +
-                     "  <impl>java.util.HashMap</impl>\n" +
-                     "  <monitor class=\"ConsoleComponentMonitor\"/>\n" +
-                     "  <useNames>false</useNames>\n" +
-                     "  <requireConsumptionOfAllParameters>true</requireConsumptionOfAllParameters>\n" +
-                     "  <injectionAnnotations>\n" +
-                     "    <java-class>javax.inject.Inject</java-class>\n" +
-                     "    <java-class>Inject</java-class>\n" +
-                     "  </injectionAnnotations>\n" +
-                     "</com.picocontainer.injectors.AnnotatedFieldInjection_-AnnotatedFieldInjector>", foo);
+
+        String expected="<com.picocontainer.injectors.AnnotatedFieldInjection_-AnnotatedFieldInjector>\n" +
+                "  <key class=\"java-class\">java.util.Map</key>\n" +
+                "  <impl>java.util.HashMap</impl>\n" +
+                "  <monitor class=\"com.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
+                "   <delegate class=\"com.picocontainer.monitors.NullComponentMonitor\"/>\n" +
+                "   </monitor>\n" +
+                "  <useNames>false</useNames>\n" +
+                "  <requireConsumptionOfAllParameters>true</requireConsumptionOfAllParameters>\n" +
+                "  <injectionAnnotations>\n" +
+                "    <java-class>javax.inject.Inject</java-class>\n" +
+                "  <java-class>com.picocontainer.annotations.Inject</java-class>\n" +
+                "  <java-class>javax.annotation.Resource</java-class>\n" +
+                "  <java-class>javax.inject.Named</java-class>\n" +
+                "  </injectionAnnotations>\n" +
+                "</com.picocontainer.injectors.AnnotatedFieldInjection_-AnnotatedFieldInjector>"
+                .replace("\t","");
+        assertEquals(expected, foo);
 
 
     }

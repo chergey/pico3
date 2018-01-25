@@ -1,18 +1,12 @@
 package com.picocontainer.lifecycle;
 
-import static com.picocontainer.Characteristics.CACHE;
-import static org.junit.Assert.assertEquals;
-
+import com.picocontainer.*;
+import com.picocontainer.containers.EmptyPicoContainer;
+import com.picocontainer.monitors.NullComponentMonitor;
 import org.junit.Test;
 
-import com.picocontainer.ComponentAdapter;
-import com.picocontainer.DefaultPicoContainer;
-import com.picocontainer.Disposable;
-import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.Startable;
-import com.picocontainer.containers.EmptyPicoContainer;
-import com.picocontainer.lifecycle.StartableLifecycleStrategy;
-import com.picocontainer.monitors.NullComponentMonitor;
+import static com.picocontainer.Characteristics.CACHE;
+import static org.junit.Assert.assertEquals;
 
 public class LazyLifecycleStrategyTestCase {
 

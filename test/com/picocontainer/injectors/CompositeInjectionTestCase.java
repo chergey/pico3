@@ -96,7 +96,7 @@ public class CompositeInjectionTestCase {
 
     }
 
-    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
                 new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new SetterInjection()));
         dpc.addComponent(Bar.class);
@@ -108,7 +108,7 @@ public class CompositeInjectionTestCase {
         assertNotNull(foo.baz);
     }
 
-    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
                 new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new SetterInjection("inject")));
         dpc.addComponent(Bar.class);
@@ -120,7 +120,7 @@ public class CompositeInjectionTestCase {
         assertNotNull(foo.baz);
     }
 
-    @Test public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
                 new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new AnnotatedMethodInjection()));
         dpc.addComponent(Bar.class);
@@ -133,7 +133,7 @@ public class CompositeInjectionTestCase {
     }
 
 
-    @Test public void testComponentWithCtorAndNamedFieldWorkToegether() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndNamedFieldWorkToegether() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
                 new EmptyPicoContainer(), new NullLifecycleStrategy(), new CompositeInjection(new ConstructorInjection(), new NamedFieldInjection()));
         dpc.addComponent(Bar.class);
@@ -289,11 +289,12 @@ public class CompositeInjectionTestCase {
     	container.addComponent(CompositeOrderDerived.class)
     			.addComponent(String.class, "Testing");
 
-    	CompositeInjector adapter = container.getComponentAdapter(CompositeOrderDerived.class).findAdapterOfType(CompositeInjector.class);
+    	CompositeInjector<CompositeOrderDerived> adapter =
+                (CompositeInjector<CompositeOrderDerived>) container.getComponentAdapter(CompositeOrderDerived.class).findAdapterOfType(CompositeInjector.class);
     	assertNotNull(adapter);
 
     	CompositeOrderDerived instance = new CompositeOrderDerived();
-    	adapter.decorateComponentInstance(container, NOTHING.class, instance);
+    	adapter.decorateComponentInstance(container, NOTHING.class,  instance);
     	checkFields(instance);
     }
 

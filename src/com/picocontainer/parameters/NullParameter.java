@@ -54,7 +54,7 @@ public class NullParameter extends AbstractParameter implements Serializable {
 			final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
 			final NameBinding expectedNameBinding, final boolean useNames,
 			final Annotation binding) {
-		return new ValueResolver(isAssignable(expectedType), null, null);
+		return new ValueResolver<>(isAssignable(expectedType), null, null);
 	}
 
 	/**

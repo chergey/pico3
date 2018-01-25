@@ -26,7 +26,7 @@ import com.picocontainer.parameters.MethodParameters;
 
 public class LifecycleAdapterTestCase {
 
-    private final ConstructorInjection.ConstructorInjector INJECTOR = new ConstructorInjection.ConstructorInjector(
+    private final ConstructorInjection.ConstructorInjector INJECTOR = new ConstructorInjection.ConstructorInjector<>(
             Foo.class, Foo.class, new ConstructorParameters(new Parameter[0])
    );
 

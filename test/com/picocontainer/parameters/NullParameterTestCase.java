@@ -25,18 +25,18 @@ public class NullParameterTestCase {
 	private NullParameter instance;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		instance = NullParameter.INSTANCE;
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		instance = null;
 	}
 
 	@Test
 	public void testAccept() {
-		final List<Parameter> parametersVisited = new ArrayList<Parameter>();
+		final List<Parameter> parametersVisited = new ArrayList<>();
 		TraversalCheckingVisitor visitor = new TraversalCheckingVisitor() {
 			@Override
 			public void visitParameter(final Parameter parameter) {

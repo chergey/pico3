@@ -47,7 +47,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
-    XStream xs;
+    private XStream xs;
 
     @Override
 	@Before
@@ -145,7 +145,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
         assertTrue("Got " + foo, foo.contains("<Annotated-Field-Injection>"));
 
-        assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedFieldInjector[javax.inject.@Inject,com.picocontainer.annotations.@Inject]"));
+        assertTrue("Got " + ca.toString(), ca.toString().contains("AnnotatedFieldInjector[javax.inject.@Inject,com.picocontainer.annotations.@Inject"));
         assertTrue("Got " + ca.toString(), ca.toString().contains("com.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter"));
     }
 

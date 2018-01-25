@@ -26,18 +26,20 @@ import com.picocontainer.injectors.ConstructorInjection;
 
 public class HiddenImplementationTestCase {
 
-    @Test public void testMultipleInterfacesCanBeHidden() {
-        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
-        ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
+    @Test
+    public void testMultipleInterfacesCanBeHidden() {
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector<>(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
+        ImplementationHiding.HiddenImplementation<?> ihca = new ImplementationHiding.HiddenImplementation<>(ca);
         Object comp = ihca.getComponentInstance(null, null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
         assertTrue(comp instanceof MouseListener);
     }
 
-    @Test public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector(new Class[]{String.class}, Footle.class);
-        ImplementationHiding.HiddenImplementation ihca = new ImplementationHiding.HiddenImplementation(ca);
+    @Test
+    public void testNonInterfaceInArrayCantBeHidden() {
+        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector<>(new Class[]{String.class}, Footle.class);
+        ImplementationHiding.HiddenImplementation<?> ihca = new ImplementationHiding.HiddenImplementation<>(ca);
         try {
             ihca.getComponentInstance(null, null);
             fail("PicoCompositionException expected");
@@ -45,7 +47,6 @@ public class HiddenImplementationTestCase {
             // expected
         }
     }
-
 
 
     public class Footle implements ActionListener, MouseListener {

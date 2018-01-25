@@ -38,15 +38,17 @@ import com.picocontainer.PicoContainer;
 @SuppressWarnings("serial")
 public class BehaviorAdapterTestCase {
 
-	private final Mockery mockery = mockeryWithCountingNamingScheme();
+    private final Mockery mockery = mockeryWithCountingNamingScheme();
 
-    @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
+    @Test
+    public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapterThatDoesSupportStrategy());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         assertNotNull(adapter.currentMonitor());
     }
 
-    @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
+    @Test
+    public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapter());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         try {
@@ -57,7 +59,8 @@ public class BehaviorAdapterTestCase {
         }
     }
 
-    @Test public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
+    @Test
+    public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapterThatCanManageLifecycle());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -69,7 +72,8 @@ public class BehaviorAdapterTestCase {
         adapter.dispose(touchable);
     }
 
-    @Test public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
+    @Test
+    public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
         AbstractBehavior.AbstractChangedBehavior adapter = new FooAbstractChangedBehavior(mockComponentAdapter());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -86,32 +90,32 @@ public class BehaviorAdapterTestCase {
     }
 
     private ComponentAdapter mockComponentAdapterThatDoesSupportStrategy() {
-    	final ComponentAdapterThatSupportsStrategy ca = mockery.mock(ComponentAdapterThatSupportsStrategy.class);
-    	mockery.checking(new Expectations() {{
-    		one(ca).changeMonitor(with(any(ComponentMonitor.class)));
-    		one(ca).currentMonitor();
-    		will(returnValue(mockMonitorWithNoExpectedMethods()));
-    	}});
+        final ComponentAdapterThatSupportsStrategy ca = mockery.mock(ComponentAdapterThatSupportsStrategy.class);
+        mockery.checking(new Expectations() {{
+            one(ca).changeMonitor(with(any(ComponentMonitor.class)));
+            one(ca).currentMonitor();
+            will(returnValue(mockMonitorWithNoExpectedMethods()));
+        }});
         return ca;
     }
 
     private ComponentAdapter mockComponentAdapter() {
-    	 return mockery.mock(ComponentAdapter.class);
+        return mockery.mock(ComponentAdapter.class);
     }
 
     public interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
     }
 
     private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {
-    	final ComponentAdapterThatCanManageLifecycle ca = mockery.mock(ComponentAdapterThatCanManageLifecycle.class);
-    	mockery.checking(new Expectations() {{
-    		one(ca).start(with(any(PicoContainer.class)));
-    		one(ca).stop(with(any(PicoContainer.class)));
-    		one(ca).dispose(with(any(PicoContainer.class)));
-    		one(ca).start(with(any(Touchable.class)));
-    		one(ca).stop(with(any(Touchable.class)));
-    		one(ca).dispose(with(any(Touchable.class)));
-    	}});
+        final ComponentAdapterThatCanManageLifecycle ca = mockery.mock(ComponentAdapterThatCanManageLifecycle.class);
+        mockery.checking(new Expectations() {{
+            one(ca).start(with(any(PicoContainer.class)));
+            one(ca).stop(with(any(PicoContainer.class)));
+            one(ca).dispose(with(any(PicoContainer.class)));
+            one(ca).start(with(any(Touchable.class)));
+            one(ca).stop(with(any(Touchable.class)));
+            one(ca).dispose(with(any(Touchable.class)));
+        }});
         return ca;
     }
 

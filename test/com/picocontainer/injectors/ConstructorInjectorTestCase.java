@@ -91,7 +91,8 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjection.ConstructorInjector<>(
                 NamedDependsOnTouchable.class, NamedDependsOnTouchable.class,
-                new ConstructorParameters(new Parameter[] {ComponentParameter.DEFAULT, new ConstantParameter("Name")}));
+                new ConstructorParameters(new Parameter[] {ComponentParameter.DEFAULT,
+                        new ConstantParameter<>("Name")}));
     }
 
     @Override

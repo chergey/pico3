@@ -446,12 +446,12 @@ public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
     public void testConstructorAndFieldParametersGetTheAppropriateParameters() {
         MutablePicoContainer mpc = new JSR330PicoContainer(new PicoBuilder().withCaching().withJavaEE5Lifecycle().build());
         mpc.addComponent(ParameterTest.class, ParameterTest.class,
-                new ConstructorParameters(new ConstantParameter(3)),
+                new ConstructorParameters(new ConstantParameter<>(3)),
                 new FieldParameters[]{
-                        new FieldParameters("fieldArg", new ConstantParameter("Arg 1"))
+                        new FieldParameters("fieldArg", new ConstantParameter<>("Arg 1"))
                 },
                 new MethodParameters[]{
-                        new MethodParameters("applyMethodArg", new ConstantParameter("Arg 2"))
+                        new MethodParameters("applyMethodArg", new ConstantParameter<>("Arg 2"))
                 });
 
 
@@ -550,8 +550,8 @@ public class JSR330PicoContainerTestCase extends AbstractPicoContainerTest {
         assertTrue(child != null);
         assertTrue(child instanceof JSR330PicoContainer);
 
-        List<Object> parentList = new ArrayList<Object>();
-        List<Object> childList = new ArrayList<Object>();
+        List<Object> parentList = new ArrayList<>();
+        List<Object> childList = new ArrayList<>();
 
         AdapterFactoryExaminingVisitor visitor = new AdapterFactoryExaminingVisitor(parentList);
         visitor.traverse(pico);

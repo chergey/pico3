@@ -33,7 +33,7 @@ public class SpecificFieldInjectorTestCase {
 	}
 
 	@Test
-	public void testStaticInjection() throws NoSuchFieldException {
+	public void testStaticInjection() {
 		MutablePicoContainer pico = new DefaultPicoContainer().addComponent(String.class,"Testing");
 
 		SpecificFieldInjector<TestInjection> adapter = new SpecificFieldInjector<TestInjection>(TestInjection.class, TestInjection.class, somethingField);
@@ -44,7 +44,7 @@ public class SpecificFieldInjectorTestCase {
 
 
 	@Test
-	public void testNonStaticInjection() throws NoSuchFieldException {
+	public void testNonStaticInjection() {
 		TestInjection.something = null;
 		MutablePicoContainer pico = new DefaultPicoContainer().addComponent(String.class,"Testing");
 

@@ -38,7 +38,7 @@ import com.picocontainer.parameters.ConstructorParameters;
 public class AbstractInjectorTestCase {
 
     private AbstractInjector ai;
-    Constructor<HashMap> ctor;
+    private Constructor<HashMap> ctor;
 
     @Before
     public void setUp() throws NoSuchMethodException {

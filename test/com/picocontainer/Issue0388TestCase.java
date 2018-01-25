@@ -13,8 +13,6 @@ public class Issue0388TestCase {
 
 	@Test
 	 public void testComponentCanUseConstructorAndAtInjectWithoutAnInitMethod() {
-
-
 	        final MutablePicoContainer pico = new DefaultPicoContainer();
 	        pico.addComponent(Carrot.class)
 	        	.addComponent(Cheese.class)

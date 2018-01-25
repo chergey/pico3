@@ -42,7 +42,7 @@ public class NamedFieldInjectorTestCase {
 
     @Test public void testFieldInjectionByType() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Helicopter>(Helicopter.class, Helicopter.class, new NullComponentMonitor(), " aa bb cc pogo dd ", true))
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<>(Helicopter.class, Helicopter.class, new NullComponentMonitor(), " aa bb cc pogo dd ", true))
          	.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -66,7 +66,8 @@ public class NamedFieldInjectorTestCase {
     @Test public void testFieldInjectionByTypeWhereNoMatch() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.setName("parent");
-        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<Monoplane>(Monoplane.class, Monoplane.class,
+
+        pico.addAdapter(new NamedFieldInjection.NamedFieldInjector<>(Monoplane.class, Monoplane.class,
                 new NullComponentMonitor(), " aa wing1 cc wing2 dd ", true));
         try {
             pico.getComponent(Monoplane.class);

@@ -167,13 +167,13 @@ public interface Parameter {
     /**
      * A fixed value wrapped as a Resolver
      */
-    class ValueResolver implements Resolver {
+    class ValueResolver<T> implements Resolver {
 
         private final boolean resolvable;
-        private final Object value;
+        private final T value;
         private final ComponentAdapter<?> adapter;
 
-        public ValueResolver(final boolean resolvable, final Object value, final ComponentAdapter<?> adapter) {
+        public ValueResolver(final boolean resolvable, final T value, final ComponentAdapter<?> adapter) {
             this.resolvable = resolvable;
             this.value = value;
             this.adapter = adapter;

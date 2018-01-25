@@ -19,6 +19,7 @@ public class CircularTestCase {
     public interface IFish {
         IWater getWater();
     }
+
     public static class Fish implements IFish {
         IWater water;
 
@@ -35,6 +36,7 @@ public class CircularTestCase {
         IFish getFish();
 
     }
+
     public static class Water implements IWater {
         IFish fish;
 
@@ -69,7 +71,7 @@ public class CircularTestCase {
         assertNotNull(fish.getWater());
 
         ComponentAdapter<?> ca = pico.getComponentAdapter(IFish.class);
-        assertEquals("Hidden:SetterInjector-" + IFish.class,ca.toString());
+        assertEquals("Hidden:SetterInjector-" + IFish.class, ca.toString());
 
     }
 

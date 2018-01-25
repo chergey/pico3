@@ -123,13 +123,10 @@ public class ThreadCachingTestCase {
         StringBuilder sb = parent.getComponent(StringBuilder.class);
         foos[0] = child.getComponent(Foo.class);
 
-        Thread thread = new Thread() {
-            @Override
-			public void run() {
-                foos[1] = child.getComponent(Foo.class);
-                foos[3] = child.getComponent(Foo.class);
-            }
-        };
+        Thread thread = new Thread(() -> {
+            foos[1] = child.getComponent(Foo.class);
+            foos[3] = child.getComponent(Foo.class);
+        });
         thread.start();
         foos[2] = child.getComponent(Foo.class);
         try {
@@ -163,13 +160,10 @@ public class ThreadCachingTestCase {
         StringBuilder sb = parent.getComponent(StringBuilder.class);
         quxs[0] = child.getComponent(Qux.class);
 
-        Thread thread = new Thread() {
-            @Override
-			public void run() {
-                quxs[1] = child.getComponent(Qux.class);
-                quxs[3] = child.getComponent(Qux.class);
-            }
-        };
+        Thread thread = new Thread(() -> {
+            quxs[1] = child.getComponent(Qux.class);
+            quxs[3] = child.getComponent(Qux.class);
+        });
 
         thread.start();
 
@@ -211,13 +205,10 @@ public class ThreadCachingTestCase {
         StringBuilder sb = parent.getComponent(StringBuilder.class);
         foos[0] = child.getComponent(Foo.class);
 
-        Thread thread = new Thread() {
-            @Override
-			public void run() {
-                foos[1] = child.getComponent(Foo.class);
-                foos[3] = child.getComponent(Foo.class);
-            }
-        };
+        Thread thread = new Thread(() -> {
+            foos[1] = child.getComponent(Foo.class);
+            foos[3] = child.getComponent(Foo.class);
+        });
         thread.start();
         foos[2] = child.getComponent(Foo.class);
         try {
@@ -254,15 +245,12 @@ public class ThreadCachingTestCase {
         foos[0] = sessionScope.getComponent(Foo.class);
         bars[0] = requestScope.getComponent(Bar.class);
 
-        Thread thread = new Thread() {
-            @Override
-			public void run() {
-                foos[1] = sessionScope.getComponent(Foo.class);
-                bars[1] = requestScope.getComponent(Bar.class);
-                foos[3] = sessionScope.getComponent(Foo.class);
-                bars[3] = requestScope.getComponent(Bar.class);
-            }
-        };
+        Thread thread = new Thread(() -> {
+            foos[1] = sessionScope.getComponent(Foo.class);
+            bars[1] = requestScope.getComponent(Bar.class);
+            foos[3] = sessionScope.getComponent(Foo.class);
+            bars[3] = requestScope.getComponent(Bar.class);
+        });
         thread.start();
         foos[2] = sessionScope.getComponent(Foo.class);
         bars[2] = requestScope.getComponent(Bar.class);

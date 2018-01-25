@@ -24,7 +24,7 @@ import com.picocontainer.visitors.AbstractPicoVisitor;
 public class InjectorTestCase {
 
     final Object key = new Object();
-    final Parameter checked = new ConstantParameter(null);
+    final Parameter checked = new ConstantParameter<>(null);
     final Parameter[] checkedArray = new Parameter[]{checked};
     final ComponentMonitor monitor = new NullComponentMonitor();
 

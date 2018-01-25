@@ -1,27 +1,24 @@
 package com.picocontainer.monitors;
 
-import static com.picocontainer.Characteristics.USE_NAMES;
-import static com.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.googlecode.jtype.Generic;
 import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.MutablePicoContainer;
 import com.picocontainer.composers.RegexComposer;
-import com.picocontainer.monitors.ComposingMonitor;
+import junit.framework.TestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.picocontainer.Characteristics.USE_NAMES;
+import static com.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 @RunWith(JMock.class)
 public class RegexComposerTestCase extends TestCase {
@@ -57,7 +54,7 @@ public class RegexComposerTestCase extends TestCase {
     @Test
     public void nonMatchingCanFallThroughToAnotherComponentMonitor() throws NoSuchMethodException {
 
-        final List<String> apples = new ArrayList<String>();
+        final List<String> apples = new ArrayList<>();
         apples.add("Cox's");
 
         final ComponentMonitor fallThru = mockery.mock(ComponentMonitor.class);

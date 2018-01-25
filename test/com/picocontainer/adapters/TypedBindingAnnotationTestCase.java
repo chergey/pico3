@@ -22,10 +22,13 @@ import com.picocontainer.injectors.ConstructorInjection;
 import com.picocontainer.injectors.MethodInjection;
 import com.picocontainer.injectors.SetterInjection;
 
-/** @author Paul Hammant */
-public class TypedBindingAnnotationTestCase  {
+/**
+ * @author Paul Hammant
+ */
+public class TypedBindingAnnotationTestCase {
 
-	@Test public void testFieldInjectionWithBindings() {
+    @Test
+    public void testFieldInjectionWithBindings() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
 
         addFiveComponents(mpc);
@@ -44,7 +47,8 @@ public class TypedBindingAnnotationTestCase  {
         assertNotNull(mpc.getComponent(Apple.class, Bramley.class));
     }
 
-    @Test public void testBindingAnnotationsWithConstructorInjection() {
+    @Test
+    public void testBindingAnnotationsWithConstructorInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new ConstructorInjection());
 
         addFiveComponents(mpc, FruitBasketViaConstructor.class);
@@ -61,7 +65,8 @@ public class TypedBindingAnnotationTestCase  {
         assertEquals(fb.braeburn.getX(), 4);
     }
 
-    @Test public void testBindingAnnotationsWithMethodInjection() {
+    @Test
+    public void testBindingAnnotationsWithMethodInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new MethodInjection("foo"));
         addFiveComponents(mpc);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);
@@ -70,7 +75,8 @@ public class TypedBindingAnnotationTestCase  {
 
     }
 
-    @Test public void testBindingAnnotationsWithSetterInjection() {
+    @Test
+    public void testBindingAnnotationsWithSetterInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new SetterInjection());
         addFiveComponents(mpc);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);
@@ -94,6 +100,7 @@ public class TypedBindingAnnotationTestCase  {
     public interface Apple {
         int getX();
     }
+
     public static class AppleImpl1 implements Apple {
         public AppleImpl1() {
         }
@@ -102,16 +109,19 @@ public class TypedBindingAnnotationTestCase  {
             return 1;
         }
     }
+
     public static class AppleImpl2 implements Apple {
         public int getX() {
             return 2;
         }
     }
+
     public static class AppleImpl3 implements Apple {
         public int getX() {
             return 3;
         }
     }
+
     public static class AppleImpl4 implements Apple {
         public int getX() {
             return 4;
@@ -121,22 +131,26 @@ public class TypedBindingAnnotationTestCase  {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public @interface Bramley {}
+    public @interface Bramley {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public @interface Cox {}
+    public @interface Cox {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public @interface Granny {}
+    public @interface Granny {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public @interface Braeburn {}
+    public @interface Braeburn {
+    }
 
     public static class FruitBasketViaConstructor extends FruitBasket {
         // used in testBindingAnnotationsWithConstructorInjection()
@@ -145,15 +159,20 @@ public class TypedBindingAnnotationTestCase  {
         }
 
     }
+
     public static class FruitBasket {
         @Inject
-        private @Bramley Apple bramley;
+        private @Bramley
+        Apple bramley;
         @Inject
-        private @Cox Apple cox;
+        private @Cox
+        Apple cox;
         @Inject
-        private @Granny Apple granny;
+        private @Granny
+        Apple granny;
         @Inject
-        private @Braeburn Apple braeburn;
+        private @Braeburn
+        Apple braeburn;
 
         public FruitBasket() {
         }

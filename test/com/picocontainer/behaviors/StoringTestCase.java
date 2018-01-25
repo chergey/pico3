@@ -34,13 +34,15 @@ public class StoringTestCase {
 
     public static class Bar {
         private final Foo foo;
+
         public Bar(final StringBuilder sb, final Foo foo) {
             this.foo = foo;
             sb.append("<Bar");
         }
     }
 
-    @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
+    @Test
+    public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         Storing storeCaching = new Storing();
@@ -54,12 +56,13 @@ public class StoringTestCase {
         Foo foo2 = child.getComponent(Foo.class);
         assertNotNull(foo);
         assertNotNull(foo2);
-        assertEquals(foo,foo2);
+        assertEquals(foo, foo2);
         assertEquals("<Foo", sb.toString());
         assertEquals("Stored:CompositeInjector(ConstructorInjector)-class com.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatTwoThreadsHaveSeparatedCacheValues() {
+    @Test
+    public void testThatTwoThreadsHaveSeparatedCacheValues() {
 
         final Foo[] foos = new Foo[4];
         final int[] sizes = new int[2];
@@ -77,12 +80,13 @@ public class StoringTestCase {
 
         Thread thread = new Thread("other") {
             @Override
-			public void run() {
+            public void run() {
                 sizes[0] = storing.getCacheSize();
                 foos[1] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);
                 sizes[1] = storing.getCacheSize();
             }
+
         };
         thread.start();
         foos[2] = child.getComponent(Foo.class);
@@ -94,8 +98,8 @@ public class StoringTestCase {
         assertNotNull(foos[1]);
         assertNotNull(foos[2]);
         assertNotNull(foos[3]);
-        assertSame(foos[0],foos[2]);
-        assertEquals(foos[1],foos[3]);
+        assertSame(foos[0], foos[2]);
+        assertEquals(foos[1], foos[3]);
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
         assertEquals("Stored:CompositeInjector(ConstructorInjector)-class com.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
@@ -104,7 +108,8 @@ public class StoringTestCase {
         assertEquals("store was not sized 1 at end for other thread", 1, sizes[1]);
     }
 
-    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
+    @Test
+    public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
 
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];
@@ -123,7 +128,7 @@ public class StoringTestCase {
 
         Thread thread = new Thread() {
             @Override
-			public void run() {
+            public void run() {
                 foos[1] = sessionScope.getComponent(Foo.class);
                 bars[1] = requestScope.getComponent(Bar.class);
                 foos[3] = sessionScope.getComponent(Foo.class);
@@ -135,18 +140,19 @@ public class StoringTestCase {
         bars[2] = requestScope.getComponent(Bar.class);
         sleepALittle();
 
-        assertSame(bars[0],bars[2]);
-        assertEquals(bars[1],bars[3]);
+        assertSame(bars[0], bars[2]);
+        assertEquals(bars[1], bars[3]);
         assertFalse(bars[0] == bars[1]);
-        assertSame(bars[0].foo,foos[0]);
-        assertSame(bars[1].foo,foos[1]);
-        assertSame(bars[2].foo,foos[2]);
-        assertSame(bars[3].foo,foos[3]);
+        assertSame(bars[0].foo, foos[0]);
+        assertSame(bars[1].foo, foos[1]);
+        assertSame(bars[2].foo, foos[2]);
+        assertSame(bars[3].foo, foos[3]);
         assertEquals("<Foo<Bar<Foo<Bar", sb.toString());
         assertEquals("Stored:CompositeInjector(ConstructorInjector)-class com.picocontainer.behaviors.StoringTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
+    @Test
+    public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
 
         final Foo[] foos = new Foo[4];
 
@@ -160,27 +166,21 @@ public class StoringTestCase {
         StringBuilder sb = parent.getComponent(StringBuilder.class);
 
         final Storing.StoreWrapper[] tmpMap = new Storing.StoreWrapper[1];
-        Thread thread = new Thread() {
-            @Override
-			public void run() {
-                foos[0] = child.getComponent(Foo.class);
-                foos[1] = child.getComponent(Foo.class);
-                tmpMap[0] = storeCaching.getCacheForThread();
+        Thread thread = new Thread(() -> {
+            foos[0] = child.getComponent(Foo.class);
+            foos[1] = child.getComponent(Foo.class);
+            tmpMap[0] = storeCaching.getCacheForThread();
 
-            }
-        };
+        });
         thread.start();
         sleepALittle();
-        thread = new Thread() {
-            @Override
-			public void run() {
-                storeCaching.putCacheForThread(tmpMap[0]);
-                foos[2] = child.getComponent(Foo.class);
-                foos[3] = child.getComponent(Foo.class);
-                tmpMap[0] = storeCaching.getCacheForThread();
+        thread = new Thread(() -> {
+            storeCaching.putCacheForThread(tmpMap[0]);
+            foos[2] = child.getComponent(Foo.class);
+            foos[3] = child.getComponent(Foo.class);
+            tmpMap[0] = storeCaching.getCacheForThread();
 
-            }
-        };
+        });
         thread.start();
         sleepALittle();
 
@@ -188,14 +188,15 @@ public class StoringTestCase {
         assertNotNull(foos[1]);
         assertNotNull(foos[2]);
         assertNotNull(foos[3]);
-        assertSame(foos[0],foos[1]);
-        assertSame(foos[1],foos[2]);
-        assertSame(foos[2],foos[3]);
+        assertSame(foos[0], foos[1]);
+        assertSame(foos[1], foos[2]);
+        assertSame(foos[2], foos[3]);
         assertEquals("<Foo", sb.toString());
         assertEquals("Stored:CompositeInjector(ConstructorInjector)-class com.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
+    @Test
+    public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
 
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
@@ -212,7 +213,7 @@ public class StoringTestCase {
 
         assertNotNull(one);
         assertNotNull(two);
-        assertSame(one,two);
+        assertSame(one, two);
 
         assertTrue(storeCaching.resetCacheForThread() instanceof Storing.StoreWrapper);
 
@@ -221,14 +222,15 @@ public class StoringTestCase {
 
         assertNotNull(three);
         assertNotNull(four);
-        assertNotSame(one,three);
-        assertSame(three,four);
+        assertNotSame(one, three);
+        assertSame(three, four);
 
         assertEquals("<Foo<Foo", sb.toString());
         assertEquals("Stored:CompositeInjector(ConstructorInjector)-class com.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {
+    @Test
+    public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
@@ -244,7 +246,7 @@ public class StoringTestCase {
 
         assertNotNull(one);
         assertNotNull(two);
-        assertSame(one,two);
+        assertSame(one, two);
 
         storeCaching.invalidateCacheForThread();
 
@@ -263,11 +265,11 @@ public class StoringTestCase {
         } catch (InterruptedException e) {
         }
     }
-    
+
     @Test
     public void testDisposingWithoutInstantiatingDoesntThrowNPE() {
-    	Storing storing = new Storing();
-    	storing.dispose();
+        Storing storing = new Storing();
+        storing.dispose();
     }
 
 

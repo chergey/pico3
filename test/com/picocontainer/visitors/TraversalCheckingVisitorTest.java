@@ -58,7 +58,8 @@ public class TraversalCheckingVisitorTest {
        );
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
-        ConstructorInjection.ConstructorInjector adapter = new ConstructorInjection.ConstructorInjector(ArrayList.class, ArrayList.class, new ConstructorParameters(new ConstantParameter(3)));
+        ConstructorInjection.ConstructorInjector adapter = new ConstructorInjection.ConstructorInjector<>(ArrayList.class, ArrayList.class,
+                new ConstructorParameters(new ConstantParameter<>(3)));
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (NameBinding) null);
     }
 
@@ -72,9 +73,9 @@ public class TraversalCheckingVisitorTest {
 
     @Test public void testVisitComponentAdapter() {
         final int numExpectedComponentAdapters = 2;
-        final List<ComponentAdapter> allAdapters = new ArrayList<ComponentAdapter>();
+        final List<ComponentAdapter> allAdapters = new ArrayList<>();
 
-        Set<ComponentAdapter> knownAdapters = new HashSet<ComponentAdapter>();
+        Set<ComponentAdapter> knownAdapters = new HashSet<>();
         knownAdapters.add(parentAdapter);
         knownAdapters.add(childAdapter);
 
@@ -98,7 +99,7 @@ public class TraversalCheckingVisitorTest {
     }
 
     @Test public void testVisitComponentFactory() {
-        final List<ComponentFactory> allFactories = new ArrayList<ComponentFactory>();
+        final List<ComponentFactory> allFactories = new ArrayList<>();
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())));
 
@@ -119,7 +120,7 @@ public class TraversalCheckingVisitorTest {
     }
 
     @Test public void testVisitContainer() {
-        final List<PicoContainer> allContainers = new ArrayList<PicoContainer>();
+        final List<PicoContainer> allContainers = new ArrayList<>();
         final int expectedNumberOfContainers = 2;
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
@@ -135,7 +136,7 @@ public class TraversalCheckingVisitorTest {
 
         assertTrue(allContainers.size() == expectedNumberOfContainers);
 
-        Set<MutablePicoContainer> knownContainers = new HashSet<MutablePicoContainer>();
+        Set<MutablePicoContainer> knownContainers = new HashSet<>();
         knownContainers.add(pico);
         knownContainers.add(child);
         for (PicoContainer oneContainer : allContainers) {
@@ -150,7 +151,7 @@ public class TraversalCheckingVisitorTest {
 
 
     @Test public void testVisitParameter() {
-        final List allParameters = new ArrayList();
+        final List<Parameter> allParameters = new ArrayList<>();
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
             @Override
@@ -164,11 +165,11 @@ public class TraversalCheckingVisitorTest {
 
         assertTrue(allParameters.size() == 1);
         assertTrue(allParameters.get(0) instanceof ConstantParameter);
-        ConstantParameter constantParameter = (ConstantParameter) allParameters.get(0);
+        ConstantParameter<?> constantParameter = (ConstantParameter<?>) allParameters.get(0);
         Parameter.Resolver resolver = constantParameter.resolve(null, null, null, null, null, false, null);
         Object o = resolver.resolveInstance(ComponentAdapter.NOTHING.class);
         assertTrue(o instanceof Integer);
-        assertEquals(3, ((Integer) ((ConstantParameter) allParameters.get(0)).resolve(null, null,
+        assertEquals(3, ((Integer) allParameters.get(0).resolve(null, null,
                 null, null, null, false, null).resolveInstance(ComponentAdapter.NOTHING.class)).intValue());
     }
 

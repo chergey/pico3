@@ -63,7 +63,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public abstract class AbstractComponentAdapterTest  {
+public abstract class AbstractComponentAdapterTest {
 
     public static final int SERIALIZABLE = 1;
     public static final int VERIFYING = 2;
@@ -89,11 +89,12 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test for a component without dependencies. Registration in the pico is
-     *         not necessary.
+     * not necessary.
      */
     protected abstract ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer);
 
-    final @Test public void testDEF_verifyWithoutDependencyWorks() {
+    final @Test
+    public void testDEF_verifyWithoutDependencyWorks() {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyWithoutDependencyWorks(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -105,11 +106,12 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test for a component that may throw on instantiation. Registration in
-     *         the pico is not necessary.
+     * the pico is not necessary.
      */
     protected abstract ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer);
 
-    final @Test public void testDEF_verifyDoesNotInstantiate() {
+    final @Test
+    public void testDEF_verifyDoesNotInstantiate() {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -124,22 +126,23 @@ public abstract class AbstractComponentAdapterTest  {
      * Prepare the test <em>visitable</em>.
      *
      * @return a ComponentAdapter of the type to test. If the ComponentAdapter supports {@link Parameter}, you have to
-     *         select a component, that have some.
+     * select a component, that have some.
      */
     protected abstract ComponentAdapter prepDEF_visitable();
 
-    final @Test public void testDEF_visitable() {
+    final @Test
+    public void testDEF_visitable() {
         final ComponentAdapter componentAdapter = prepDEF_visitable();
         final Class type = getComponentAdapterType();
         assertSame(type, componentAdapter.getClass());
         boolean hasParameters = supportsParameters(type);
         final RecordingVisitor visitor = new RecordingVisitor();
         visitor.traverse(componentAdapter);
-        final List visitedElements = new ArrayList(visitor.getVisitedElements());
+        final List<?> visitedElements = new ArrayList<>(visitor.getVisitedElements());
         assertSame(componentAdapter, visitedElements.get(0));
         if (hasParameters) {
             hasParameters = false;
-            for (final Iterator iter = visitedElements.iterator(); iter.hasNext() && !hasParameters;) {
+            for (final Iterator<?> iter = visitedElements.iterator(); iter.hasNext() && !hasParameters; ) {
                 hasParameters = Parameter.class.isAssignableFrom(iter.next().getClass());
             }
             assertTrue("ComponentAdapter " + type + " supports parameters, provide some", hasParameters);
@@ -152,7 +155,7 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test. Select a component, that has some parameters. Registration in the
-     *         pico is not necessary.
+     * pico is not necessary.
      */
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(final MutablePicoContainer picoContainer) {
         final Class type = getComponentAdapterType();
@@ -163,7 +166,8 @@ public abstract class AbstractComponentAdapterTest  {
         return null;
     }
 
-    final @Test public void testDEF_isAbleToTakeParameters() {
+    final @Test
+    public void testDEF_isAbleToTakeParameters() {
         final Class type = getComponentAdapterType();
         boolean hasParameters = supportsParameters(type);
         if (hasParameters) {
@@ -172,14 +176,12 @@ public abstract class AbstractComponentAdapterTest  {
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final RecordingVisitor visitor = new RecordingVisitor();
             visitor.traverse(componentAdapter);
-            final List visitedElements = visitor.getVisitedElements();
-            if (hasParameters) {
-                hasParameters = false;
-                for (final Iterator iter = visitedElements.iterator(); iter.hasNext() && !hasParameters;) {
-                    hasParameters = Parameter.class.isAssignableFrom(iter.next().getClass());
-                }
-                assertTrue("ComponentAdapter " + type + " supports parameters, provide some", hasParameters);
+            final List<?> visitedElements = visitor.getVisitedElements();
+            hasParameters = false;
+            for (final Iterator iter = visitedElements.iterator(); iter.hasNext() && !hasParameters; ) {
+                hasParameters = Parameter.class.isAssignableFrom(iter.next().getClass());
             }
+            assertTrue("ComponentAdapter " + type + " supports parameters, provide some", hasParameters);
             final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
         }
@@ -200,7 +202,8 @@ public abstract class AbstractComponentAdapterTest  {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testSER_isSerializable() throws IOException, ClassNotFoundException {
+    final @Test
+    public void testSER_isSerializable() throws IOException, ClassNotFoundException {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isSerializable(picoContainer);
@@ -213,7 +216,7 @@ public abstract class AbstractComponentAdapterTest  {
             outputStream.close();
             final ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream
                     .toByteArray()));
-            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)inputStream.readObject();
+            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter) inputStream.readObject();
             inputStream.close();
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
             final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
@@ -233,7 +236,8 @@ public abstract class AbstractComponentAdapterTest  {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testSER_isXStreamSerializableWithPureReflection() {
+    final @Test
+    public void testSER_isXStreamSerializableWithPureReflection() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -242,7 +246,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertNotNull(instance);
             final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
             final String xml = xstream.toXML(componentAdapter);
-            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
+            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter) xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
             final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instanceAfterSerialization);
@@ -250,7 +254,8 @@ public abstract class AbstractComponentAdapterTest  {
         }
     }
 
-    final @Test public void testSER_isXStreamSerializable() {
+    final @Test
+    public void testSER_isXStreamSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -259,7 +264,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertNotNull(instance);
             final XStream xstream = new XStream(new XppDriver());
             final String xml = xstream.toXML(componentAdapter);
-            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
+            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter) xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
             final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instanceAfterSerialization);
@@ -277,13 +282,14 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test, that fails for the verification, e.g. because of a compoennt with
-     *         missing dependencies. Registration in the pico is not necessary.
+     * missing dependencies. Registration in the pico is not necessary.
      */
     protected ComponentAdapter prepVER_verificationFails(final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testVER_verificationFails() {
+    final @Test
+    public void testVER_verificationFails() {
         if ((getComponentAdapterNature() & VERIFYING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer();
             final ComponentAdapter componentAdapter = prepVER_verificationFails(picoContainer);
@@ -321,7 +327,8 @@ public abstract class AbstractComponentAdapterTest  {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testINS_createsNewInstances() {
+    final @Test
+    public void testINS_createsNewInstances() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_createsNewInstances(picoContainer);
@@ -338,13 +345,14 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with an {@link Error} at
-     *         instantiation. Registration in the pico is not necessary.
+     * instantiation. Registration in the pico is not necessary.
      */
     protected ComponentAdapter prepINS_errorIsRethrown(final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testINS_errorIsRethrown() {
+    final @Test
+    public void testINS_errorIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_errorIsRethrown(picoContainer);
@@ -364,13 +372,14 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with a {@link RuntimeException} at
-     *         instantiation. Registration in the pico is not necessary.
+     * instantiation. Registration in the pico is not necessary.
      */
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testINS_runtimeExceptionIsRethrown() {
+    final @Test
+    public void testINS_runtimeExceptionIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_runtimeExceptionIsRethrown(picoContainer);
@@ -390,15 +399,16 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with a
-     *         {@link PicoCompositionException} at instantiation. Registration in the pico is not
-     *         necessary.
+     * {@link PicoCompositionException} at instantiation. Registration in the pico is not
+     * necessary.
      */
     protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
+    final @Test
+    public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInitializationException(picoContainer);
@@ -423,13 +433,14 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has dependencies. Registration in the pico
-     *         is not necessary.
+     * is not necessary.
      */
     protected ComponentAdapter prepRES_dependenciesAreResolved(final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testRES_dependenciesAreResolved() {
+    final @Test
+    public void testRES_dependenciesAreResolved() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final List dependencies = new LinkedList();
             final Object[] wrapperDependencies = new Object[]{dependencies};
@@ -454,14 +465,15 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
-     *         register the component itself in the pico.
+     * register the component itself in the pico.
      */
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(
             final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testRES_failingVerificationWithCyclicDependencyException() {
+    final @Test
+    public void testRES_failingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
@@ -488,14 +500,15 @@ public abstract class AbstractComponentAdapterTest  {
      *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
-     *         register the component itself in the pico.
+     * register the component itself in the pico.
      */
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(
             final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test public void testRES_failingInstantiationWithCyclicDependencyException() {
+    final @Test
+    public void testRES_failingInstantiationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
@@ -521,7 +534,7 @@ public abstract class AbstractComponentAdapterTest  {
     // ============================================
 
     static class RecordingVisitor extends AbstractPicoVisitor {
-        private final List visitedElements = new LinkedList();
+        private final List<Object> visitedElements = new LinkedList<>();
 
         public boolean visitContainer(final PicoContainer pico) {
             visitedElements.add(pico);
@@ -551,10 +564,11 @@ public abstract class AbstractComponentAdapterTest  {
         }
 
         @Override
-		public Object getComponentInstance(final PicoContainer container, final Type into) {
+        public Object getComponentInstance(final PicoContainer container, final Type into) {
             Assert.fail("Not instantiatable");
             return null;
         }
+
         public String getDescriptor() {
             return null;
         }
@@ -562,15 +576,15 @@ public abstract class AbstractComponentAdapterTest  {
     }
 
     static public class CollectingChangedBehavior extends AbstractBehavior.AbstractChangedBehavior {
-        final List list;
+        final List<Object> list;
 
-        public CollectingChangedBehavior(final ComponentAdapter delegate, final List list) {
+        public CollectingChangedBehavior(final ComponentAdapter<?> delegate, final List<Object> list) {
             super(delegate);
             this.list = list;
         }
 
         @Override
-		public Object getComponentInstance(final PicoContainer container, final Type into) {
+        public Object getComponentInstance(final PicoContainer container, final Type into) {
             final Object result = super.getComponentInstance(container, into);
             list.add(result);
             return result;
@@ -582,18 +596,18 @@ public abstract class AbstractComponentAdapterTest  {
     }
 
     static public class CycleDetectorChangedBehavior extends AbstractBehavior.AbstractChangedBehavior {
-        private final Set set;
-        private final ObjectReference reference;
+        private final Set<Object> set;
+        private final ObjectReference<Object> reference;
 
         public CycleDetectorChangedBehavior(
-                final ComponentAdapter delegate, final Set set, final ObjectReference reference) {
+                final ComponentAdapter<?> delegate, final Set<Object> set, final ObjectReference<Object> reference) {
             super(delegate);
             this.set = set;
             this.reference = reference;
         }
 
         @Override
-		public Object getComponentInstance(final PicoContainer container, final Type into) {
+        public Object getComponentInstance(final PicoContainer container, final Type into) {
             if (set.contains(this)) {
                 reference.set(this);
             } else {
@@ -648,16 +662,16 @@ public abstract class AbstractComponentAdapterTest  {
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();
         for (Object allComponentAdapter : allComponentAdapters) {
             final Parameter[] parameters = new Parameter[size];
-            parameters[0] = new ConstantParameter(allComponentAdapter);
+            parameters[0] = new ConstantParameter<>(allComponentAdapter);
             for (int i = 1; i < parameters.length; i++) {
-                parameters[i] = new ConstantParameter(wrapperDependencies[i - 1]);
+                parameters[i] = new ConstantParameter<>(wrapperDependencies[i - 1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
-                new ConstructorInjection());
+                    new ConstructorInjection());
             instantiatingPicoContainer.addComponent(
-                "decorator", decoratingComponentAdapterClass, parameters);
-            mutablePicoContainer.addAdapter((ComponentAdapter)instantiatingPicoContainer
-                .getComponent("decorator"));
+                    "decorator", decoratingComponentAdapterClass, parameters);
+            mutablePicoContainer.addAdapter((ComponentAdapter) instantiatingPicoContainer
+                    .getComponent("decorator"));
         }
         return mutablePicoContainer;
     }
@@ -670,8 +684,8 @@ public abstract class AbstractComponentAdapterTest  {
             final Class[] parameterTypes = constructor.getParameterTypes();
             for (final Class parameterType : parameterTypes) {
                 if (Parameter.class.isAssignableFrom(parameterType)
-                    || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
-                    .getComponentType()))) {
+                        || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
+                        .getComponentType()))) {
                     hasParameters = true;
                     break;
                 }

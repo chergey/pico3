@@ -32,13 +32,13 @@ public class ParanamerPicoContainerTestCase {
 
 
     public void methodToFind(final String name) {
-		assert name != null;
-	}
+        assert name != null;
+    }
 
 
     @Test
     public void
-           testNameBindingShouldNotThrowWhenAreParameterNamesAreNotAvailable()
+    testNameBindingShouldNotThrowWhenAreParameterNamesAreNotAvailable()
             throws Exception {
         Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 

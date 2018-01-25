@@ -83,7 +83,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
     @Test public void testCustomLifecycleCanBeInjected() {
         NullLifecycle component = new NullLifecycle();
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        InstanceAdapter adapter = new InstanceAdapter(NullLifecycle.class, component, strategy, new NullComponentMonitor());
+        InstanceAdapter adapter = new InstanceAdapter<>(NullLifecycle.class, component, strategy, new NullComponentMonitor());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -97,7 +97,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
 
     @Test public void testComponentAdapterCanIgnoreLifecycle() {
         final Touchable touchable = new SimpleTouchable();
-        InstanceAdapter adapter = new InstanceAdapter(Touchable.class, touchable, new NullLifecycleStrategy(),
+        InstanceAdapter adapter = new InstanceAdapter<>(Touchable.class, touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -110,7 +110,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
 
     @Test public void testGuardAgainstNullInstance() {
         try {
-            new InstanceAdapter(Map.class, null, new NullLifecycleStrategy(),
+            new InstanceAdapter<>(Map.class, null, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
             fail("should have barfed");
         } catch (NullPointerException e) {
@@ -120,7 +120,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
 
     @Test
     public void testFindAdapterOfType() {
-    	ComponentAdapter adapter = new InstanceAdapter("test", "test");
+    	ComponentAdapter adapter = new InstanceAdapter<>("test", "test");
     	assertEquals(adapter, adapter.findAdapterOfType(InstanceAdapter.class));
     }
 

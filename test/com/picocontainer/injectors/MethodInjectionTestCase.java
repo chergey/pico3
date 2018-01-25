@@ -126,7 +126,7 @@ public class MethodInjectionTestCase {
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjection.MethodInjector<Foo>(Foo.class, Foo.class, new NullComponentMonitor(), "inject", false, true, null));
+        pico.addAdapter(new MethodInjection.MethodInjector<>(Foo.class, Foo.class, new NullComponentMonitor(), "inject", false, true, null));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
@@ -212,8 +212,8 @@ public class MethodInjectionTestCase {
             fail("should have barfed");
         } catch (MultiArgMemberInjector.ParameterCannotBeNullException e) {
             assertEquals("num", e.getParameterName());
-            assertTrue(e.getMessage().indexOf("Parameter 1") != -1);
-            assertTrue(e.getMessage().indexOf(Foo.class.getMethods()[0].toString()) != -1);
+            assertTrue(e.getMessage().contains("Parameter 1"));
+            assertTrue(e.getMessage().contains(Foo.class.getMethods()[0].toString()));
         }
     }
 
@@ -236,9 +236,9 @@ public class MethodInjectionTestCase {
         MethodInjection.MethodInjector injector =  (MethodInjection.MethodInjector)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),
         		new Properties(), ClassAsConstructor.class, ClassAsConstructor.class,
-        		new ConstructorParameters(new ConstantParameter("Test")),
-        		new FieldParameters[] {new FieldParameters("joe", new ConstantParameter("Test"))},
-        		new MethodParameters[]{new MethodParameters("", new ConstantParameter("Value")) } );
+        		new ConstructorParameters(new ConstantParameter<>("Test")),
+        		new FieldParameters[] {new FieldParameters("joe", new ConstantParameter<>("Test"))},
+        		new MethodParameters[]{new MethodParameters("", new ConstantParameter<>("Value")) } );
 
         assertTrue(injector.parameters.length == 1);
         assertEquals(1, injector.parameters.length);

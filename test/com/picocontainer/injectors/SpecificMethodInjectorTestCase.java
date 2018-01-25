@@ -14,15 +14,11 @@ import com.picocontainer.exceptions.PicoCompositionException;
 public class SpecificMethodInjectorTestCase {
 
 	public static class TestModel {
-
 		public static int staticInjectCount;
-
 		public int injectCount;
-
 		public static void injectSomething() {
 			staticInjectCount++;
 		}
-
 		public void injectSomethingElse() {
 			injectCount++;
 		}
