@@ -53,11 +53,7 @@ public class Key<T> implements Serializable {
         if (!annotation.equals(key.annotation)) {
             return false;
         }
-        if (!type.equals(key.type)) {
-            return false;
-        }
-
-        return true;
+        return type.equals(key.type);
     }
 
     @Override

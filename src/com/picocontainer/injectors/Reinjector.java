@@ -106,8 +106,7 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(final Class<?> key, final InjectionType reinjectionType) {
-        Object o = reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
-        return o;
+        return reinject(key, key, parent.getComponentInto(Generic.get(key), ComponentAdapter.NOTHING.class), NO_PROPERTIES, reinjectionType);
     }
 
     /**

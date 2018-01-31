@@ -113,11 +113,11 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         return delegate.noComponentFound(container, key);
     }
 
-    public Injector newInjector(final Injector injector) {
+    public <T> Injector<T> newInjector(final Injector<T> injector) {
         return injector;
     }
 
-    public ChangedBehavior changedBehavior(final ChangedBehavior changedBehavior) {
+    public <T> ChangedBehavior changedBehavior(final ChangedBehavior<T> changedBehavior) {
         return changedBehavior;
     }
 

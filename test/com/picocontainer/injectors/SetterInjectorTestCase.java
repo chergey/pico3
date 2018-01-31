@@ -327,9 +327,9 @@ public class SetterInjectorTestCase
 
     @Test
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        SetterInjection.SetterInjector<A> aAdapter = new SetterInjection.SetterInjector<A>("a", A.class, new NullComponentMonitor(), "set", false, "", false, null
+        SetterInjection.SetterInjector<A> aAdapter = new SetterInjection.SetterInjector<>("a", A.class, new NullComponentMonitor(), "set", false, "", false, null
         );
-        SetterInjection.SetterInjector<B> bAdapter = new SetterInjection.SetterInjector<B>("b", B.class, new NullComponentMonitor(), "set", false, "", false, null
+        SetterInjection.SetterInjector<B> bAdapter = new SetterInjection.SetterInjector<>("b", B.class, new NullComponentMonitor(), "set", false, "", false, null
         );
 
         MutablePicoContainer pico = new DefaultPicoContainer();

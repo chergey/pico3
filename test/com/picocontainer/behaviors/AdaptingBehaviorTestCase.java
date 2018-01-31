@@ -47,9 +47,9 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.CACHE, cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class, null, null, null);
         assertTrue(ca instanceof Caching.Cached);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
-        Map<?,?> map2 = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map2 = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
         assertEquals("Cached:CompositeInjector(ConstructorInjector)-interface java.util.Map", ca.toString());
@@ -61,9 +61,9 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class, null, null, null);
         assertTrue(ca instanceof Caching.Cached);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
-        Map<?,?>map2 = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map2 = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
         assertEquals("Cached:CompositeInjector(ConstructorInjector)-interface java.util.Map", ca.toString());
@@ -93,7 +93,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.HIDE_IMPL, cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class, null, null, null);
         assertTrue(ca instanceof ImplementationHiding.HiddenImplementation);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
@@ -111,7 +111,7 @@ public class AdaptingBehaviorTestCase {
         assertTrue(ca instanceof PropertyApplying.PropertyApplicator);
         PropertyApplying.PropertyApplicator pa = (PropertyApplying.PropertyApplicator) ca;
         pa.setProperty("foo", "bar");
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(map instanceof HashMap);
         assertTrue(map instanceof MyHashMap2);
@@ -128,7 +128,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SDI, cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class, null, null, null);
         assertTrue(ca instanceof CompositeInjection.CompositeInjector);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertEquals(0, cc.size());
         assertEquals("CompositeInjector(ConstructorInjector+SetterInjector)-interface java.util.Map", ca.toString());
@@ -143,7 +143,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE, cc);
         ComponentAdapter ca = adaptingBehavior.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class, null, null, null);
         assertTrue(ca instanceof Caching.Cached);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), null);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), null);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
@@ -173,7 +173,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE, cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class, null, null, null);
         assertTrue(ca instanceof Caching.Cached);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
@@ -197,7 +197,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE, cc);
         ComponentAdapter ca = caching.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
         assertTrue(ca instanceof Caching.Cached);
-        Map<?,?> map = (Map<?,?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
+        Map<?, ?> map = (Map<?, ?>) ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 

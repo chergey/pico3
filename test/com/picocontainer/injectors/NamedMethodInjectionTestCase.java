@@ -13,7 +13,7 @@ import com.picocontainer.containers.EmptyPicoContainer;
 import com.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNull;
+
 import static org.junit.Assert.*;
 
 /**

@@ -19,30 +19,35 @@ import com.picocontainer.LifecycleStrategy;
  *
  */
 @SuppressWarnings("serial")
-public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
+public class NullLifecycleStrategy<T> implements LifecycleStrategy<T>, Serializable {
 
 
     /** {@inheritDoc} **/
-	public void start(final Object component) {
+	public void start(final T component) {
 		//Does nothing
     }
 
     /** {@inheritDoc} **/
-    public void stop(final Object component) {
+    public void stop(final T component) {
 		//Does nothing
     }
 
     /** {@inheritDoc} **/
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
 		//Does nothing
     }
 
     /** {@inheritDoc} **/
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         return false;
     }
 
-    public boolean isLazy(final ComponentAdapter<?> adapter) {
+    public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+        return false;
+    }
+
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
         return false;
     }
 }

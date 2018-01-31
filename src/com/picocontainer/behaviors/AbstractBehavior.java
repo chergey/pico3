@@ -165,7 +165,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
      * @author Mauro Talevi
      */
     public abstract static class AbstractChangedBehavior<T> implements ChangedBehavior<T>, ComponentMonitorStrategy,
-            LifecycleStrategy, Serializable {
+            LifecycleStrategy<T>, Serializable {
 
         protected final ComponentAdapter<T> delegate;
 
@@ -268,17 +268,11 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * {@inheritDoc}
          */
         public boolean componentHasLifecycle() {
-            if (delegate instanceof ChangedBehavior) {
-                return ((ChangedBehavior<?>) delegate).componentHasLifecycle();
-            }
-            return false;
+            return delegate instanceof ChangedBehavior && ((ChangedBehavior<?>) delegate).componentHasLifecycle();
         }
 
         public boolean isStarted() {
-            if (delegate instanceof ChangedBehavior) {
-                return ((ChangedBehavior<?>) delegate).isStarted();
-            }
-            return false;
+            return delegate instanceof ChangedBehavior && ((ChangedBehavior<?>) delegate).isStarted();
         }
 
         // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
@@ -287,7 +281,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * Invokes delegate start method if the delegate is a LifecycleStrategy
          * {@inheritDoc}
          */
-        public void start(final Object component) {
+        public void start(final T component) {
             if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy) delegate).start(component);
             }
@@ -297,7 +291,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * Invokes delegate stop method if the delegate is a LifecycleStrategy
          * {@inheritDoc}
          */
-        public void stop(final Object component) {
+        public void stop(final T component) {
             if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy) delegate).stop(component);
             }
@@ -307,7 +301,7 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * Invokes delegate dispose method if the delegate is a LifecycleStrategy
          * {@inheritDoc}
          */
-        public void dispose(final Object component) {
+        public void dispose(final T component) {
             if (delegate instanceof LifecycleStrategy) {
                 ((LifecycleStrategy) delegate).dispose(component);
             }
@@ -317,17 +311,22 @@ public class AbstractBehavior implements ComponentFactory, Serializable, Behavio
          * Invokes delegate hasLifecycle(Class) method if the delegate is a LifecycleStrategy
          * {@inheritDoc}
          */
-        public boolean hasLifecycle(final Class<?> type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
         }
 
-        public boolean isLazy(final ComponentAdapter<?> adapter) {
-            return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).isLazy(adapter);
+        public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+            return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).calledAfterContextStart(adapter);
         }
 
         @Override
         public String toString() {
             return getDescriptor() + ":" + delegate.toString();
+        }
+
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+            return false;
         }
     }
 

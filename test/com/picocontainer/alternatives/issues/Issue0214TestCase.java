@@ -20,7 +20,8 @@ import com.picocontainer.visitors.VerifyingVisitor;
 public class Issue0214TestCase {
 
     // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.
-    @Test public void testTheBug() {
+    @Test
+    public void testTheBug() {
         final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent(A.class);
 

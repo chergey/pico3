@@ -184,13 +184,9 @@ public class InjectableMethodSelector {
 
 
     private boolean isStillViableGivenOverrides(final Method method, final Map<String, List<Method>> allMethodsAnalyzed) {
+        return !Modifier.isPublic(method.getModifiers()) && !isPackagePrivate(method)
+                || !isChildClassMethodOverridingCurrentMethod(method, allMethodsAnalyzed);
 
-        if (Modifier.isPublic(method.getModifiers()) || isPackagePrivate(method)) {
-            return !isChildClassMethodOverridingCurrentMethod(method, allMethodsAnalyzed);
-
-        }
-
-        return true;
     }
 
     protected boolean isPackagePrivate(final Method m) {

@@ -8,6 +8,7 @@ package com.picocontainer.lifecycle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.Disposable;
 import com.picocontainer.exceptions.PicoLifecycleException;
@@ -26,7 +27,7 @@ import com.picocontainer.Startable;
  * @see Disposable
  */
 @SuppressWarnings("serial")
-public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public class StartableLifecycleStrategy<T> extends AbstractMonitoringLifecycleStrategy<T> {
 
 
     private transient Method start, stop, dispose;
@@ -83,7 +84,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
      * {@inheritDoc}
      **/
     @SuppressWarnings("unchecked")
-    public void start(final Object component) {
+    public void start(final T component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -97,11 +98,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    protected void startComponent(final Object component) {
+    protected void startComponent(final T component) {
         doLifecycleMethod(component, start);
     }
 
-    private void doLifecycleMethod(final Object component, final Method lifecycleMethod) {
+    private void doLifecycleMethod(final T component, final Method lifecycleMethod) {
         try {
             lifecycleMethod.invoke(component);
         } catch (IllegalAccessException e) {
@@ -114,11 +115,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    protected void stopComponent(final Object component) {
+    protected void stopComponent(final T component) {
         doLifecycleMethod(component, stop);
     }
 
-    protected void disposeComponent(final Object component) {
+    protected void disposeComponent(final T component) {
         doLifecycleMethod(component, dispose);
     }
 
@@ -126,7 +127,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
      * {@inheritDoc}
      **/
     @SuppressWarnings("unchecked")
-    public void stop(final Object component) {
+    public void stop(final T component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -144,7 +145,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
      * {@inheritDoc}
      **/
     @SuppressWarnings("unchecked")
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
         doMethodsIfNotDone();
         if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -162,15 +163,20 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
      * {@inheritDoc}
      **/
     @SuppressWarnings("unchecked")
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 
-    protected Class getDisposableInterface() {
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+        return false;
+    }
+
+    protected Class<?> getDisposableInterface() {
         return Disposable.class;
     }
 
-    protected Class getStartableInterface() {
+    protected Class<?> getStartableInterface() {
         return Startable.class;
     }
 }

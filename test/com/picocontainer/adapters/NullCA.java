@@ -22,11 +22,11 @@ public class NullCA implements ComponentAdapter {
         return NOTHING.class;
     }
 
-    public Object getComponentInstance(final PicoContainer container, final Type into)  {
+    public Object getComponentInstance(final PicoContainer container, final Type into) {
         return null;
     }
 
-    public void verify(final PicoContainer container)  {
+    public void verify(final PicoContainer container) {
     }
 
     public void accept(final PicoVisitor visitor) {

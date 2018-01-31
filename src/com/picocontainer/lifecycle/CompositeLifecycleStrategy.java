@@ -17,34 +17,34 @@ import com.picocontainer.LifecycleStrategy;
  *
  * @author Paul Hammant
  */
-public class CompositeLifecycleStrategy implements LifecycleStrategy {
+public class CompositeLifecycleStrategy<T> implements LifecycleStrategy<T> {
 
-    private final LifecycleStrategy[] alternateStrategies;
+    private final LifecycleStrategy<T>[] alternateStrategies;
 
     public CompositeLifecycleStrategy(final LifecycleStrategy... alternateStrategies) {
         this.alternateStrategies = alternateStrategies;
     }
 
-    public void start(final Object component) {
-        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    public void start(final T component) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
             lifecycle.start(component);
         }
     }
 
-    public void stop(final Object component) {
-        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    public void stop(final T component) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
             lifecycle.stop(component);
         }
     }
 
-    public void dispose(final Object component) {
-        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    public void dispose(final T component) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
             lifecycle.dispose(component);
         }
     }
 
-    public boolean hasLifecycle(final Class<?> type) {
-        for (LifecycleStrategy lifecycle : alternateStrategies) {
+    public boolean hasLifecycle(final Class<T> type) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
             if (lifecycle.hasLifecycle(type)) {
                 return true;
             }
@@ -52,9 +52,19 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
         return false;
     }
 
-    public boolean isLazy(final ComponentAdapter<?> adapter) {
-        for (LifecycleStrategy lifecycle : alternateStrategies) {
-            if (lifecycle.isLazy(adapter)) {
+    public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
+            if (lifecycle.calledAfterContextStart(adapter)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+        for (LifecycleStrategy<T> lifecycle : alternateStrategies) {
+            if (lifecycle.calledAfterConstruction(adapter)) {
                 return true;
             }
         }

@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
 import com.picocontainer.exceptions.PicoLifecycleException;
 import com.picocontainer.injectors.AnnotationInjectionUtils;
@@ -24,7 +25,7 @@ import com.picocontainer.injectors.AnnotationInjectionUtils;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public final class JavaEE5LifecycleStrategy<T> extends AbstractMonitoringLifecycleStrategy<T> {
 
     /**
      * Construct a JavaEE5LifecycleStrategy.
@@ -39,28 +40,28 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
     /**
      * {@inheritDoc}
      **/
-    public void start(final Object component) {
+    public void start(final T component) {
         doLifecycleMethod(component, PostConstruct.class, true);
     }
 
     /**
      * {@inheritDoc}
      **/
-    public void stop(final Object component) {
+    public void stop(final T component) {
     }
 
     /**
      * {@inheritDoc}
      **/
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
         doLifecycleMethod(component, PreDestroy.class, false);
     }
 
-    private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final boolean superFirst) {
+    private void doLifecycleMethod(final T component, final Class<? extends Annotation> annotation, final boolean superFirst) {
         doLifecycleMethod(component, annotation, component.getClass(), superFirst, new HashSet<>());
     }
 
-    private void doLifecycleMethod(final Object component, final Class<? extends Annotation> annotation, final Class<? extends Object> clazz, final boolean superFirst, final Set<String> doneAlready) {
+    private void doLifecycleMethod(final T component, final Class<? extends Annotation> annotation, final Class<? extends Object> clazz, final boolean superFirst, final Set<String> doneAlready) {
         Class<?> parent = clazz.getSuperclass();
         if (superFirst && parent != Object.class) {
             doLifecycleMethod(component, annotation, parent, superFirst, doneAlready);
@@ -101,7 +102,7 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
     /**
      * {@inheritDoc} The component has a lifecycle PreDestroy or PostConstruct are on a method
      */
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         Method[] methods = type.getDeclaredMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(PreDestroy.class) || method.isAnnotationPresent(PostConstruct.class)) {
@@ -111,4 +112,13 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         return false;
     }
 
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+        return true;
+    }
+
+    @Override
+    public boolean calledAfterContextStart(ComponentAdapter<T> adapter) {
+        return true;
+    }
 }

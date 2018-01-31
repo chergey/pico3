@@ -240,7 +240,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param adapter a <code>ComponentAdapter</code> value
      * @return <code>true</code> if the adapter takes part
      */
-    protected boolean evaluate(final ComponentAdapter adapter) {
+    protected boolean evaluate(final ComponentAdapter<?> adapter) {
         return adapter != null; // use parameter, prevent compiler warning
     }
 
@@ -266,8 +266,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         for (final ComponentAdapter componentAdapter : allAdapters) {
             adapterMap.remove(componentAdapter.getComponentKey());
         }
-        final List<ComponentAdapter> adapterList = List.class.cast(container.getComponentAdapters(valueType));
-        for (final ComponentAdapter componentAdapter : adapterList) {
+        final List<ComponentAdapter<?>> adapterList = List.class.cast(container.getComponentAdapters(valueType));
+        for (final ComponentAdapter<?> componentAdapter : adapterList) {
             final Object key = componentAdapter.getComponentKey();
             if (adapter != null && key.equals(adapter.getComponentKey())) {
                 continue;

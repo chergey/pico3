@@ -31,7 +31,6 @@ import com.picocontainer.ComponentMonitor;
 import com.picocontainer.Disposable;
 import com.picocontainer.PicoContainer;
 import com.picocontainer.Startable;
-import com.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import com.picocontainer.monitors.NullComponentMonitor;
 
 /**

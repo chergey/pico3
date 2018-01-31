@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.picocontainer.ComponentAdapter;
 import com.picocontainer.ComponentMonitor;
 
 /**
@@ -26,7 +27,7 @@ import com.picocontainer.ComponentMonitor;
  * @see com.picocontainer.lifecycle.StartableLifecycleStrategy
  */
 @SuppressWarnings("serial")
-public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public class ReflectionLifecycleStrategy<T> extends AbstractMonitoringLifecycleStrategy<T> {
 
     /**
      * Index in the methodnames array that contains the name of the 'start'
@@ -86,7 +87,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     /**
      * {@inheritDoc}
      **/
-    public void start(final Object component) {
+    public void start(final T component) {
         Method[] methods = init(component.getClass());
         invokeMethod(component, methods[START]);
 
@@ -95,7 +96,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     /**
      * {@inheritDoc}
      **/
-    public void stop(final Object component) {
+    public void stop(final T component) {
         Method[] methods = init(component.getClass());
         invokeMethod(component, methods[STOP]);
     }
@@ -103,12 +104,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     /**
      * {@inheritDoc}
      **/
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
         Method[] methods = init(component.getClass());
         invokeMethod(component, methods[DISPOSE]);
     }
 
-    private void invokeMethod(final Object component, final Method method) {
+    private void invokeMethod(final T component, final Method method) {
         if (component != null && method != null) {
             try {
                 long str = System.currentTimeMillis();
@@ -125,7 +126,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
 
     protected void monitorAndThrowReflectionLifecycleException(final Method method,
                                                                final Throwable e,
-                                                               final Object component) {
+                                                               final T component) {
         RuntimeException re;
         if (e.getCause() instanceof RuntimeException) {
             re = (RuntimeException) e.getCause();
@@ -141,13 +142,18 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     /**
      * {@inheritDoc} The component has a lifecycle if at least one of the three methods is present.
      */
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         Method[] methods = init(type);
         for (Method method : methods) {
             if (method != null) {
                 return true;
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
         return false;
     }
 

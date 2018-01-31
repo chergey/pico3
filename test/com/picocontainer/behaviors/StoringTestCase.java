@@ -17,12 +17,16 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.picocontainer.Utils;
 import org.junit.Test;
 
 import com.picocontainer.DefaultPicoContainer;
 import com.picocontainer.behaviors.Caching;
 import com.picocontainer.behaviors.Storing;
 import com.picocontainer.lifecycle.NullLifecycleStrategy;
+
+import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class StoringTestCase {
 
@@ -126,15 +130,12 @@ public class StoringTestCase {
         foos[0] = sessionScope.getComponent(Foo.class);
         bars[0] = requestScope.getComponent(Bar.class);
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                foos[1] = sessionScope.getComponent(Foo.class);
-                bars[1] = requestScope.getComponent(Bar.class);
-                foos[3] = sessionScope.getComponent(Foo.class);
-                bars[3] = requestScope.getComponent(Bar.class);
-            }
-        };
+        Thread thread = new Thread(() -> {
+            foos[1] = sessionScope.getComponent(Foo.class);
+            bars[1] = requestScope.getComponent(Bar.class);
+            foos[3] = sessionScope.getComponent(Foo.class);
+            bars[3] = requestScope.getComponent(Bar.class);
+        });
         thread.start();
         foos[2] = sessionScope.getComponent(Foo.class);
         bars[2] = requestScope.getComponent(Bar.class);
@@ -250,16 +251,15 @@ public class StoringTestCase {
 
         storeCaching.invalidateCacheForThread();
 
-        try {
-            Foo three = child.getComponent(Foo.class);
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
+
+        Utils.shouldThrow(() -> child.getComponent(Foo.class), "should have barfed",
+                UnsupportedOperationException.class);
+
     }
 
 
     private void sleepALittle() {
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {

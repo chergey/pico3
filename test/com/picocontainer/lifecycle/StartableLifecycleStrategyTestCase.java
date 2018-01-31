@@ -39,11 +39,11 @@ public class StartableLifecycleStrategyTestCase {
 
 	private final Mockery mockery = mockeryWithCountingNamingScheme();
 
-    private StartableLifecycleStrategy startableLifecycle;
+    private StartableLifecycleStrategy<Object> startableLifecycle;
 
     @Before
     public void setUp() {
-        startableLifecycle = new StartableLifecycleStrategy(new NullComponentMonitor());
+        startableLifecycle = new StartableLifecycleStrategy<Object>(new NullComponentMonitor());
     }
 
     @Test public void testStartable() {

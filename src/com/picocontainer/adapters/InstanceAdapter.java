@@ -32,7 +32,7 @@ import com.picocontainer.monitors.NullComponentMonitor;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public final class InstanceAdapter<T> extends AbstractAdapter<T> implements ComponentLifecycle<T>, LifecycleStrategy {
+public final class InstanceAdapter<T> extends AbstractAdapter<T> implements ComponentLifecycle<T>, LifecycleStrategy<T> {
 
     /**
      * The actual instance of the component.
@@ -42,7 +42,7 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     /**
      * Lifecycle Strategy for the component adpater.
      */
-    private final LifecycleStrategy lifecycle;
+    private final LifecycleStrategy<T> lifecycle;
     private boolean started;
 
 
@@ -95,7 +95,7 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
     }
 
     public boolean componentHasLifecycle() {
-        return hasLifecycle(componentInstance.getClass());
+        return hasLifecycle((Class<T>) componentInstance.getClass());
     }
 
     public boolean isStarted() {
@@ -104,25 +104,30 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
 
     // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
-    public void start(final Object component) {
+    public void start(final T component) {
         lifecycle.start(componentInstance);
         started = true;
     }
 
-    public void stop(final Object component) {
+    public void stop(final T component) {
         lifecycle.stop(componentInstance);
         started = false;
     }
 
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
         lifecycle.dispose(componentInstance);
     }
 
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         return lifecycle.hasLifecycle(type);
     }
 
-    public boolean isLazy(final ComponentAdapter<?> adapter) {
-        return lifecycle.isLazy(adapter);
+    public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+        return lifecycle.calledAfterContextStart(adapter);
+    }
+
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+        return false;
     }
 }

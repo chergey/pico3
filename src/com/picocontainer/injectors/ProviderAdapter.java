@@ -26,7 +26,7 @@ import com.picocontainer.lifecycle.NullLifecycleStrategy;
  * will satisfy.
  */
 @SuppressWarnings("rawtypes")
-public class ProviderAdapter implements com.picocontainer.Injector, Provider, LifecycleStrategy {
+public class ProviderAdapter<T> implements com.picocontainer.Injector, Provider, LifecycleStrategy<T> {
 
     private static Method AT_INJECT_GET = javax.inject.Provider.class.getDeclaredMethods()[0];
 
@@ -116,11 +116,11 @@ public class ProviderAdapter implements com.picocontainer.Injector, Provider, Li
         return key;
     }
 
-    public Class getComponentImplementation() {
+    public Class<?> getComponentImplementation() {
         if (provider instanceof javax.inject.Provider) {
             return provider.getClass();
         } else {
-            return (Class) key;
+            return (Class<?>) key;
         }
     }
 
@@ -251,24 +251,29 @@ public class ProviderAdapter implements com.picocontainer.Injector, Provider, Li
     }
 
 
-    public void start(final Object component) {
+    public void start(final T component) {
         lifecycle.start(component);
     }
 
-    public void stop(final Object component) {
+    public void stop(final T component) {
         lifecycle.stop(component);
     }
 
-    public void dispose(final Object component) {
+    public void dispose(final T component) {
         lifecycle.dispose(component);
     }
 
-    public boolean hasLifecycle(final Class<?> type) {
+    public boolean hasLifecycle(final Class<T> type) {
         return lifecycle.hasLifecycle(type);
     }
 
-    public boolean isLazy(final ComponentAdapter<?> adapter) {
-        return lifecycle.isLazy(adapter);
+    public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+        return lifecycle.calledAfterContextStart(adapter);
+    }
+
+    @Override
+    public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+        return false;
     }
 
     /**

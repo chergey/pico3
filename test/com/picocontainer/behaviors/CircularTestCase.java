@@ -1,8 +1,9 @@
 package com.picocontainer.behaviors;
 
-import static junit.framework.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.picocontainer.Characteristics;
@@ -71,7 +72,7 @@ public class CircularTestCase {
         assertNotNull(fish.getWater());
 
         ComponentAdapter<?> ca = pico.getComponentAdapter(IFish.class);
-        assertEquals("Hidden:SetterInjector-" + IFish.class, ca.toString());
+        Assert.assertEquals("Hidden:SetterInjector-" + IFish.class, ca.toString());
 
     }
 

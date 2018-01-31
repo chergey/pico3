@@ -38,7 +38,7 @@ public class HiddenImplementationTestCase {
 
     @Test
     public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjection.ConstructorInjector<>(new Class[]{String.class}, Footle.class);
+        ComponentAdapter<?> ca = new ConstructorInjection.ConstructorInjector<>(new Class[]{String.class}, Footle.class);
         ImplementationHiding.HiddenImplementation<?> ihca = new ImplementationHiding.HiddenImplementation<>(ca);
         try {
             ihca.getComponentInstance(null, null);

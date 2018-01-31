@@ -190,21 +190,27 @@ public class CompositeInjectionTestCase {
 
     }
 
-    private static class NonNullLifecycleStrategy implements LifecycleStrategy {
-        public void start(final Object component) {
+
+    private static class NonNullLifecycleStrategy<T> implements LifecycleStrategy<T> {
+        public void start(final T component) {
         }
 
-        public void stop(final Object component) {
+        public void stop(final T component) {
         }
 
-        public void dispose(final Object component) {
+        public void dispose(final T component) {
         }
 
-        public boolean hasLifecycle(final Class<?> type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return false;
         }
 
-        public boolean isLazy(final ComponentAdapter<?> adapter) {
+        public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+            return false;
+        }
+
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
             return false;
         }
     }

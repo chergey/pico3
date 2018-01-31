@@ -35,7 +35,7 @@ import com.picocontainer.references.ThreadLocalMapObjectReference;
 public class Storing extends AbstractBehavior {
 
     @SuppressWarnings("rawtypes")
-    private StoreThreadLocal<Object> mapThreadLocalObjectReference = new StoreThreadLocal<>();
+    private StoreThreadLocal<?> mapThreadLocalObjectReference = new StoreThreadLocal<>();
 
     @Override
     public void dispose() {
@@ -49,7 +49,7 @@ public class Storing extends AbstractBehavior {
         }
     }
 
-    protected <T> StoreThreadLocal<T> getThreadLocalStore() {
+    private <T> StoreThreadLocal<T> getThreadLocalStore() {
         return (StoreThreadLocal<T>) mapThreadLocalObjectReference;
     }
 
@@ -138,7 +138,7 @@ public class Storing extends AbstractBehavior {
             super(delegate);
             instanceReference = reference;
             this.lifecycleDelegate = hasLifecycle(delegate)
-                    ? new RealComponentLifecycle<T>() : new NoComponentLifecycle<T>();
+                    ? new RealComponentLifecycle() : new NoComponentLifecycle<T>();
         }
 
         private void guardInstRef() {
@@ -181,7 +181,7 @@ public class Storing extends AbstractBehavior {
         public void flush() {
             Instance<T> inst = instanceReference.get();
             if (inst != null) {
-                Object instance = inst.instance;
+                T instance = inst.instance;
                 if (instance != null && instanceReference.get().started) {
                     stop(instance);
                     dispose(instance);
@@ -232,7 +232,7 @@ public class Storing extends AbstractBehavior {
             return lifecycleDelegate.isStarted();
         }
 
-        private class RealComponentLifecycle<T> implements ComponentLifecycle<T>, Serializable {
+        private class RealComponentLifecycle implements ComponentLifecycle, Serializable {
 
             public void start(final PicoContainer container) {
                 guardInstRef();
@@ -255,10 +255,10 @@ public class Storing extends AbstractBehavior {
 
             public void dispose(final PicoContainer container) {
                 guardInstRef();
-                Instance<?> instance = instanceReference.get();
+                Instance<T> instance = instanceReference.get();
                 if (instance.instance != null) {
                     guardAlreadyDisposed();
-                    Stored.this.dispose(instance.instance);
+                    Stored.this.dispose( instance.instance);
                     instance.disposed = true;
                 }
             }
@@ -311,9 +311,9 @@ public class Storing extends AbstractBehavior {
             }
         }
 
-        private static boolean hasLifecycle(final ComponentAdapter delegate) {
+        private static <T> boolean hasLifecycle(final ComponentAdapter<T> delegate) {
             return delegate instanceof LifecycleStrategy
-                    && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
+                    && ((LifecycleStrategy<T>) delegate).hasLifecycle((Class<T>) delegate.getComponentImplementation());
         }
 
         public static class Instance<T> implements Serializable {
