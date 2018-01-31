@@ -15,11 +15,16 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(),
                 new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
-            @Override
-            public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
-                return true;
-            }
-        });
+                    @Override
+                    public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean calledAfterConstruction(ComponentAdapter<Object> adapter) {
+                        return true;
+                    }
+                });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
@@ -39,8 +44,9 @@ public class LazyLifecycleStrategyTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
             @Override
             public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
-                return true;
+                return false;
             }
+
         });
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
@@ -58,7 +64,12 @@ public class LazyLifecycleStrategyTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
             @Override
             public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
-                return adapter.getComponentImplementation() == MyStartableComp.class;
+                return adapter.getComponentImplementation() != MyStartableComp.class;
+            }
+
+            @Override
+            public boolean calledAfterConstruction(ComponentAdapter<Object> adapter) {
+                return true;
             }
         });
         pico.addComponent(sb);
