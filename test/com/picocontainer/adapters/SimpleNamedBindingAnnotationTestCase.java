@@ -195,7 +195,7 @@ public class SimpleNamedBindingAnnotationTestCase {
                         continue;
                     }
                     Object value = null;
-                    if (!isStatic(field.getModifiers())) {
+                    if (!Modifier.isStatic(field.getModifiers())) {
                         Named bindAnnotation = field.getAnnotation(Named.class);
                         if (bindAnnotation != null) {
                             value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));

@@ -103,7 +103,7 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
 
     public <T> T getComponent(final Generic<T> componentType) {
         for (PicoContainer container : containers) {
-            Object inst = container.getComponent(componentType);
+            T inst = container.getComponent(componentType);
             if (inst != null) {
                 return (T) inst;
             }
