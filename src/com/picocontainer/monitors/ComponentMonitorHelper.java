@@ -43,7 +43,7 @@ public final class ComponentMonitorHelper  {
     		return "";
     	}
 
-    	StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
         for (int i = 0; i < injected.length; i++) {
             String s = injected[i].getClass().getName();
             sb.append(s);
@@ -58,9 +58,9 @@ public final class ComponentMonitorHelper  {
     	if (constructor == null) {
     		return "null";
     	}
-    	
+
         Class[] params = constructor.getParameterTypes();
-        StringBuffer sb = new StringBuffer(constructor.getName());
+        StringBuilder sb = new StringBuilder(constructor.getName());
         sb.append("(");
         for (int i = 0; i < params.length; i++) {
             String s = params[i].getName();
@@ -77,7 +77,7 @@ public final class ComponentMonitorHelper  {
     	if (member == null) {
     		return "null";
     	}
-    	
+
     	StringBuilder sb = new StringBuilder(member.getName());
 
         if (member instanceof Method) {
@@ -108,7 +108,7 @@ public final class ComponentMonitorHelper  {
     	if (m == null) {
     		return "null";
     	}
-    	
+
         if (m instanceof Field) {
             return getDeclaringTypeString(m) + "." +  toString((Field) m);
         } else {
@@ -120,9 +120,7 @@ public final class ComponentMonitorHelper  {
     	if (field == null) {
     		return "null";
     	}
-        StringBuffer sb = new StringBuffer(field.getName());
-        sb.append("(").append(field.getName()).append(")");
-        return sb.toString();
+        return field.getName() + "(" + field.getName() + ")";
     }
 
 }

@@ -111,8 +111,8 @@ public abstract class AbstractComponentAdapterTest {
      */
     protected abstract ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer);
 
-    final @Test
-    public void testDEF_verifyDoesNotInstantiate() {
+    @Test
+    final public void testDEF_verifyDoesNotInstantiate() {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -131,8 +131,8 @@ public abstract class AbstractComponentAdapterTest {
      */
     protected abstract ComponentAdapter prepDEF_visitable();
 
-    final @Test
-    public void testDEF_visitable() {
+    @Test
+    final public void testDEF_visitable() {
         final ComponentAdapter componentAdapter = prepDEF_visitable();
         final Class type = getComponentAdapterType();
         assertSame(type, componentAdapter.getClass());
@@ -177,7 +177,7 @@ public abstract class AbstractComponentAdapterTest {
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final RecordingVisitor visitor = new RecordingVisitor();
             visitor.traverse(componentAdapter);
-            final List<?> visitedElements = visitor.getVisitedElements();
+            final List<Object> visitedElements = visitor.getVisitedElements();
             hasParameters = false;
             for (final Iterator iter = visitedElements.iterator(); iter.hasNext() && !hasParameters; ) {
                 hasParameters = Parameter.class.isAssignableFrom(iter.next().getClass());
@@ -237,8 +237,8 @@ public abstract class AbstractComponentAdapterTest {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test
-    public void testSER_isXStreamSerializableWithPureReflection() {
+    @Test
+    final public void testSER_isXStreamSerializableWithPureReflection() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -255,8 +255,8 @@ public abstract class AbstractComponentAdapterTest {
         }
     }
 
-    final @Test
-    public void testSER_isXStreamSerializable() {
+    @Test
+    final public void testSER_isXStreamSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -298,14 +298,14 @@ public abstract class AbstractComponentAdapterTest {
             try {
                 componentAdapter.verify(picoContainer);
                 fail("PicoCompositionException expected");
-            } catch (PicoCompositionException e) {
+            } catch (PicoCompositionException ignored) {
             } catch (Exception e) {
                 fail("PicoCompositionException expected, but got " + e.getClass().getName());
             }
             try {
                 componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
                 fail("PicoCompositionException or PicoCompositionException expected");
-            } catch (PicoCompositionException e) {
+            } catch (PicoCompositionException ignored) {
             } catch (Exception e) {
                 fail("PicoCompositionException or PicoCompositionException expected, but got "
                         + e.getClass().getName());
@@ -472,11 +472,10 @@ public abstract class AbstractComponentAdapterTest {
             final MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
-
-    final @Test
-    public void testRES_failingVerificationWithCyclicDependencyException() {
+    @Test
+    final public void testRES_failingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
-            final Set cycleInstances = new HashSet();
+            final Set<Object> cycleInstances = new HashSet<>();
             final ObjectReference cycleCheck = new SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
@@ -508,8 +507,9 @@ public abstract class AbstractComponentAdapterTest {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final @Test
-    public void testRES_failingInstantiationWithCyclicDependencyException() {
+
+    @Test
+    final public void testRES_failingInstantiationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
@@ -554,7 +554,7 @@ public abstract class AbstractComponentAdapterTest {
             visitedElements.add(parameter);
         }
 
-        List getVisitedElements() {
+        List<Object> getVisitedElements() {
             return visitedElements;
         }
     }
@@ -665,7 +665,7 @@ public abstract class AbstractComponentAdapterTest {
         assertTrue(AbstractBehavior.AbstractChangedBehavior.class.isAssignableFrom(decoratingComponentAdapterClass));
         final MutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
         final int size = (wrapperDependencies != null ? wrapperDependencies.length : 0) + 1;
-        final Collection allComponentAdapters = picoContainer.getComponentAdapters();
+        final Collection<?> allComponentAdapters = picoContainer.getComponentAdapters();
         for (Object allComponentAdapter : allComponentAdapters) {
             final Parameter[] parameters = new Parameter[size];
             parameters[0] = new ConstantParameter<>(allComponentAdapter);

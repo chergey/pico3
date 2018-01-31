@@ -76,7 +76,7 @@ public class Locking extends AbstractBehavior {
 
         @Override
         public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-            T retVal = null;
+            T retVal;
             lock.lock();
             try {
                 retVal = super.getComponentInstance(container, into);
