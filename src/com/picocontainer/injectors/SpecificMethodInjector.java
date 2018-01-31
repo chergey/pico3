@@ -93,7 +93,7 @@ public class SpecificMethodInjector<T> extends MethodInjection.MethodInjector<T>
                     @SuppressWarnings("synthetic-access")
                     public Object run(final Object instance) {
                         List<Method> methods = getInjectorMethods();
-                        Object[] methodParameters = null;
+                        Object[] methodParameters;
                         for (Method method : methods) {
                             methodParameters = getMemberArguments(guardedContainer, method, into);
                             invokeMethod(method, methodParameters, null, container);

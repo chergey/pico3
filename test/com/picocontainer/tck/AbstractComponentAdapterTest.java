@@ -32,9 +32,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.Assert;
+
 import junit.framework.AssertionFailedError;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.picocontainer.ComponentAdapter;
@@ -621,30 +622,35 @@ public abstract class AbstractComponentAdapterTest {
         }
     }
 
-    public static final class RecordingLifecycleStrategy implements LifecycleStrategy {
+    public static final class RecordingLifecycleStrategy<T> implements LifecycleStrategy<T> {
         private final StringBuffer recorder;
 
         public RecordingLifecycleStrategy(final StringBuffer recorder) {
             this.recorder = recorder;
         }
 
-        public void start(final Object component) {
+        public void start(final T component) {
             recorder.append("<start");
         }
 
-        public void stop(final Object component) {
+        public void stop(final T component) {
             recorder.append("<stop");
         }
 
-        public void dispose(final Object component) {
+        public void dispose(final T component) {
             recorder.append("<dispose");
         }
 
-        public boolean hasLifecycle(final Class type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return true;
         }
 
-        public boolean isLazy(final ComponentAdapter<?> adapter) {
+        public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+            return false;
+        }
+
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
             return false;
         }
 

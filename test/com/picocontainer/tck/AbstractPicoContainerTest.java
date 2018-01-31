@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.picocontainer.*;
 import org.junit.Test;
 
 import com.picocontainer.testmodel.DependsOnTouchable;
@@ -41,23 +42,9 @@ import com.picocontainer.testmodel.SimpleTouchable;
 import com.picocontainer.testmodel.Touchable;
 import com.picocontainer.testmodel.Washable;
 import com.picocontainer.testmodel.WashableTouchable;
-import com.picocontainer.ChangedBehavior;
-import com.picocontainer.Characteristics;
-import com.picocontainer.ComponentAdapter;
-import com.picocontainer.ComponentFactory;
-import com.picocontainer.ComponentMonitor;
-import com.picocontainer.Converting;
-import com.picocontainer.DefaultPicoContainer;
-import com.picocontainer.Disposable;
-import com.picocontainer.MutablePicoContainer;
-import com.picocontainer.NameBinding;
-import com.picocontainer.Parameter;
 import com.picocontainer.exceptions.PicoCompositionException;
-import com.picocontainer.PicoContainer;
 import com.picocontainer.exceptions.PicoException;
 import com.picocontainer.exceptions.PicoVerificationException;
-import com.picocontainer.PicoVisitor;
-import com.picocontainer.Startable;
 import com.picocontainer.adapters.InstanceAdapter;
 import com.picocontainer.behaviors.AbstractBehavior;
 import com.picocontainer.behaviors.AdaptingBehavior;
@@ -983,7 +970,7 @@ public abstract class AbstractPicoContainerTest {
 
 
         try {
-            pico.addComponent(ComponentC.class, null);
+            pico.addComponent(ComponentC.class,  (Object) null);
             fail("Pico should not have been able to register null component instance");
         } catch (NullPointerException e) {
             assertNotNull(e.getMessage());

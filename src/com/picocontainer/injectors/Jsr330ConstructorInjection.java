@@ -74,15 +74,9 @@ public class Jsr330ConstructorInjection extends ConstructorInjection {
         }
 
         private boolean isDefaultParameter(final Parameter parameter) {
-            if (parameter == ComponentParameter.DEFAULT || parameter == JSR330ComponentParameter.DEFAULT) {
-                return true;
-            }
+            return parameter == ComponentParameter.DEFAULT || parameter == JSR330ComponentParameter.DEFAULT
+                    || parameter instanceof ComponentParameter && !((ComponentParameter) parameter).isKeyDefined();
 
-            if (parameter instanceof ComponentParameter) {
-                return !((ComponentParameter) parameter).isKeyDefined();
-
-            }
-            return false;
         }
 
         @Override

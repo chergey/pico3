@@ -7,7 +7,7 @@
  *****************************************************************************/
 package com.picocontainer.behaviors;
 
-import static junit.framework.Assert.assertNull;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -17,6 +17,7 @@ import static com.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.picocontainer.testmodel.SimpleTouchable;
@@ -77,7 +78,7 @@ public class CachedTestCase {
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
-        assertNull(adapter.getStoredObject());
+        Assert.assertNull(adapter.getStoredObject());
     }
 
     @Test public void testComponentCannotBeStartedIfAlreadyStarted() {
@@ -207,18 +208,18 @@ public class CachedTestCase {
                 atLeast(1).of(ca).start(with(any(Touchable.class)));
             }
             if (stop) {
-                one(ca).stop(with(any(Touchable.class)));
+                oneOf(ca).stop(with(any(Touchable.class)));
             }
             if (dispose) {
-                one(ca).dispose(with(any(Touchable.class)));
+                oneOf(ca).dispose(with(any(Touchable.class)));
             }
             if (hasLifecycle || instantiate) {
-            	one(ca).getComponentInstance(with(any(PicoContainer.class)), with(same(ComponentAdapter.NOTHING.class)));
+                oneOf(ca).getComponentInstance(with(any(PicoContainer.class)), with(same(ComponentAdapter.NOTHING.class)));
             	will(returnValue(new SimpleTouchable()));
             }
-            one(ca).getComponentImplementation();
+            oneOf(ca).getComponentImplementation();
             will(returnValue(SimpleTouchable.class));
-            one(ca).hasLifecycle(with(same(SimpleTouchable.class)));
+            oneOf(ca).hasLifecycle(with(same(SimpleTouchable.class)));
             will(returnValue(true));
         }});
         return ca;

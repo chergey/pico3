@@ -19,7 +19,7 @@ package com.picocontainer;
  * @see com.picocontainer.Startable
  * @see com.picocontainer.Disposable
  */
-public interface LifecycleStrategy {
+public interface LifecycleStrategy<T> {
 
     /**
      * Invoke the "start" method on the component instance if this is startable.
@@ -27,7 +27,7 @@ public interface LifecycleStrategy {
      *
      * @param component the instance of the component to start
      */
-    void start(Object component);
+    void start(T component);
 
     /**
      * Invoke the "stop" method on the component instance if this is stoppable.
@@ -35,7 +35,7 @@ public interface LifecycleStrategy {
      *
      * @param component the instance of the component to stop
      */
-    void stop(Object component);
+    void stop(T component);
 
     /**
      * Invoke the "dispose" method on the component instance if this is disposable.
@@ -43,7 +43,7 @@ public interface LifecycleStrategy {
      *
      * @param component the instance of the component to dispose
      */
-    void dispose(Object component);
+    void dispose(T component);
 
     /**
      * Test if a component instance has a lifecycle.
@@ -51,15 +51,18 @@ public interface LifecycleStrategy {
      *
      * @return <code>true</code> if the component has a lifecycle
      */
-    boolean hasLifecycle(Class<?> type);
+    boolean hasLifecycle(Class<T> type);
 
     /**
-     * Is a component eager (not lazy) in that it should start when start() or equivalent is called,
-     * or lazy (it will only start on first getComponent() ).
-     * The default is the first of those two.
-     *
-     * @param adapter
-     * @return true if lazy, false if not lazy
+     * @param adapter com adapter
+     * @return true if com called after context starts
      */
-    boolean isLazy(ComponentAdapter<?> adapter);
+    boolean calledAfterContextStart(ComponentAdapter<T> adapter);
+
+    /**
+     *
+     * @param adapter com adapter
+     * @return true if called after com construction
+     */
+    boolean calledAfterConstruction(ComponentAdapter<T> adapter);
 }

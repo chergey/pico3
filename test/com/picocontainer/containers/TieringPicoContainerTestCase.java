@@ -11,6 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.picocontainer.Utils;
 import org.junit.Test;
 import com.picocontainer.testmodel.DependsOnTouchable;
 import com.picocontainer.testmodel.SimpleTouchable;
@@ -41,13 +42,8 @@ public class TieringPicoContainerTestCase {
         grandparent.addComponent(Couch.class);
         child.addComponent(TiredPerson.class);
 
-        TiredPerson tp = null;
-        try {
-            tp = child.getComponent(TiredPerson.class);
-            fail("should have barfed");
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            // expected
-        }
+        Utils.shouldThrow(()-> child.getComponent(TiredPerson.class),
+                AbstractInjector.UnsatisfiableDependenciesException.class );
 
     }
 
@@ -95,12 +91,10 @@ public class TieringPicoContainerTestCase {
         assertNotNull(d);
         assertNotNull(d.tiredPerson);
         assertNotNull(d.tiredPerson.couchToSitOn);
-        try {
-            TiredDoctor td = c.getComponent(TiredDoctor.class);
-            fail("should have barfed");
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            // expected
-        }
+
+        Utils.shouldThrow( ()-> c.getComponent(TiredDoctor.class), "should have barfed",
+                AbstractInjector.UnsatisfiableDependenciesException.class);
+
 
     }
 
@@ -148,13 +142,10 @@ public class TieringPicoContainerTestCase {
         assertNotNull(grandparent.getComponent(TiredPerson.class, Polite.class));
         assertNotNull(grandparent.getComponent(TiredPerson.class, Grouchy.class));
 
-        DiscerningDoctor dd = null;
-        try {
-            dd = child.getComponent(DiscerningDoctor.class);
-            fail("should have barfed");
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            // expected
-        }
+        Utils.shouldThrow(()-> child.getComponent(DiscerningDoctor.class),
+                AbstractInjector.UnsatisfiableDependenciesException.class);
+
+
 
     }
 

@@ -216,7 +216,7 @@ public final class Characteristics {
      */
     public static class ImmutableProperties extends Properties {
 
-        private boolean sealed = false;
+        private boolean sealed;
 
         public ImmutableProperties(final String name, final String value) {
             super.setProperty(name, value);

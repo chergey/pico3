@@ -51,7 +51,7 @@ public class ConfigParameterTestCase {
 
 	@Test public void testThatNotStringEntryIsNotResolved() throws Exception {
 		MutablePicoContainer container = new DefaultPicoContainer();
-		container.addComponent("gloo.blum", new Integer(239));
+		container.addComponent("gloo.blum", 239);
 
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 

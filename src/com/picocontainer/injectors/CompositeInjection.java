@@ -102,7 +102,7 @@ public class CompositeInjection extends AbstractInjectionType {
         	}
 
         	//Needed for: com.picocontainer.injectors.AdaptingInjectionTestCase.testSingleUsecanBeInstantiatedByDefaultComponentAdapter()
-        	if (result.size() == 0) {
+        	if (result.isEmpty()) {
         		result.add(Object.class);
         	}
 

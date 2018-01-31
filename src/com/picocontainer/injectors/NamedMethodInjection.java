@@ -46,7 +46,7 @@ public class NamedMethodInjection extends AbstractInjectionType {
     }
 
     public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor monitor, final LifecycleStrategy lifecycle, final Properties componentProps, final Object key, final Class<T> impl, final ConstructorParameters constructorParams, final FieldParameters[] fieldParams, final MethodParameters[] methodParams) throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(key, impl, monitor, prefix, optional, methodParams)), lifecycle);
+        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector<>(key, impl, monitor, prefix, optional, methodParams)), lifecycle);
     }
 
     @SuppressWarnings("serial")
@@ -73,11 +73,9 @@ public class NamedMethodInjection extends AbstractInjectionType {
 
         @Override
         protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
-            return new NameBinding() {
-                public String getName() {
-                    String name = ((Method) member).getName().substring(prefix.length()); // string off 'set' or chosen prefix
-                    return name.substring(0, 1).toLowerCase() + name.substring(1);  // change "SomeThing" to "someThing"
-                }
+            return () -> {
+                String name = ((Method) member).getName().substring(prefix.length()); // string off 'set' or chosen prefix
+                return name.substring(0, 1).toLowerCase() + name.substring(1);  // change "SomeThing" to "someThing"
             };
         }
 

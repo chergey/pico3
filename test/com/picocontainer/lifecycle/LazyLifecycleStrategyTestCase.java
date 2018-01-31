@@ -13,9 +13,10 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(),
+                new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(final ComponentAdapter<?> adapter) {
+            public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
                 return true;
             }
         });
@@ -35,9 +36,9 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazyWithoutGet() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(final ComponentAdapter<?> adapter) {
+            public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
                 return true;
             }
         });
@@ -54,9 +55,9 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeConditionallyLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy(new NullComponentMonitor()) {
+        MutablePicoContainer pico = new DefaultPicoContainer(new EmptyPicoContainer(), new StartableLifecycleStrategy<Object>(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(final ComponentAdapter<?> adapter) {
+            public boolean calledAfterContextStart(final ComponentAdapter<Object> adapter) {
                 return adapter.getComponentImplementation() == MyStartableComp.class;
             }
         });

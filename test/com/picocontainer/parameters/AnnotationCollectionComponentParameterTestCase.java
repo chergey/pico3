@@ -87,7 +87,7 @@ public class AnnotationCollectionComponentParameterTestCase {
 	public void testPrimitiveArrayCollecting() {
 		MutablePicoContainer pico = buildContainer();
 		SingletonRegistryWithArray test = pico.getComponent(SingletonRegistryWithArray.class);
-		Set<String> names = new HashSet<String>();
+		Set<String> names = new HashSet<>();
 		for (Object eachItem : test.singletons) {
 			names.add(eachItem.getClass().getName());
 		}
@@ -103,7 +103,7 @@ public class AnnotationCollectionComponentParameterTestCase {
 	public void testCollectionCollecting() {
 		MutablePicoContainer pico = buildContainer();
 		SingletonRegistryWithList test = pico.getComponent(SingletonRegistryWithList.class);
-		Set<String> names = new HashSet<String>();
+		Set<String> names = new HashSet<>();
 		for (Object eachItem : test.singletons) {
 			names.add(eachItem.getClass().getName());
 		}
@@ -118,7 +118,7 @@ public class AnnotationCollectionComponentParameterTestCase {
 	public void testMapCollecting() {
 		MutablePicoContainer pico = buildContainer();
 		SingletonRegistryWithMap test = pico.getComponent(SingletonRegistryWithMap.class);
-		Set<String> names = new HashSet<String>();
+		Set<String> names = new HashSet<>();
 		for (Object eachItem : test.singletons.values()) {
 			names.add(eachItem.getClass().getName());
 		}

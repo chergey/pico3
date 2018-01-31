@@ -6,10 +6,15 @@ import static org.junit.Assert.fail;
 
 public class Utils {
 
-    public static <T> void shouldThrow(Runnable action, String message, Class<?>... exceptions) {
+    public static void shouldThrow(Runnable action, Class<?>... exceptions) {
+      shouldThrow(action, "should have barfed!", exceptions);
+    }
+
+
+    public static void shouldThrow(Runnable action, String message, Class<?>... exceptions) {
         try {
             action.run();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if (Arrays.stream(exceptions).anyMatch(f -> f.equals(e.getClass()))) {
                 return;
             } else {
@@ -19,10 +24,10 @@ public class Utils {
         fail(message);
     }
 
-    public static <T> void shouldThrow(Runnable action, String message, String exceptionMessage, Class<?>... exceptions) {
+    public static void shouldThrow(Runnable action, String message, String exceptionMessage, Class<?>... exceptions) {
         try {
             action.run();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if (Arrays.stream(exceptions).anyMatch(f -> f.equals(e.getClass())) && e.getMessage().equals(exceptionMessage)) {
                 return;
             } else {

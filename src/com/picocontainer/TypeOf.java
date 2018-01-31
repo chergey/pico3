@@ -55,19 +55,19 @@ public abstract class TypeOf<T> {
     }
 
     public String getName() {
-        if (type instanceof Class) {
-            return ((Class) type).getName();
+        if (type instanceof Class<?>) {
+            return ((Class<?>) type).getName();
         } else {
             return type.toString();
         }
     }
 
     public boolean isAssignableFrom(final Class<?> aClass) {
-        return type instanceof Class && ((Class) type).isAssignableFrom(aClass);
+        return type instanceof Class<?> && ((Class<?>) type).isAssignableFrom(aClass);
     }
 
-    public boolean isAssignableTo(final Class aClass) {
-        return type instanceof Class && aClass.isAssignableFrom((Class<?>) type);
+    public boolean isAssignableTo(final Class<?> aClass) {
+        return type instanceof Class<?> && aClass.isAssignableFrom((Class<?>) type);
     }
 
     private static class ClassType<T> extends TypeOf<T> {

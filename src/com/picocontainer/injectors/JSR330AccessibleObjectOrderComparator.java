@@ -94,11 +94,8 @@ public class JSR330AccessibleObjectOrderComparator implements Comparator<Accessi
      * @return
      */
     private boolean isComparableOrderType(final Class<?> type) {
-        if (Field.class.isAssignableFrom(type) || Method.class.isAssignableFrom(type)) {
-            return true;
-        }
+        return Field.class.isAssignableFrom(type) || Method.class.isAssignableFrom(type);
 
-        return false;
     }
 
 

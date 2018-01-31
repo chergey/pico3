@@ -62,7 +62,7 @@ public class PicoBuilderTestCase {
     private final AdaptingInjection ai = new AdaptingInjection();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         xs = new XStream();
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }

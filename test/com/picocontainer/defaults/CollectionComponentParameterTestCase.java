@@ -74,30 +74,30 @@ public class CollectionComponentParameterTestCase {
 				atLeast(1).of(forAdapter).getComponentKey();
 				will(returnValue("x"));
 
-				one(pico).getComponentAdapters();
+				oneOf(pico).getComponentAdapters();
 				will(returnValue(new HashSet()));
 
-                one(pico).getComponentAdapters(
+				oneOf(pico).getComponentAdapters(
 						with(equal(Generic.get(String.class))));
 				will(returnValue(Arrays.asList(
                         new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(), new NullComponentMonitor()),
                         new InstanceAdapter("z", "World", new NullLifecycleStrategy(), new NullComponentMonitor()))));
 
-                one(pico).getComponentInto(with(equal("z")), with(equal(ComponentAdapter.NOTHING.class)));
+				oneOf(pico).getComponentInto(with(equal("z")), with(equal(ComponentAdapter.NOTHING.class)));
 				will(returnValue("World"));
 
-                one(pico).getComponentInto(with(equal("y")), with(equal(ComponentAdapter.NOTHING.class)));
+				oneOf(pico).getComponentInto(with(equal("y")), with(equal(ComponentAdapter.NOTHING.class)));
 				will(returnValue("Hello"));
 
-                one(pico).getParent();
+				oneOf(pico).getParent();
 				will(returnValue(null));
 			}
 		});
-		List expected = Arrays.asList("Hello", "World");
+		List<String> expected = Arrays.asList("Hello", "World");
 		Collections.sort(expected);
         Parameter.Resolver resolver = ccp.resolve(pico, forAdapter, null, String[].class, null, false, null);
-        List actual = Arrays.asList((Object[]) resolver.resolveInstance(ComponentAdapter.NOTHING.class));
-		Collections.sort(actual);
+        List<?> actual =  Arrays.asList( resolver.resolveInstance(ComponentAdapter.NOTHING.class));
+		Collections.sort((List<String>) actual);
 		assertEquals(expected, actual);
 	}
 

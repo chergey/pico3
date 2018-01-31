@@ -41,7 +41,7 @@ public class Emjection {
         return inst;
     }
 
-    private static <T> void setPico(final Object inst, final PicoContainer container) {
+    private static <T> void setPico(final T inst, final PicoContainer container) {
         try {
             Field field = inst.getClass().getDeclaredField("emjection");
             field.setAccessible(true);

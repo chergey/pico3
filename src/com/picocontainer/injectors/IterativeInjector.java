@@ -92,7 +92,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
 
-    protected Constructor<?> getConstructor() {
+    protected Constructor<T> getConstructor() {
         Object retVal = AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             try {
                 return getComponentImplementation().getConstructor((Class[]) null);
@@ -100,8 +100,8 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 return new PicoCompositionException(e);
             }
         });
-        if (retVal instanceof Constructor) {
-            return (Constructor<?>) retVal;
+        if (retVal instanceof Constructor<?>) {
+            return (Constructor<T>) retVal;
         } else {
             throw (PicoCompositionException) retVal;
         }
@@ -287,7 +287,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     @Override
     public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        final Constructor<?> constructor = getConstructor();
+        final Constructor<T> constructor = getConstructor();
         boolean iInstantiated = false;
         T result;
         try {
@@ -359,9 +359,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     protected abstract Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance);
 
-    private Object makeInstance(final PicoContainer container, final Constructor constructor, final ComponentMonitor monitor) {
+    private Object makeInstance(final PicoContainer container, final Constructor<T> constructor, final ComponentMonitor monitor) {
         long startTime = System.currentTimeMillis();
-        Constructor constructorToUse = monitor.instantiating(container, this, constructor);
+        Constructor<T> constructorToUse = monitor.instantiating(container, this, constructor);
         Object componentInstance;
         try {
             componentInstance = newInstance(constructorToUse, null);

@@ -13,6 +13,7 @@ package com.picocontainer.classname;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.picocontainer.tck.AbstractPicoContainerTest;
@@ -27,7 +28,7 @@ import com.picocontainer.monitors.ConsoleComponentMonitor;
 import java.util.List;
 import java.util.Properties;
 
-import static junit.framework.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -139,7 +140,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
         });
 
         //TODO: these should be "contains" so the test doesn't fail every time we add a container.
-        assertEquals("ClassLoadingPicoContainer\n" +
+        Assert.assertEquals("ClassLoadingPicoContainer\n" +
                         "DefaultClassLoadingPicoContainer$AsPropertiesPicoContainer\n" +
                         "DefaultClassLoadingPicoContainer\n" +
                         "AbstractDelegatingMutablePicoContainer\n" +
@@ -161,7 +162,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.toString());
 
         //Same here.
-        assertEquals(19, found);
+        Assert.assertEquals(19, found);
     }
 
     @Test()
@@ -174,12 +175,12 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.append(clazz.getName()).append("\n");
             }
         });
-        assertEquals("DefaultPicoContainer$AsPropertiesPicoContainer\n" +
+        Assert.assertEquals("DefaultPicoContainer$AsPropertiesPicoContainer\n" +
                         "DefaultPicoContainer\n" +
                         "MutablePicoContainer\n" +
                         "PicoContainer\n",
                 sb.toString());
-        assertEquals(4, found);
+        Assert.assertEquals(4, found);
     }
 
 
@@ -226,9 +227,9 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 ".*m\\.class",
                 false,
                 clazz -> sb.append(clazz.getName()).append("\n"));
-        assertEquals("com.thoughtworks.xstream.XStream\n",
+        Assert.assertEquals("com.thoughtworks.xstream.XStream\n",
                 sb.toString());
-        assertEquals(1, found);
+        Assert.assertEquals(1, found);
     }
 
     @Test
@@ -241,14 +242,14 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.append(clazz.getName()).append("\n");
             }
         });
-        assertEquals("com.thoughtworks.xstream.io.xml.xppdom.XppDom\n" +
+        Assert.assertEquals("com.thoughtworks.xstream.io.xml.xppdom.XppDom\n" +
                         "com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
                         "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
                         "com.thoughtworks.xstream.core.util.CustomObjectInputStream\n" +
                         "com.thoughtworks.xstream.core.util.CustomObjectOutputStream\n" +
                         "com.thoughtworks.xstream.XStream\n",
                 sb.toString());
-        assertEquals(6, found);
+        Assert.assertEquals(6, found);
     }
 
 

@@ -84,12 +84,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     @Test
     public void testInstantiationWithNullComponentFactory() {
-        try {
-            new DefaultPicoContainer((PicoContainer) null, (ComponentFactory) null);
-            fail("NPE expected");
-        } catch (NullPointerException e) {
-            // expected
-        }
+
+        Utils.shouldThrow(() -> new DefaultPicoContainer((PicoContainer) null, (ComponentFactory) null),
+                "NPE expected", NullPointerException.class);
+
     }
 
     @Test
@@ -537,22 +535,27 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         Utils.shouldThrow(dpc::start, "should have barfed", "foo", RuntimeException.class);
     }
 
-    public static class FailingLifecycleStrategy implements LifecycleStrategy {
-        public void start(final Object component) {
+    public static class FailingLifecycleStrategy<T> implements LifecycleStrategy<T> {
+        public void start(final T component) {
             throw new RuntimeException("foo");
         }
 
-        public void stop(final Object component) {
+        public void stop(final T component) {
         }
 
-        public void dispose(final Object component) {
+        public void dispose(final T component) {
         }
 
-        public boolean hasLifecycle(final Class type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return true;
         }
 
-        public boolean isLazy(final ComponentAdapter<?> adapter) {
+        public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+            return false;
+        }
+
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
             return false;
         }
     }
@@ -930,7 +933,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 "should have barfed",
                 "Check the order of the BehaviorFactories in the varargs list of ComponentFactories. " +
                         "Index 0 (com.picocontainer.injectors.ConstructorInjection) should be a BehaviorFactory but is not.",
-                 PicoCompositionException.class);
+                PicoCompositionException.class);
 
     }
 
@@ -1036,7 +1039,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         mpc.start();
 
         Utils.shouldThrow(mpc::stop,
-                "Error should have been thrown by component", PicoLifecycleException.class );
+                "Error should have been thrown by component", PicoLifecycleException.class);
 
         assertTrue(mpc.getLifecycleState().isStopped());
 

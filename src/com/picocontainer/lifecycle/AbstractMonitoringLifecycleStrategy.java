@@ -20,7 +20,7 @@ import com.picocontainer.LifecycleStrategy;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+public abstract class AbstractMonitoringLifecycleStrategy<T> implements LifecycleStrategy<T>, ComponentMonitorStrategy, Serializable {
 
 	/**
 	 * Component monitor that receives lifecycle state.
@@ -56,7 +56,7 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
         return monitor;
     }
 
-    public boolean isLazy(final ComponentAdapter<?> adapter) {
+    public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
         return false;
     }
 

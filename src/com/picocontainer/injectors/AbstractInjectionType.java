@@ -35,7 +35,7 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
         if (lifecycle instanceof NullLifecycleStrategy) {
             return injector;
         } else {
-            return new LifecycleAdapter<T>(injector, lifecycle);
+            return new LifecycleAdapter<>(injector, lifecycle);
         }
     }
 
@@ -43,11 +43,11 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
     public void dispose() {
     }
 
-    private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+    private static class LifecycleAdapter<T> implements Injector<T>, LifecycleStrategy<T>, ComponentMonitorStrategy, Serializable {
         private final Injector<T> delegate;
-        private final LifecycleStrategy lifecycle;
+        private final LifecycleStrategy<T> lifecycle;
 
-        public LifecycleAdapter(final Injector<T> delegate, final LifecycleStrategy lifecycle) {
+        public LifecycleAdapter(final Injector<T> delegate, final LifecycleStrategy<T> lifecycle) {
             this.delegate = delegate;
             this.lifecycle = lifecycle;
         }
@@ -90,24 +90,29 @@ public abstract class AbstractInjectionType implements InjectionType, Serializab
             return getDescriptor() + ":" + delegate.toString();
         }
 
-        public void start(final Object component) {
+        public void start(final T component) {
             lifecycle.start(component);
         }
 
-        public void stop(final Object component) {
+        public void stop(final T component) {
             lifecycle.stop(component);
         }
 
-        public void dispose(final Object component) {
+        public void dispose(final T component) {
             lifecycle.dispose(component);
         }
 
-        public boolean hasLifecycle(final Class<?> type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return lifecycle.hasLifecycle(type);
         }
 
-        public boolean isLazy(final ComponentAdapter<?> adapter) {
-            return lifecycle.isLazy(adapter);
+        public boolean calledAfterContextStart(final ComponentAdapter<T> adapter) {
+            return lifecycle.calledAfterContextStart(adapter);
+        }
+
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+            return false;
         }
 
         public ComponentMonitor changeMonitor(final ComponentMonitor monitor) {

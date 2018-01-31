@@ -230,5 +230,9 @@ public class AnnotatedStaticInjection extends AbstractBehavior {
             return referenceSet;
         }
 
+        @Override
+        public boolean calledAfterConstruction(ComponentAdapter<T> adapter) {
+            return false;
+        }
     }
 }

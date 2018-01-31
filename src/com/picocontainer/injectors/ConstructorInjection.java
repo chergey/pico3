@@ -112,7 +112,7 @@ public class ConstructorInjection extends AbstractInjectionType {
          * @param params
          */
         public ConstructorInjector(final Object key, final Class<T> impl, final Parameter... params) {
-            this(key, impl, (params == null || params.length == 0) ? (ConstructorParameters) null : new ConstructorParameters(params));
+            this(key, impl, (params == null || params.length == 0) ? null : new ConstructorParameters(params));
         }
 
         /**

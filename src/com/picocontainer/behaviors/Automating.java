@@ -59,9 +59,11 @@ public class Automating extends AbstractBehavior implements Serializable {
         }
 
         @Override
-        public boolean hasLifecycle(final Class<?> type) {
+        public boolean hasLifecycle(final Class<T> type) {
             return true;
         }
+
+
 
         public String getDescriptor() {
             return "Automated";

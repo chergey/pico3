@@ -111,7 +111,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionType {
             }
 
             //Sort for injection.
-            Collections.sort(injectionMembers, new JSR330AccessibleObjectOrderComparator());
+            injectionMembers.sort(new JSR330AccessibleObjectOrderComparator());
             for (AccessibleObject eachMember : injectionMembers) {
                 Field field = (Field) eachMember;
                 typeList.add(box(field.getGenericType()));
