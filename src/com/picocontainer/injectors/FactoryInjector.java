@@ -30,7 +30,7 @@ import com.picocontainer.PicoVisitor;
  */
 public abstract class FactoryInjector<T> implements Injector<T> {
 
-    private Class key;
+    private Class<?> key;
 
     public FactoryInjector() throws PicoCompositionException {
         key = getTypeArguments(FactoryInjector.class, getClass()).get(0);
@@ -118,7 +118,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
     }
 
     public Class<? extends T> getComponentImplementation() {
-        return key;
+        return (Class<? extends T>) key;
     }
 
     public void accept(final PicoVisitor visitor) {

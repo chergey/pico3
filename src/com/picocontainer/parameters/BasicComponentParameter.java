@@ -292,22 +292,31 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     @SuppressWarnings("unchecked")
     private <T> Generic<T> convertToPrimitiveType(Generic<T> type) {
         String expectedTypeName = type.toString();
-        if (expectedTypeName.equals("int")) {
-            type = JTypeHelper.INTEGER;
-        } else if (expectedTypeName.equals("long")) {
-            type = JTypeHelper.LONG;
-        } else if (expectedTypeName.equals("float")) {
-            type = JTypeHelper.FLOAT;
-        } else if (expectedTypeName.equals("double")) {
-            type = JTypeHelper.DOUBLE;
-        } else if (expectedTypeName.equals("boolean")) {
-            type = JTypeHelper.BOOLEAN;
-        } else if (expectedTypeName.equals("char")) {
-            type = JTypeHelper.CHARACTER;
-        } else if (expectedTypeName.equals("short")) {
-            type = JTypeHelper.SHORT;
-        } else if (expectedTypeName.equals("byte")) {
-            type = JTypeHelper.BYTE;
+        switch (expectedTypeName) {
+            case "int":
+                type = JTypeHelper.INTEGER;
+                break;
+            case "long":
+                type = JTypeHelper.LONG;
+                break;
+            case "float":
+                type = JTypeHelper.FLOAT;
+                break;
+            case "double":
+                type = JTypeHelper.DOUBLE;
+                break;
+            case "boolean":
+                type = JTypeHelper.BOOLEAN;
+                break;
+            case "char":
+                type = JTypeHelper.CHARACTER;
+                break;
+            case "short":
+                type = JTypeHelper.SHORT;
+                break;
+            case "byte":
+                type = JTypeHelper.BYTE;
+                break;
         }
         return type;
     }

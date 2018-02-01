@@ -34,8 +34,7 @@ public final class SecurityWrappingPicoContainer implements MutablePicoContainer
 	
 	private final Permission writeCheck;
 	
-	
-	
+
 	private final AccessControllerWrapper accessWrapper;
 
 	public SecurityWrappingPicoContainer(String scope, MutablePicoContainer pico) {
@@ -49,8 +48,8 @@ public final class SecurityWrappingPicoContainer implements MutablePicoContainer
 			throw new NullPointerException("pico");
 		}
 		
-		readCheck = new PicoAccessPermission(scope, PicoAccessPermission.READ);
-		writeCheck = new PicoAccessPermission(scope, PicoAccessPermission.WRITE);
+		readCheck = new PicoAccessPermission(scope, PicoAccessPermission.Perm.READ);
+		writeCheck = new PicoAccessPermission(scope, PicoAccessPermission.Perm.WRITE);
 		
 		accessWrapper = new DefaultAccessWrapper();
 					

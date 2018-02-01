@@ -429,21 +429,21 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     protected Type box(final Type parameterType) {
         if (parameterType instanceof Class && ((Class) parameterType).isPrimitive()) {
             String parameterTypeName = ((Class) parameterType).getName();
-            if (parameterTypeName == "int") {
+            if (parameterTypeName.equals("int")) {
                 return Integer.class;
-            } else if (parameterTypeName == "boolean") {
+            } else if (parameterTypeName.equals("boolean")) {
                 return Boolean.class;
-            } else if (parameterTypeName == "long") {
+            } else if (parameterTypeName.equals("long")) {
                 return Long.class;
-            } else if (parameterTypeName == "float") {
+            } else if (parameterTypeName.equals("float")) {
                 return Float.class;
-            } else if (parameterTypeName == "double") {
+            } else if (parameterTypeName.equals("double")) {
                 return Double.class;
-            } else if (parameterTypeName == "char") {
+            } else if (parameterTypeName.equals("char")) {
                 return Character.class;
-            } else if (parameterTypeName == "byte") {
+            } else if (parameterTypeName.equals("byte")) {
                 return Byte.class;
-            } else if (parameterTypeName == "short") {
+            } else if (parameterTypeName.equals("short")) {
                 return Short.class;
             }
         }
